@@ -1,0 +1,5 @@
+{"templates":[
+	{"name":"simple text module", "icon":"", "path":"simple-text-box.html", "default": true},
+	{"name":"table 3 columns module", "icon":"", "path":"table-3-cols.html"},
+	{"name":"3 box line module", "icon":"", "path":"box-3.html"}
+]}

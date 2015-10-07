@@ -1,0 +1,657 @@
+/*******************************************************************************
+ *
+ * jQuery.mb.components: editIt
+ * version: 1.0
+ * Author: mbicocchi
+ * Creation date: 04/09/15
+ * Licences: MIT, GPL
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ *
+ ******************************************************************************/
+
+@charset "UTF-8";
+
+
+@import "vars";
+
+
+@import "icons";
+
+body {
+  &.blur {
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
+    overflow: hidden;
+    opacity: .7;
+  }
+  &.inSourceMode {
+    margin-bottom: 50vh !important;
+  }
+}
+
+.editIt-wrapper {
+
+  &.inEditMode {
+    border: 1px dotted rgba(0,0,0,0.3);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  &.full-screen {
+    position: fixed;
+    top:0; left:0; right: 0; bottom: 0;
+    margin: auto;
+    background: #fff;
+  }
+
+  [data-group=true] {
+    position: relative;
+  }
+
+  *:focus {
+    outline: 0;
+  }
+
+}
+
+.editIt {
+
+  &[contenteditable]{
+    position: relative;
+    border: 1px dotted transparent;
+    padding: 4px;
+    border: 1px dotted #fee298;
+    background-color: fade(@editor-color,3);
+    margin: 5px 0;
+
+    &:focus {
+      //      background-color: @editor-color;
+
+      &:before {
+        content: "EDIT MODE";
+        background-color: @editor-label-color;
+        position: absolute;
+        top: -18px;
+        left: 0;
+        padding: 3px;
+        font-size: 8px;
+        font-weight: normal;
+      }
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      td {
+        border: 1px dotted #ccc;
+      }
+    }
+
+    &::selection, & *::selection{
+      background: @editor-selection;
+    }
+
+    &::-moz-selection, & *::-moz-selection{
+      background: @editor-selection;
+    }
+
+  }
+
+}
+
+.editIt-main-buttonBar {
+  position: absolute;
+  top:-45px;
+  right: 0;
+  height: 30px;
+  font-family: @default-font-family;
+}
+
+.inSourceMode{
+  position: relative;
+  z-index: 100000;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px dotted fade(@tool-color, 0.85);
+}
+
+/** ToolBar */
+
+#editIt-toolbar {
+  position: absolute;
+  z-index: 1000;
+  margin-top: -40px;
+  padding: 0;
+  min-height: 33px;
+  font-family: @default-font-family;
+
+  background-color: fade(@tool-color,90);
+  border-radius: 4px;
+  white-space: nowrap;
+
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+
+  button {
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    font-weight: 100;
+    font-size: 16px;
+    letter-spacing: 1px;
+    line-height: 18px;
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    color: @tool-font-color;
+    border: none;
+    padding: 12px;
+//    border-right: 1px solid fade(@tool-font-color, 20);
+
+    cursor: pointer;
+
+    &:hover {
+      background-color: @tool-hover-color;
+      color: @tool-hover-font-color;
+    }
+
+    .textual {
+      font-family: "Arimo", Helvetica, Arial, sans-serif;
+    }
+
+    &.sel {
+      color: @tool-selected-font-color;
+    }
+
+    &.disabled {
+      color: fade(@tool-font-color, 20);
+    }
+
+  }
+
+  span.separator {
+    position: relative;
+    display: inline-block;
+    background-color: fade(@tool-font-color,20);
+    width: 1px;
+    padding: 12px 0;
+    height: 100%;
+    vertical-align: top;
+  }
+
+
+  .arrow_box {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+  }
+  .arrow_box:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-top-color: fade(@tool-color,90);
+    border-width: 10px;
+    margin-left: -10px;
+  }
+
+}
+
+.editIt-buttonBar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: none;
+  font-family: @default-font-family;
+
+}
+
+button.editIt-button {
+  position: relative;
+  background-color: @editor-label-color;
+  width: auto;
+  color: @editor-label-font-color;
+  font-weight: 100;
+  font-size: @small-font-size;
+  line-height: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 1000;
+  margin: 5px;
+  border: 1px solid fade(@secondary-color, 30);
+
+  white-space: nowrap;
+
+  &.onlyIcon {
+    font-size: @big-font-size;
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 25px;
+  }
+
+  &:after {
+    content: " " attr(label);
+    font-size: 90%;
+    line-height: 20px;
+    text-transform: uppercase;
+    font-family: @default-font-family;
+  }
+
+  &:hover {
+    background-color: @tool-color;
+    color: @tool-font-color;
+  }
+
+  &.text-modality {
+    background-color: transparent;
+    color: @prompt-font-color;
+
+    &:hover {
+      background-color: @tool-color;
+      color: fade(@tool-font-color,60);
+    }
+  }
+
+  &.white {
+    background-color: #FFFFFF;
+    color: #333333;
+
+    &:hover {
+      background-color: @tool-color;
+      color: @tool-font-color;
+    }
+  }
+
+  &.red {
+    background-color: rgba(168, 27, 15, 1);
+    color: #FFF;
+
+    &:hover {
+      background-color: @tool-color;
+      color: @tool-font-color;
+    }
+  }
+
+  &.main-color {
+    background-color: fade(@tool-color,80);
+    color: @tool-font-color;
+
+    &:hover {
+      background-color: @editor-label-color;
+      color: #333333;
+    }
+  }
+
+  &.apply {
+    background-color: @prompt-apply-button-color;
+    color: @prompt-font-color;
+
+    &:hover {
+      background-color: @tool-color;
+      color: @tool-font-color;
+    }
+  }
+
+  &.delete {
+    background-color: @prompt-delete-button-color;
+    color: @prompt-font-color;
+
+    &:hover {
+      background-color: @tool-color;
+      color: @tool-font-color;
+    }
+  }
+
+  &.align-right{
+    float: right;
+  }
+
+  &.big {
+    font-size: @default-font-size;
+  }
+
+}
+
+
+.editIt-dropdown {
+  padding: 0;
+  font-family: @default-font-family;
+  background-color: fade(@dropdown-color, 90);
+
+  div {
+    position: relative;
+    min-width: 120px;
+    color: @dropdown-font-color;
+    font-weight: 100;
+    font-size: @default-font-size;
+    cursor: pointer;
+    padding: 6px 30px 6px 6px;
+
+    &:hover {
+      background-color:  fade(@dropdown-color, 100);
+      color: @tool-hover-font-color;
+    }
+
+    &.row_separator {
+      width: 100%;
+      height: 1px;
+      background-color: fade(@dropdown-font-color, 20);
+      padding: 0;
+
+      &:hover {
+        background-color: fade(@dropdown-font-color, 20);
+      }
+
+    }
+
+    span {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
+  }
+}
+
+
+.editIt-prompt {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: fade(#FFFFFF,50);
+  z-index: 10000;
+  font-family: @default-font-family;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  > div {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 20px 20px 100px;
+    color: #fff;
+    background-color: fade(@prompt-color,80);
+
+    width: 600px;
+    min-height: 150px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 5px;
+
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+
+  }
+
+  input[type=text] {
+
+    font-family: @default-font-family;
+    padding: 10px;
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .editIt-prompt-buttonBar{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    text-align: right;
+    width: 100%;
+    font-family: @default-font-family;
+
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+}
+
+.editIt-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: fade(#FFFFFF,50);
+  z-index: 10000;
+  font-family: @default-font-family;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  > div {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 20px 20px 60px;
+    color: #fff;
+    background-color: fade(@main-color,95);
+
+    width: 400px;
+    min-height: 150px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 5px;
+
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+
+  }
+
+  .editIt-alert-buttonBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    text-align: right;
+    width: 100%;
+    font-family: @default-font-family;
+
+  }
+
+}
+
+
+.editIt-tooltip {
+  position: absolute;
+  background-color: @main-color;
+  padding: 10px;
+  margin-top: -35px;
+  left: -35px;
+  border-radius: 5px;
+  font-size: @default-font-size;
+  font-family: @default-font-family;
+
+  a {
+    color: @tool-font-color;
+  }
+}
+
+.sourceMode-switcher {
+  position: absolute;
+  background-color: @editor-label-color;
+  /*background-color: rgba(25, 34, 37, 0.85);*/
+  border: none;
+  bottom: -5px;
+  right: -5px;
+  width: auto;
+  color: @editor-label-font-color;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: @default-font-family;
+
+  display: none;
+
+  &.main-switcher {
+    display: block;
+    bottom: auto;
+    top: -10px;
+    right: auto;
+    left: -10px;
+    width: auto;
+    background-color: fade(@tool-color,60);
+    color: @tool-font-color;
+  }
+
+  &:after {
+    content: " " attr(label);
+    font-size: 80%;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  &:hover {
+    background-color: @tool-color;
+    color: @tool-font-color;
+  }
+
+}
+
+.editIt-source {
+  transition: All .2s .5s;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 80%;
+  height: 0%;
+  opacity: 1;
+  margin: auto;
+
+  z-index: 100000;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  textarea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: @tool-color;
+    border: none;
+    padding: 40px 100px;
+    color: @tool-font-color;
+    font-size: 18px;
+    line-height: 22px;
+    font-family: "Bitstream Vera Sans Mono", Consolas, Courier, monospace;
+
+    box-shadow: 0 0 5px rgba(51, 51, 51, 0.8);
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    resize: none;
+
+    &:focus {
+      outline: 0;
+    }
+
+  }
+
+
+  .sourceMode-switcher {
+    position: absolute;
+    bottom: auto;
+    top:10px;
+    right: 10px;
+    z-index: 100000;
+    width:auto;
+    height: auto;
+
+    background-color: @default-button-color;
+    font-size: 16px;
+    color: @default-button-font-color;
+    margin-top: 0;
+    display: block;
+
+    &:after {
+      content: "";
+    }
+
+  }
+
+  &.in {
+    height: 50%;
+  }
+}
+
+.editIt-source-overlay {
+  transition: all .2s;
+  background: fade(#000000,60) url(images/raster@2x.png);
+  z-index: 9999;
+  opacity:0;
+
+  &.in {
+    opacity:1;
+  }
+}
+
+.editIt-preview {
+  background: fade(#FFFFFF,50);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100000;
+
+  .preview-content {
+
+    position: relative;
+    max-width: 1024px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    margin: auto;
+    background: #FFFFFF;
+
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+
+  }
+
+  .previewMode-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+
+}
+

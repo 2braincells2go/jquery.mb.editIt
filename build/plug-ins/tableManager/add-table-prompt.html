@@ -1,0 +1,41 @@
+<div id="addTable-prompt">
+
+  <h2>Title</h2>
+
+  <p>
+
+      <label for="addTable-columns"></label><br><input id="addTable-columns" type="text" name="columns" value="3"><br>
+      <label for="addTable-rows"></label><br><input id="addTable-rows" type="text" name="rows" value="3"><br><br>
+      <label for="addTable-header"></label><br><input id="addTable-header" type="checkbox" name="header" value="true" checked>
+
+  </p>
+
+</div>
+
+<script>
+
+  $.editIt.prompt.onLoad = function (editor, plugin) {
+
+      var i18n = {
+          "it-IT": {
+              "Add a table:"     : "Aggiungi una tabella:",
+              "Add header"     : "Aggiungi una intestazione:",
+              "How many rows?"   : "Quante righe?",
+              "How many columns?": "Quante colonne?"
+          }
+      };
+
+      $.editIt.i18n.extend(i18n);
+
+      var prompt = $("#addTable-prompt");
+      prompt.children("h2").html(_("Add a table:"));
+
+      //Labels
+      $("[for=addTable-header]").html(_("Add header"));
+      $("[for=addTable-columns]").html(_("How many columns?"));
+      $("[for=addTable-rows]").html(_( "How many rows?"));
+
+
+  };
+
+</script>

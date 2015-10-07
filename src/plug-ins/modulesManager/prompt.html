@@ -1,0 +1,65 @@
+<div id="templateManager-prompt">
+
+  <h2>Title</h2>
+
+  <ul id="templateManager-list"></ul>
+
+  <p>
+
+    <h3></h3>
+
+    <input id="templateManager-after" type="radio" name="position" value="after" checked> <label for="templateManager-after"></label><br>
+    <input id="templateManager-before" type="radio" name="position" value="before"> <label for="templateManager-before"></label>
+
+  </p>
+
+</div>
+
+<script>
+
+  $.editIt.prompt.onLoad = function (editor, plugin) {
+
+    var i18n = {
+      "it-IT": {
+        "Choose a template:": "Scegli un template:",
+        "table 3 columns" : "Tabella a 3 colonne",
+        "3 box line" : "3 box in linea",
+        "simple text box" : "box di testo",
+        "After the current block" : "Dopo il blocco corrente",
+        "Before the current bloclk" : "Prima del blocco corrente",
+        "Where?" : "Dove?"
+      }
+    };
+
+    $.editIt.i18n.extend(i18n);
+
+    var prompt = $("#templateManager-prompt");
+    prompt.children("h2").html(_("Choose a template:"));
+    prompt.children("h3:first").html(_("Where?"));
+
+    for (var temp in plugin.templates){
+
+      var listEl = $("<li/>");
+
+      var listChooser = $("<input/>").attr({
+        type: "radio",
+        name: "template-url",
+        value: plugin.templates[temp].path,
+        id: "radio_" + temp,
+        checked: plugin.templates[temp].default ? true : false
+      });
+      var label = $("<label/>").attr({for: "radio_" + temp}).html(" "+_(plugin.templates[temp].name));
+
+      listEl.append(listChooser).append(label);
+
+      $("#templateManager-list").append(listEl);
+
+      //Labels
+      $("[for=templateManager-after]").html(_("After the current block"));
+      $("[for=templateManager-before]").html(_("Before the current bloclk"));
+
+    }
+
+  };
+
+</script>

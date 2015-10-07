@@ -1,0 +1,66 @@
+<div id="variablesReplace-prompt">
+
+  <h3>Title</h3>
+
+  <ul id="variablesReplace-list"></ul>
+
+</div>
+
+<script>
+
+  $.editIt.prompt.onLoad = function (editor, plugin) {
+
+    var i18n = {
+      "it-IT": {
+        "Choose the variable:": "Scegli una variabile da inserire:",
+        "There're no available variables." : "Non ci sono variabili da utilizzare."
+      }
+    };
+
+    $.editIt.i18n.extend(i18n);
+
+    var prompt = $("#variablesReplace-prompt");
+    prompt.children("h3").html(_("Choose the variable:"));
+
+    var predef = plugin.variables;
+
+
+    for (var p in predef) {
+
+      var inpt = $("<input/>").attr({type: "hidden", value: predef[p], name: p, "data-content-replace": true});
+      $("#variablesReplace-prompt").append(inpt);
+
+    }
+
+    var vars =  [];
+
+    $("[data-content-replace]").each(function(){
+      vars.push(this.name);
+    });
+
+    if(!vars.length){
+      prompt.children("#variablesReplace-list").replaceWith("<p>" + _("There're no available variables.") + "</p>");
+      $(".editIt-button.apply").hide();
+    }
+
+    for (var v in vars){
+
+      var listEl = $("<li/>");
+
+      var listChooser = $("<input/>").attr({
+        type: "radio",
+        name: "variable-name",
+        value: vars[v],
+        id: "radio_" + vars[v]
+      });
+      var label = $("<label/>").attr({for: "radio_" + vars[v]}).html(" "+ vars[v]);
+
+      listEl.append(listChooser).append(label);
+
+      $("#variablesReplace-list").append(listEl);
+
+    }
+
+  };
+
+</script>
