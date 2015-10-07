@@ -1,10 +1,20 @@
 
+.modulesManager-buttonBar {
+  position: relative;
+  display: inline-block;
+  float: right;
+  margin-top: -10px;
+  min-width: 150px;
+  text-align: right;
+  z-index: 10000;
+}
+
 .editIt-prompt h2, .editIt-prompt h3{
   margin-top: 0;
   font-weight: 100;
 }
 
-.editIt-prompt #tableManager-list{
+.editIt-prompt #modulesManager-list{
   list-style: none;
   margin: 0;
   padding: 0;

@@ -320,7 +320,7 @@
 				"Add header"     : "Aggiungi una intestazione:",
 				"How many rows?"   : "Quante righe?",
 				"How many columns?": "Quante colonne?",
-				"Adding %% rows and %% columns": "Aggiungi %% righe e %% colonne"
+				"%% rows and %% columns": "%% righe e %% colonne"
 
 			}
 		}

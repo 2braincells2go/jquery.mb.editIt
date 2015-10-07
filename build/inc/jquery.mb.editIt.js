@@ -46,7 +46,7 @@
  *
  **/
 
-( function( $ ) {
+( function( $, d ) {
 
 	$.editIt = {
 
@@ -142,7 +142,7 @@
 					if( !cmnd.type )
 						cmnd.type = "default";
 
-					var canCheck = typeof document.queryCommandState != "undefined";
+					var canCheck = typeof d.queryCommandState != "undefined";
 
 					switch( cmnd.type ) {
 
@@ -156,7 +156,7 @@
 
 						case "plugin":
 							try {
-								if( canCheck && document.queryCommandState( btn ) )
+								if( canCheck && d.queryCommandState( btn ) )
 									command.addClass( "sel" );
 							} catch( err ) {
 								console.debug( err )
@@ -165,9 +165,9 @@
 
 						default:
 							try {
-								if( canCheck && !document.queryCommandEnabled( btn ) )
+								if( canCheck && !d.queryCommandEnabled( btn ) )
 									command.addClass( "disabled" );
-								if( canCheck && ( btn == "createlink" ) && $.editIt.util.isSelectionInsideElement( "A" ) || ( btn != "removeFormat" && document.queryCommandState( btn ) ) )
+								if( canCheck && ( btn == "createlink" ) && $.editIt.util.isSelectionInsideElement( "A" ) || ( btn != "removeFormat" && d.queryCommandState( btn ) ) )
 									command.addClass( "sel" );
 							} catch( err ) {
 								console.debug( err )
@@ -330,8 +330,8 @@
 				label: "Redo",
 				icon: "editIt-icon-mail-forward",
 				action: function( editor ) {
-					if( document.queryCommandEnabled( "redo" ) )
-						document.execCommand( 'redo', false, null );
+					if( d.queryCommandEnabled( "redo" ) )
+						d.execCommand( 'redo', false, null );
 				}
 			},
 
@@ -339,8 +339,8 @@
 				label: "Undo",
 				icon: "editIt-icon-mail-reply",
 				action: function( editor ) {
-					if( document.queryCommandEnabled( "undo" ) )
-						document.execCommand( 'undo', false, null );
+					if( d.queryCommandEnabled( "undo" ) )
+						d.execCommand( 'undo', false, null );
 
 				}
 			},
@@ -349,7 +349,7 @@
 				label: "Bold",
 				icon: "editIt-icon-bold",
 				action: function( editor ) {
-					document.execCommand( 'bold', false, null );
+					d.execCommand( 'bold', false, null );
 				}
 			},
 
@@ -357,7 +357,7 @@
 				label: "Italic",
 				icon: "editIt-icon-italic",
 				action: function( editor ) {
-					document.execCommand( 'italic', false, null );
+					d.execCommand( 'italic', false, null );
 				}
 			},
 
@@ -365,7 +365,7 @@
 				label: "Underline",
 				icon: "editIt-icon-underline",
 				action: function( editor ) {
-					document.execCommand( 'underline', false, null );
+					d.execCommand( 'underline', false, null );
 				}
 			},
 
@@ -373,7 +373,7 @@
 				label: "Stroke",
 				icon: "editIt-icon-strikethrough",
 				action: function( editor ) {
-					document.execCommand( 'strikeThrough', false, null );
+					d.execCommand( 'strikeThrough', false, null );
 				}
 			},
 
@@ -381,7 +381,7 @@
 				label: "Clear",
 				icon: "editIt-icon-eraser",
 				action: function( editor ) {
-					document.execCommand( 'removeFormat', false, null );
+					d.execCommand( 'removeFormat', false, null );
 				}
 			},
 
@@ -405,7 +405,7 @@
 					if( text.length > 30 )
 						text = text.substring( 0, 28 ) + "...";
 
-					var url = editor.actualTag.tagName.toUpperCase() == "A" ? editor.actualTag.href.replace( document.URL, "" ).replace( document.location.origin, "" ) : 'http://';
+					var url = editor.actualTag.tagName.toUpperCase() == "A" ? editor.actualTag.href.replace( d.URL, "" ).replace( d.location.origin, "" ) : 'http://';
 					var title = editor.actualTag.tagName.toUpperCase() == "A" ? editor.actualTag.title : '';
 					var targ = editor.actualTag.tagName.toUpperCase() == "A" && editor.actualTag.target ? "checked" : '';
 
@@ -422,15 +422,15 @@
 						if( data[ "link" ] && data[ "link" ] != "http://" ) {
 
 							var url = data[ "link" ].replace( pageUrl, "" );
-							document.execCommand( 'createlink', false, url );
+							d.execCommand( 'createlink', false, url );
 							if( data[ "target" ] )
-								document.getSelection().anchorNode.parentNode.target = data[ "target" ];
+								d.getSelection().anchorNode.parentNode.target = data[ "target" ];
 
 							if( data[ "title" ] )
-								document.getSelection().anchorNode.parentNode.title = data[ "title" ];
+								d.getSelection().anchorNode.parentNode.title = data[ "title" ];
 
 						} else {
-							document.execCommand( 'unlink', false, "" );
+							d.execCommand( 'unlink', false, "" );
 						}
 					} );
 
@@ -441,7 +441,7 @@
 				label: "Justify",
 				icon: "editIt-icon-align-justify",
 				action: function( editor ) {
-					document.execCommand( 'justifyFull', false, "" );
+					d.execCommand( 'justifyFull', false, "" );
 				}
 			},
 
@@ -449,7 +449,7 @@
 				label: "Center",
 				icon: "editIt-icon-align-center",
 				action: function( editor ) {
-					document.execCommand( 'justifyCenter', false, "" );
+					d.execCommand( 'justifyCenter', false, "" );
 				}
 			},
 
@@ -457,7 +457,7 @@
 				label: "Left",
 				icon: "editIt-icon-align-left",
 				action: function( editor ) {
-					document.execCommand( 'justifyLeft', false, "" );
+					d.execCommand( 'justifyLeft', false, "" );
 				}
 			},
 
@@ -465,7 +465,7 @@
 				label: "Right",
 				icon: "editIt-icon-align-right",
 				action: function( editor ) {
-					document.execCommand( 'justifyRight', false, "" );
+					d.execCommand( 'justifyRight', false, "" );
 				}
 			},
 
@@ -473,7 +473,7 @@
 				label: "Unlink",
 				icon: "editIt-icon-chain-broken",
 				action: function( editor ) {
-					document.execCommand( 'unlink', false, "" );
+					d.execCommand( 'unlink', false, "" );
 				}
 			},
 
@@ -496,7 +496,7 @@
 				label: "Title H1",
 				icon: false,
 				action: function( editor ) {
-					document.execCommand( 'formatBlock', false, "<H1>" );
+					d.execCommand( 'formatBlock', false, "<H1>" );
 				}
 			},
 
@@ -504,7 +504,7 @@
 				label: "Title H2",
 				icon: false,
 				action: function() {
-					document.execCommand( 'formatBlock', false, "<H2>" );
+					d.execCommand( 'formatBlock', false, "<H2>" );
 				}
 			},
 
@@ -512,7 +512,7 @@
 				label: "Title H3",
 				icon: false,
 				action: function() {
-					document.execCommand( 'formatBlock', false, "<H3>" );
+					d.execCommand( 'formatBlock', false, "<H3>" );
 				}
 			},
 
@@ -520,7 +520,7 @@
 				label: "Title H4",
 				icon: false,
 				action: function() {
-					document.execCommand( 'formatBlock', false, "<H4>" );
+					d.execCommand( 'formatBlock', false, "<H4>" );
 				}
 			},
 
@@ -528,7 +528,7 @@
 				label: "Paragraph P",
 				icon: false,
 				action: function() {
-					document.execCommand( 'formatBlock', false, "<P>" );
+					d.execCommand( 'formatBlock', false, "<P>" );
 				}
 			},
 
@@ -536,7 +536,7 @@
 				label: "Blockquote",
 				icon: "editIt-icon-quote-left",
 				action: function() {
-					document.execCommand( 'formatBlock', false, "<BLOCKQUOTE>" );
+					d.execCommand( 'formatBlock', false, "<BLOCKQUOTE>" );
 				}
 			},
 
@@ -544,7 +544,7 @@
 				label: "Ordered list",
 				icon: "editIt-icon-list-ol",
 				action: function( editor ) {
-					document.execCommand( 'insertOrderedList', false, null )
+					d.execCommand( 'insertOrderedList', false, null )
 				}
 			},
 
@@ -552,7 +552,7 @@
 				label: "Unordered list",
 				icon: "editIt-icon-list-ul",
 				action: function( editor ) {
-					document.execCommand( 'insertUnorderedList', false, null )
+					d.execCommand( 'insertUnorderedList', false, null )
 				}
 			},
 
@@ -560,7 +560,7 @@
 				label: "Indent",
 				icon: "editIt-icon-indent",
 				action: function( editor ) {
-					document.execCommand( 'indent', false, null )
+					d.execCommand( 'indent', false, null )
 				}
 			},
 
@@ -568,7 +568,7 @@
 				label: "Outdent",
 				icon: "editIt-icon-dedent",
 				action: function( editor ) {
-					document.execCommand( 'outdent', false, null )
+					d.execCommand( 'outdent', false, null )
 				}
 			}
 
@@ -584,7 +584,7 @@
 
 			load: function( pathToFolder ) {
 
-				$( document ).on( "registered", function( e ) {
+				$( d ).on( "registered", function( e ) {
 					e.plugin.UID = pathToFolder.asId();
 					e.plugin.path = pathToFolder;
 				} );
@@ -609,7 +609,7 @@
 
 				var registered = $.Event( "registered" );
 				registered.plugin = $.editIt._plugins[ plugin.name ];
-				$( document ).trigger( registered );
+				$( d ).trigger( registered );
 
 				if( plugin.i18n )
 					$.editIt.i18n.extend( plugin.i18n );
@@ -698,7 +698,7 @@
 						$( editor ).focus();
 					}, 50 );
 
-					$( document ).off( "keydown.alert" );
+					$( d ).off( "keydown.alert" );
 
 				} );
 
@@ -714,7 +714,7 @@
 
 				editor.alert.fadeIn( 120 );
 
-				$( document ).on( "keydown.alert", function( e ) {
+				$( d ).on( "keydown.alert", function( e ) {
 
 					var k = e.keyCode;
 
@@ -797,7 +797,7 @@
 						$( editor ).focus();
 					}, 50 );
 
-					$( document ).off( "keydown.prompt" );
+					$( d ).off( "keydown.prompt" );
 
 				} );
 
@@ -808,7 +808,7 @@
 					$.editIt.util.restoreSelection( editor.actualSelection );
 
 					$.editIt.toolBar.draw( editor, true );
-					$( document ).off( "keydown.prompt" );
+					$( d ).off( "keydown.prompt" );
 				} );
 
 				editor.prompt.append( promptBox );
@@ -828,7 +828,7 @@
 					promptBox.find( "input" ).eq( 0 ).focus().select();
 				} );
 
-				$( document ).on( "keydown.prompt", function( e ) {
+				$( d ).on( "keydown.prompt", function( e ) {
 
 					var k = e.keyCode;
 
@@ -1094,7 +1094,7 @@
 				}
 
 				// insert text manually
-				document.execCommand( "insertHTML", false, text );
+				d.execCommand( "insertHTML", false, text );
 
 			},
 
@@ -1115,7 +1115,7 @@
 
 						var previewEv = $.Event( "editIt-preview" );
 						previewEv.content = preview;
-						$( document ).trigger( previewEv );
+						$( d ).trigger( previewEv );
 
 						var closePreview = $.editIt.util.drawButton( "Close", "previewMode-close main-color big", "editIt-icon-close", function() {
 							preview.slideUp( 400, function() {
@@ -1264,7 +1264,7 @@
 			 * @returns {{left: *, top: *}}
 			 */
 			getSelectionCoords: function() {
-				var sel = document.selection,
+				var sel = d.selection,
 					range, rect;
 				var x = 0,
 					y = 0,
@@ -1302,11 +1302,11 @@
 						// Fall back to inserting a temporary element
 						if( x == 0 && y == 0 ) {
 
-							var span = document.createElement( "span" );
+							var span = d.createElement( "span" );
 							if( span.getClientRects ) {
 								// Ensure span has dimensions and position by
 								// adding a zero-width space character
-								span.appendChild( document.createTextNode( "\u200b" ) );
+								span.appendChild( d.createTextNode( "\u200b" ) );
 								range.insertNode( span );
 								rect = span.getClientRects()[ 0 ];
 								x = rect.left;
@@ -1339,8 +1339,8 @@
 
 				if( window.getSelection ) {
 					return window.getSelection().toString();
-				} else if( document.selection ) {
-					return document.selection.createRange().text;
+				} else if( d.selection ) {
+					return d.selection.createRange().text;
 				}
 
 				return '';
@@ -1415,8 +1415,8 @@
 					if( sel.getRangeAt && sel.rangeCount ) {
 						return sel.getRangeAt( 0 );
 					}
-				} else if( document.selection && document.selection.createRange ) {
-					return document.selection.createRange();
+				} else if( d.selection && d.selection.createRange ) {
+					return d.selection.createRange();
 				}
 				return null;
 			},
@@ -1430,7 +1430,7 @@
 						sel = window.getSelection();
 						sel.removeAllRanges();
 						sel.addRange( range );
-					} else if( document.selection && range.select ) {
+					} else if( d.selection && range.select ) {
 						range.select();
 					}
 				}
@@ -1440,7 +1440,7 @@
 			 * @param el
 			 */
 			selectElementContents: function( el ) {
-				var range = document.createRange();
+				var range = d.createRange();
 				range.selectNodeContents( el );
 				var sel = window.getSelection();
 				sel.removeAllRanges();
@@ -1543,16 +1543,9 @@
 					$editor.attr( "contenteditable", true );
 
 					if( self.opt.styleWithCSS )
-						document.execCommand( "styleWithCSS", false, null );
+						d.execCommand( "styleWithCSS", false, null );
 					/**
 					 * PASTE event
-					 */
-
-					/*
-					 if( $.browser.safari )
-					 document.addEventListener( "paste", function( e ) {
-					 $.editIt.util.handlePaste( e, editor );
-					 } );
 					 */
 
 					$editor.on( "paste", function( e ) {
@@ -1566,7 +1559,7 @@
 
 						editor.actualTag = e.target;
 
-						$( document ).one( "mouseup", function() {
+						$( d ).one( "mouseup", function() {
 							$editor.trigger( "mouseup" );
 						} );
 
@@ -1697,8 +1690,8 @@
 
 								var selection = window.getSelection(),
 									range = selection.getRangeAt( 0 ),
-									el = document.createElement( "br" ),
-									textNode = document.createTextNode( "\u00a0" );
+									el = d.createElement( "br" ),
+									textNode = d.createTextNode( "\u00a0" );
 
 								range.collapse( false );
 								range.insertNode( textNode );
@@ -1706,10 +1699,10 @@
 								range.selectNodeContents( textNode );
 								selection.removeAllRanges();
 								selection.addRange( range );
-								document.execCommand( "forwardDelete", false, null );
+								d.execCommand( "forwardDelete", false, null );
 
 								if( !e.shiftKey )
-									document.execCommand( "formatBlock", false, "p" );
+									d.execCommand( "formatBlock", false, "p" );
 								break;
 
 							case 65: //A
@@ -1721,21 +1714,21 @@
 
 							case 66: //B
 								if( e.ctrlKey || e.metaKey ) {
-									document.execCommand( "bold", false, null );
+									d.execCommand( "bold", false, null );
 									e.preventDefault();
 								}
 								break;
 
 							case 73: //I
 								if( e.ctrlKey || e.metaKey ) {
-									document.execCommand( "italic", false, null );
+									d.execCommand( "italic", false, null );
 									e.preventDefault();
 								}
 								break;
 
 							case 85: //U
 								if( e.ctrlKey || e.metaKey ) {
-									document.execCommand( "underline", false, null );
+									d.execCommand( "underline", false, null );
 									e.preventDefault();
 								}
 								break;
@@ -1799,10 +1792,13 @@
 
 				var initEv = $.Event( "editIt-apply" );
 				initEv.editor = self;
-				$( document ).trigger( initEv );
+				$( d ).trigger( initEv );
 
 				if( self.editorsContainer.opt.textareaId )
 					self.editorsContainer.textarea.val( $.editIt.util.getClearContent( self ) );
+
+				d.execCommand( "enableInlineTableEditing", false, false );
+				d.execCommand( "enableObjectResizing", false, false );
 
 			} )
 		}
@@ -1812,7 +1808,7 @@
 	$.fn.editIt = $.editIt.init;
 	$.fn.sourceMode = $.editIt.sourceMode;
 
-} )( jQuery );
+} )( jQuery, document );
 
 /************************************************************************************* UTILITIES
  *

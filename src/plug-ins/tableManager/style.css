@@ -10,10 +10,14 @@
   border-collapse: collapse;
   border: 1px dotted #FFFFFF;
   width: 300px;
-  height: 300px;
+  height: 100px;
   cursor: default;
   -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
+
+  font-size: 1px;
+  line-height: 15px;
 }
 
 .grid td {
