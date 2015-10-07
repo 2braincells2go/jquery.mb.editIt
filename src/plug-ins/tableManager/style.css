@@ -1,29 +1,35 @@
 
-.modulesManager-buttonBar {
-  position: relative;
-  display: inline-block;
-  float: right;
-  margin-top: -10px;
-  min-width: 150px;
-  text-align: right;
-  z-index: 10000;
-}
-
 .editIt-prompt h2, .editIt-prompt h3{
   margin-top: 0;
   font-weight: 100;
 }
 
-.editIt-prompt #modulesManager-list{
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.grid {
+  position: relative;
+  margin: auto;
+  border-collapse: collapse;
+  border: 1px dotted #FFFFFF;
+  width: 300px;
+  height: 300px;
+  cursor: default;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-.editIt-prompt #modulesManager-list li{
-  margin: 0;
-  padding: 5px;
-  background-color: transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  /*border-top: 1px solid rgba(0, 0, 0, 1);*/
+.grid td {
+  width: 10%;
+  border: 1px dotted #FFFFFF;
+}
+
+.grid td.sel {
+  background-color: #b9daff;
+  border: 1px dotted #FFFFFF;
+}
+
+#rowCol {
+  font-size: 18px;
+  position: relative;
+  margin: auto;
+  text-align: center;
+  padding: 20px 10px;
 }

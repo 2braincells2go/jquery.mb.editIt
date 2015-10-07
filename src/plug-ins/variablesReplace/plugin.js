@@ -24,8 +24,6 @@
 			type  : "plugin",
 			action: function (editor) {
 
-				console.debug(this);
-
 				$.get(variablesReplace.path + "/prompt.html?_=" + new Date().getTime(), function (html) {
 
 					$.editIt.prompt.draw(editor, html, variablesReplace, function (data) {
@@ -66,8 +64,6 @@
 				e.content.html(c);
 			});
 
-			$.editIt.i18n.extend(plugin.i18n);
-
 		},
 		update  : function (e) {
 			var plugin = this;
@@ -94,13 +90,18 @@
 
 		i18n: {
 			"it-IT": {
-				"Insert Variable" : "Inserisci una variabile"
+				"Insert Variable" : "Inserisci una variabile",
+
+				// i18n for prompt
+				"Choose the variable:": "Scegli una variabile da inserire:",
+				"There're no available variables." : "Non ci sono variabili da utilizzare."
+
 			}
 		}
 
 	};
 
-	$.editIt.plugins.register(variablesReplace, true);
+	$.editIt.plugins.register(variablesReplace);
 
 
 })(jQuery);

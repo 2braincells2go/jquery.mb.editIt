@@ -19,20 +19,6 @@
 
   $.editIt.prompt.onLoad = function (editor, plugin) {
 
-    var i18n = {
-      "it-IT": {
-        "Choose a template:": "Scegli un template:",
-        "table 3 columns" : "Tabella a 3 colonne",
-        "3 box line" : "3 box in linea",
-        "simple text box" : "box di testo",
-        "After the current block" : "Dopo il blocco corrente",
-        "Before the current bloclk" : "Prima del blocco corrente",
-        "Where?" : "Dove?"
-      }
-    };
-
-    $.editIt.i18n.extend(i18n);
-
     var prompt = $("#templateManager-prompt");
     prompt.children("h2").html(_("Choose a template:"));
     prompt.children("h3:first").html(_("Where?"));

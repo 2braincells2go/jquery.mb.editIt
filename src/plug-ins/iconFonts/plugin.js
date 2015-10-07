@@ -29,8 +29,6 @@
 
 			$(document).on("editIt-mouseup." + iconFont.name, function(e){});
 
-			$.editIt.i18n.extend(plugin.i18n);
-
 		},
 
 		i18n: {
@@ -41,7 +39,7 @@
 
 	};
 
-	$.editIt.plugins.register(iconFont,true);
+	$.editIt.plugins.register(iconFont);
 
 })();
 

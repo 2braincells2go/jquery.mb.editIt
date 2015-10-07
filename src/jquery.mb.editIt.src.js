@@ -611,8 +611,11 @@
 				registered.plugin = $.editIt._plugins[ plugin.name ];
 				$( document ).trigger( registered );
 
-				if( activate )
-					$.editIt._plugins[ plugin.name ].activate.apply( registered.plugin );
+				if( plugin.i18n )
+					$.editIt.i18n.extend( plugin.i18n );
+
+				$.editIt._plugins[ plugin.name ].activate.apply( registered.plugin );
+
 			}
 
 		},
@@ -1546,11 +1549,11 @@
 					 */
 
 					/*
-										if( $.browser.safari )
-											document.addEventListener( "paste", function( e ) {
-												$.editIt.util.handlePaste( e, editor );
-											} );
-					*/
+					 if( $.browser.safari )
+					 document.addEventListener( "paste", function( e ) {
+					 $.editIt.util.handlePaste( e, editor );
+					 } );
+					 */
 
 					$editor.on( "paste", function( e ) {
 						$.editIt.util.handlePaste( e, editor );

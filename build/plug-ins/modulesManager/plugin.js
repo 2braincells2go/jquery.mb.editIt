@@ -26,10 +26,8 @@
 			 * Load template list from the json
 			 */
 			$.getJSON(plugin.path + "/modules/modules.json?_=" + new Date().getTime(), function (data) {plugin.templates = data.templates;});
-
-			$.editIt.i18n.extend(plugin.i18n);
-
 		},
+
 		update  : function (e) {
 
 			$(".modulesManager-buttonBar").remove();
@@ -112,13 +110,23 @@
 				"Add block" : "Aggiungi un blocco",
 				"Remove block" : "elimina il blocco",
 				"Do you really want to delete this content?" : "Vuoi veramente rimuovere questo contenuto?",
-				"There's been an error loading the template: <br> %%" : "C'è stato un errore caricando il template:<br> %% "
+				"There's been an error loading the template: <br> %%" : "C'è stato un errore caricando il template:<br> %% ",
+
+				// i18n for prompt
+				"Choose a template:": "Scegli un template:",
+				"table 3 columns" : "Tabella a 3 colonne",
+				"3 box line" : "3 box in linea",
+				"simple text box" : "box di testo",
+				"After the current block" : "Dopo il blocco corrente",
+				"Before the current bloclk" : "Prima del blocco corrente",
+				"Where?" : "Dove?"
+
 			}
 		}
 
 	};
 
-	$.editIt.plugins.register(modulesManager, true);
+	$.editIt.plugins.register(modulesManager);
 
 
 })(jQuery);

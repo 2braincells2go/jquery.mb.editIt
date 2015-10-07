@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, d) {
 	var tableManager = {
 
 		name       : "tableManager",
@@ -9,27 +9,25 @@
 		activate: function () {
 
 			var plugin = this;
-
 			console.debug("Activate:: ", plugin);
 
 			$('<link/>', {rel: 'stylesheet', href: this.path + "/style.css", id: "style_" + this.name}).appendTo('head');
 
-			$(document).on("editIt-apply", function (e) {
-
+			$(d).on("editIt-apply", function (e) {
 				var editor = e.editor;
 				var defaultToolBar = editor.editorsContainer.opt.toolBar;
 
 				$.editIt.commands.extend(plugin.commands);
 				$.editIt.toolBar.extend(defaultToolBar, "table",22);
-
 				plugin.update.apply(plugin, [e]);
+
 			});
 
-			$(document).on("editIt-remove", function () {
+			$(d).on("editIt-remove", function () {
 				plugin.destroy.apply(plugin);
 			});
 
-			$.editIt.i18n.extend(plugin.i18n);
+
 
 		},
 
@@ -37,7 +35,7 @@
 
 			var plugin = this;
 
-			$(document).on("editIt-mousedown.table", function (e) {
+			$(d).on("editIt-mousedown.table", function (e) {
 
 				var editor = $(plugin.actualTag).parents("[data-editable]");
 
@@ -50,11 +48,11 @@
 					$(plugin.actualTag).selectable();
 
 				} else if(plugin.actualTable)
-						plugin.cleanUp(plugin.actualTable);
+					plugin.cleanUp(plugin.actualTable);
 
 			});
 
-			$(document).on("editIt-blur.table", function(e){
+			$(d).on("editIt-blur.table", function(e){
 
 				if (e.editor.actualTag.tagName.toUpperCase() == "TD")
 					return;
@@ -63,7 +61,7 @@
 
 			});
 
-			$(document).on("editIt-mouseover.table", function (e) {
+			$(d).on("editIt-mouseover.table", function (e) {
 				plugin.hoverElement = e.hoverElement;
 			});
 
@@ -81,7 +79,7 @@
 				}
 
 				plugin.actualTable.find("td").selectable();
-				var range = document.createRange();
+				var range = d.createRange();
 				var sel = window.getSelection();
 				var refNode = el.eq(x).get(0);
 				range.setStart(refNode, 0);
@@ -98,7 +96,7 @@
 
 			}
 
-			$(document).off("keydown.table").on("keydown.table", function(e){
+			$(d).off("keydown.table").on("keydown.table", function(e){
 				var k = e.keyCode;
 
 				if( $(plugin.actualTag).is("td")){
@@ -122,9 +120,9 @@
 			var plugin = this;
 
 			// Unbind update events
-			$(document).off("editIt-mouseover.table");
-			$(document).off("editIt-mousedown.table");
-			$(document).off("editIt-remove.table");
+			$(d).off("editIt-mouseover.table");
+			$(d).off("editIt-mousedown.table");
+			$(d).off("editIt-remove.table");
 
 		},
 
@@ -138,7 +136,7 @@
 				icon        : "editIt-icon-table",
 				type        : "dropdown",
 				action      : function (editor) {
-					var elements = [ "addTable", "-", "addRowAbove", "addRowBelow", "removeRow", "-", "addColBefore", "addColAfter", "removeCol" ];
+					var elements = [ "addTable", "deleteTable", "-", "addRowAbove", "addRowBelow", "removeRow", "-", "addColBefore", "addColAfter", "removeCol" ];
 					$.editIt.dropDown.draw.apply(this, [ editor, elements ]);
 				}
 			},
@@ -223,7 +221,6 @@
 					var idx = $(tableManager.actualTag).index();
 
 					table.find("tr, th, tf").each(function () {
-						var td = $(this).find("td").eq(idx).clone().html("&nbsp;");
 						$(this).find("td").eq(idx).remove();
 					});
 
@@ -276,17 +273,35 @@
 
 							}
 
+							tmp.append("<br>")
+
 							var text = tmp.html();
 
-							document.execCommand( "insertHTML", false, text );
+							d.execCommand( "insertHTML", false, text );
 
 						});
 					});
 
 					$.editIt.util.restoreSelection(editor.actualSelection);
 				}
-			}
+			},
 
+			deleteTable: {
+				label : _("Delete table"),
+				icon  : "editIt-icon-close",
+				availableFor: "TABLE",
+				action: function (editor) {
+					var main_editor = editor.editorsContainer;
+					$.editIt.prompt.draw(main_editor, _( "<h2>Are you sure you want to delete this table?</h2>" ), tableManager, function (data) {
+
+						var table = $(tableManager.actualTag).parents("table");
+						table.remove();
+
+					});
+
+					$.editIt.util.restoreSelection(editor.actualSelection);
+				}
+			}
 		},
 
 		i18n: {
@@ -296,16 +311,26 @@
 				"Remove row︎" : "Elimina riga︎",
 				"Add column" : "Aggiungi colonna",
 				"remove column" : "Rimuovi colonna",
-				"Add table" : "Aggiungi tabella"
+				"Add table" : "Aggiungi tabella",
+				"Delete table" : "Elimina tabella",
+				"<h2>Are you sure you want to delete this table?</h2>": "<h2>Sei sicuro di voler eliminare questa tabella?</h2>",
+
+				// i18n for add-table-prompt
+				"Add a table:"     : "Aggiungi una tabella:",
+				"Add header"     : "Aggiungi una intestazione:",
+				"How many rows?"   : "Quante righe?",
+				"How many columns?": "Quante colonne?",
+				"Adding %% rows and %% columns": "Aggiungi %% righe e %% colonne"
+
 			}
 		}
 
 	};
 
-	$.editIt.plugins.register(tableManager, true);
+	$.editIt.plugins.register(tableManager);
 
 
-})(jQuery);
+})(jQuery, document);
 
 
 
