@@ -17,7 +17,6 @@ body.inSourceMode{margin-bottom:50vh!important}
 .editIt-main-buttonBar{position:absolute;top:-45px;right:0;height:30px}
 .inSourceMode{position:relative;z-index:100000;padding:5px;background-color:#fff;border:1px dotted rgba(51,51,51,.0085)}
 #editIt-toolbar{position:absolute;z-index:1000;margin-top:-40px;padding:0;min-height:33px;background-color:rgba(51,51,51,.9);border-radius:4px;white-space:nowrap;box-shadow:0 0 4px rgba(0,0,0,.3)}
-.editIt-alert>div,.editIt-prompt>div{min-height:150px;box-shadow:0 0 15px rgba(0,0,0,.3)}
 #editIt-toolbar button{-webkit-transition:all .3s;transition:all .3s;font-weight:100;font-size:16px;letter-spacing:1px;line-height:18px;position:relative;display:inline-block;background-color:transparent;color:#fff;border:none;padding:12px;cursor:pointer}
 #editIt-toolbar button:hover{background-color:rgba(51,51,51,.9);color:#98c2ff}
 #editIt-toolbar button .textual{font-family:Arimo,Helvetica,Arial,sans-serif}
@@ -31,7 +30,6 @@ body.inSourceMode{margin-bottom:50vh!important}
 .editIt-buttonBar{position:absolute;bottom:0;right:0;display:none}
 .editIt-dropdown div,button.editIt-button{position:relative;font-weight:100;cursor:pointer}
 button.editIt-button{background-color:#fee298;width:auto;color:#444;font-size:12px;line-height:20px;border-radius:4px;z-index:1000;margin:5px;border:1px solid rgba(254,226,152,.3);white-space:nowrap}
-.editIt-alert,.editIt-prompt{z-index:10000;bottom:0;left:0}
 button.editIt-button.onlyIcon{font-size:20px;border-radius:100%;width:30px;height:30px;text-align:center;line-height:25px}
 button.editIt-button:after{font-size:90%;line-height:20px}
 button.editIt-button:hover{background-color:#333;color:#fff}
@@ -55,18 +53,25 @@ button.editIt-button.big{font-size:16px}
 .editIt-dropdown div.row_separator,.editIt-dropdown div.row_separator:hover{background-color:rgba(255,255,255,.2)}
 .editIt-dropdown div.row_separator{width:100%;height:1px;padding:0}
 .editIt-dropdown div span{position:absolute;right:10px;top:5px}
-.editIt-prompt{position:fixed;top:0;right:0;margin:auto;background-color:rgba(255,255,255,.5);-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+.editIt-prompt{position:fixed;top:0;left:0;right:0;bottom:0;margin:auto;background-color:rgba(255,255,255,.5);z-index:10000;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;transition:background .4s;-webkit-transition:background .4s}
 .editIt-alert,.editIt-prompt *{-moz-box-sizing:border-box;-webkit-box-sizing:border-box}
 .editIt-prompt *{box-sizing:border-box}
-.editIt-prompt>div{position:absolute;top:20%;left:0;right:0;margin:auto;padding:20px 20px 100px;color:#fff;background-color:rgba(0,0,0,.8);width:600px;border:1px solid rgba(255,255,255,.35);border-radius:5px}
-.editIt-prompt .editIt-prompt-buttonBar,.editIt-prompt input[type=text]{padding:10px;width:100%;font-family:calluna,"Open Sans",Helvetica,sans-serif}
-.editIt-prompt input[type=text]{font-size:18px}
-.editIt-prompt .editIt-prompt-buttonBar{position:absolute;bottom:0;left:0;text-align:right}
+.editIt-prompt h2{border-bottom:1px solid rgba(255,255,255,.1);font-weight:100;padding-bottom:5px;margin:10px 0}
+.editIt-prompt>div{position:absolute;top:20%;left:0;right:0;margin:auto;padding:20px 20px 100px;color:#fff;background-color:rgba(0,0,0,.8);width:600px;min-height:150px;border:1px solid rgba(255,255,255,.35);border-radius:5px;box-shadow:0 0 15px rgba(0,0,0,.3)}
+.editIt-prompt .editIt-prompt-buttonBar,.editIt-prompt input[type=text]{width:100%;font-family:calluna,"Open Sans",Helvetica,sans-serif}
+.editIt-prompt ul[id*=-list]{list-style:none;margin:0;padding:0}
+.editIt-prompt ul[id*=-list] li{margin:0;padding:10px;background-color:transparent;border-bottom:1px solid rgba(255,255,255,.15)}
+.editIt-prompt input[type=text]{padding:10px;font-size:18px}
+.editIt-prompt input[type=checkbox],.editIt-prompt input[type=radio]{font-family:calluna,"Open Sans",Helvetica,sans-serif;margin-right:10px;font-size:18px}
+.editIt-prompt .editIt-prompt-buttonBar{position:absolute;bottom:0;left:0;padding:10px;text-align:right}
 .editIt-prompt ul{list-style:none;padding:0;margin:0}
-.editIt-alert{position:fixed;top:0;right:0;margin:auto;background-color:rgba(255,255,255,.5);font-family:calluna,"Open Sans",Helvetica,sans-serif;box-sizing:border-box}
+.editIt-prompt.highlight{background-color:rgba(254,226,152,.8)}
+.editIt-prompt .required{border:1px solid #fee298;box-shadow:inset 0 0 15px #fee298}
+.editIt-prompt .editIt-prompt-message{position:absolute;bottom:10px;left:10px;color:#fee298}
+.editIt-alert{position:fixed;top:0;left:0;right:0;bottom:0;margin:auto;background-color:rgba(255,255,255,.5);z-index:10000;font-family:calluna,"Open Sans",Helvetica,sans-serif;box-sizing:border-box}
 .editIt-alert *,.editIt-source{-webkit-box-sizing:border-box;-moz-box-sizing:border-box}
 .editIt-alert *{box-sizing:border-box}
-.editIt-alert>div{position:absolute;top:20%;left:0;right:0;margin:auto;padding:20px 20px 60px;color:#fff;background-color:rgba(51,51,51,.95);width:400px;border:1px solid rgba(255,255,255,.35);border-radius:5px}
+.editIt-alert>div{position:absolute;top:20%;left:0;right:0;margin:auto;padding:20px 20px 60px;color:#fff;background-color:rgba(51,51,51,.95);width:400px;min-height:150px;border:1px solid rgba(255,255,255,.35);border-radius:5px;box-shadow:0 0 15px rgba(0,0,0,.3)}
 .editIt-alert .editIt-alert-buttonBar,.editIt-tooltip{padding:10px;position:absolute;font-family:calluna,"Open Sans",Helvetica,sans-serif}
 .editIt-alert .editIt-alert-buttonBar{bottom:0;left:0;text-align:right;width:100%}
 .editIt-tooltip{background-color:#333;margin-top:-35px;left:-35px;border-radius:5px;font-size:16px}

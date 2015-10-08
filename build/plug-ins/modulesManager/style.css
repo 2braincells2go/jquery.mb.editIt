@@ -8,21 +8,3 @@
   text-align: right;
   z-index: 10000;
 }
-
-.editIt-prompt h2, .editIt-prompt h3{
-  margin-top: 0;
-  font-weight: 100;
-}
-
-.editIt-prompt #modulesManager-list{
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.editIt-prompt #editor-list li{
-  margin: 0;
-  padding: 5px;
-  background-color: transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-}

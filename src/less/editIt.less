@@ -148,7 +148,7 @@ body {
     color: @tool-font-color;
     border: none;
     padding: 12px;
-//    border-right: 1px solid fade(@tool-font-color, 20);
+    //    border-right: 1px solid fade(@tool-font-color, 20);
 
     cursor: pointer;
 
@@ -376,11 +376,23 @@ button.editIt-button {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 
+  transition: background 0.4s;
+  -webkit-transition: background 0.4s;
+
   * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
+
+  h2 {
+    border-bottom: 1px solid fade(@prompt-font-color, 10);
+    font-weight: 100;
+    padding-bottom: 5px;
+    margin: 10px 0;
+  }
+
+  h3{}
 
   > div {
     position: absolute;
@@ -398,6 +410,20 @@ button.editIt-button {
     border-radius: 5px;
 
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+
+  ul[id *= -list]{
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+      padding: 10px;
+      background-color: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
 
   }
 
@@ -407,6 +433,13 @@ button.editIt-button {
     padding: 10px;
     font-size: 18px;
     width: 100%;
+  }
+
+  input[type=checkbox], input[type=radio], {
+
+    font-family: @default-font-family;
+    margin-right: 10px;
+    font-size: 18px;
   }
 
   .editIt-prompt-buttonBar{
@@ -424,6 +457,22 @@ button.editIt-button {
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+
+  &.highlight {
+    background-color: fade(@secondary-color,80);
+  }
+
+  .required {
+    border: 1px solid @secondary-color;
+    box-shadow: inset 0 0 15px @secondary-color;
+  }
+
+  .editIt-prompt-message {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: @secondary-color;
   }
 
 }

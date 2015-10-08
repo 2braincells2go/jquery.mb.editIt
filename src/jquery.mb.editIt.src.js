@@ -405,19 +405,21 @@
 					if( text.length > 30 )
 						text = text.substring( 0, 28 ) + "...";
 
-					var url = editor.actualTag.tagName.toUpperCase() == "A" ? editor.actualTag.href.replace( d.URL, "" ).replace( d.location.origin, "" ) : 'http://';
+					var url = editor.actualTag.tagName.toUpperCase() == "A" ? editor.actualTag.href.replace( d.URL, "" ).replace( d.location.origin, "" ) : '';
 					var title = editor.actualTag.tagName.toUpperCase() == "A" ? editor.actualTag.title : '';
 					var targ = editor.actualTag.tagName.toUpperCase() == "A" && editor.actualTag.target ? "checked" : '';
 
 					promptContent =
 						"<h2>" + _( "Write here the URL for:" ) + " <span style='opacity:.6'>" + text + "</span></h2> \n" +
-						"<input type='text' id='editItlink' name='link' placeholder='http://' value='" + url + "'>" +
+						"<input type='text' data-required='true' id='editItlink' name='link' placeholder='http://' value='" + url + "'>" +
 						"<br><br>" +
 						"<input type='text' id='editItlinkTitle' name='title' placeholder='" + _( "Add a title" ) + "' value='" + title + "'>" +
 						"<br><br>" +
 						"<input type='checkbox' id='editItlinkTarget' name='target' value='_blank' " + targ + "> <label for='editItlinkTarget'>" + _( "Open the link in a new window" ) + "</label>";
 
 					$.editIt.prompt.draw( editor, promptContent, null, function( data ) {
+
+						console.debug( data );
 
 						if( data[ "link" ] && data[ "link" ] != "http://" ) {
 
@@ -432,7 +434,7 @@
 						} else {
 							d.execCommand( 'unlink', false, "" );
 						}
-					} );
+					}, null, null, true );
 
 				}
 			},
@@ -604,7 +606,6 @@
 			register: function( plugin, activate ) {
 
 				$.editIt._plugins = $.editIt.plugins || {};
-
 				$.editIt._plugins[ plugin.name ] = plugin;
 
 				var registered = $.Event( "registered" );
@@ -614,8 +615,22 @@
 				if( plugin.i18n )
 					$.editIt.i18n.extend( plugin.i18n );
 
-				$.editIt._plugins[ plugin.name ].activate.apply( registered.plugin );
+				$( '<link/>', {
+					rel: 'stylesheet',
+					href: plugin.path + "/style.css",
+					id: "style_" + plugin.name
+				} ).appendTo( 'head' );
 
+				$.editIt._plugins[ plugin.name ].activate.apply( plugin );
+
+				$( d ).on( "editIt-apply", function( e ) {
+					plugin.update.apply( plugin, [ e ] );
+				} );
+
+				$( d ).on( "editIt-remove", function() {
+					plugin.destroy.apply( plugin );
+					$( d ).off( "." + plugin.name );
+				} );
 			}
 
 		},
@@ -747,7 +762,7 @@
 			 * @param applyName
 			 * @param className
 			 */
-			draw: function( editor, content, plugin, action, applyName, className ) {
+			draw: function( editor, content, plugin, action, applyName, className, mustReturnData ) {
 
 				editor.actualSelection = $.editIt.util.saveSelection();
 				//				$.editIt.toolBar.clear( editor );
@@ -765,7 +780,7 @@
 
 				promptApply.on( "click", function() {
 					var data = {};
-					$( "input", editor.prompt ).each( function() {
+					$( "input, textarea", editor.prompt ).each( function() {
 
 						switch( this.type ) {
 
@@ -780,10 +795,30 @@
 								break;
 
 							default:
-								data[ this.name ] = $( this ).val();
+								if( this.value.length )
+									data[ this.name ] = $( this ).val();
+						}
+
+						if( $( this ).is( "[data-required]" ) && !this.value.length ) {
+							data = "empty-required";
+							$( this ).addClass( "required" );
+							return false;
 						}
 
 					} );
+
+					if( $.isEmptyObject( data ) && mustReturnData ) {
+						$.editIt.prompt.highlight( editor, _( "Make your choice first..." ) );
+						return;
+					}
+
+					if( data == "empty-required" ) {
+						$.editIt.prompt.highlight( editor, _( "A required field is empty" ) );
+						$( ".required", editor.prompt ).one( "focus", function() {
+							$( this ).removeClass( "required" );
+						} );
+						return;
+					}
 
 					$.editIt.util.restoreSelection( editor.actualSelection );
 					action( data );
@@ -792,7 +827,6 @@
 					$( "body" ).removeClass( "blur" );
 
 					setTimeout( function() {
-
 						$.editIt.toolBar.draw( editor );
 						$( editor ).focus();
 					}, 50 );
@@ -846,6 +880,21 @@
 					}
 
 				} );
+
+			},
+
+			highlight: function( editor, message ) {
+
+				editor.prompt.addClass( "highlight" );
+				var msg = $( "<div/>" ).addClass( "editIt-prompt-message" ).html( message );
+				$( ".editIt-prompt-buttonBar" ).before( msg );
+
+				setTimeout(
+					function() {
+						editor.prompt.removeClass( "highlight" );
+						msg.remove();
+					}, 3000
+				)
 
 			},
 

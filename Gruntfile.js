@@ -87,7 +87,7 @@ module.exports = function(grunt) {
 		jsbeautifier : {
 
 			dist: {
-				src : ['src/jquery.mb.editIt.src.js']
+				src : ['src/jquery.mb.editIt.src.js', "src/plug-ins/**/*.js"]
 			},
 
 			options: {

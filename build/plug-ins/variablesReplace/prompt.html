@@ -1,5 +1,6 @@
 <div id="variablesReplace-prompt">
 
+  <h2>Title</h2>
   <h3>Title</h3>
 
   <ul id="variablesReplace-list"></ul>
@@ -11,14 +12,17 @@
   $.editIt.prompt.onLoad = function (editor, plugin) {
 
     var prompt = $("#variablesReplace-prompt");
+    prompt.children("h2").html(_("Dynamic content"));
     prompt.children("h3").html(_("Choose the variable:"));
 
+/*
     var predef = plugin.variables;
 
     for (var p in predef) {
       var inpt = $("<input/>").attr({type: "hidden", value: predef[p], name: p, "data-content-replace": true});
       $("#variablesReplace-prompt").append(inpt);
     }
+*/
 
     var vars =  [];
 
