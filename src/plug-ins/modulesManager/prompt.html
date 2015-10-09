@@ -1,13 +1,12 @@
 <div id="templateManager-prompt">
 
   <h2>Title</h2>
-  <h3>SubTitle</h3>
 
   <ul id="templateManager-list"></ul>
 
   <p>
 
-    <h3>SubTitle</h3>
+    <h3></h3>
 
     <input id="templateManager-after" type="radio" name="position" value="after" checked> <label for="templateManager-after"></label><br>
     <input id="templateManager-before" type="radio" name="position" value="before"> <label for="templateManager-before"></label>
@@ -21,9 +20,8 @@
   $.editIt.prompt.onLoad = function (editor, plugin) {
 
     var prompt = $("#templateManager-prompt");
-    prompt.children("h2").html(_("Template manager"));
-    prompt.children("h3").eq(0).html(_("Choose a template:"));
-    prompt.children("h3").eq(1).html(_("Where?"));
+    prompt.children("h2").html(_("Choose a template:"));
+    prompt.children("h3:first").html(_("Where?"));
 
     for (var temp in plugin.templates){
 

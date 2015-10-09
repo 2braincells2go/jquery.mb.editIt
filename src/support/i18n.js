@@ -49,9 +49,7 @@ $.editIt.i18n["it-IT"] =  {
 	"Cancel"                       : "Cancella",
 	"Delete"                       : "Elimina",
 	"Write here the URL for:"      : "Inserisci qui la URL per:",
-	"Open the link in a new window": "Apri il link in una nuova finestra",
-	"Make your choice first..."    : "Non hai selezionato niente...",
-	"A required field is empty"    : "Un campo obbligatorio è vuoto"
+	"Open the link in a new window": "Apri il link in una nuova finestra"
 
 };
 
