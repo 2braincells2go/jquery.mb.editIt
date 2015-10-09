@@ -362,6 +362,7 @@ button.editIt-button {
 
 
 .editIt-prompt {
+
   position: fixed;
   top: 0;
   left: 0;
@@ -376,9 +377,6 @@ button.editIt-button {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 
-  transition: background 0.4s;
-  -webkit-transition: background 0.4s;
-
   * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -386,13 +384,16 @@ button.editIt-button {
   }
 
   h2 {
-    border-bottom: 1px solid fade(@prompt-font-color, 10);
+    margin-top: 0;
     font-weight: 100;
+    border-bottom: 1px solid fade(@prompt-font-color,70);
     padding-bottom: 5px;
-    margin: 10px 0;
   }
 
-  h3{}
+  h3 {
+    margin-top: 0;
+    font-weight: 100;
+  }
 
   > div {
     position: absolute;
@@ -408,41 +409,33 @@ button.editIt-button {
     min-height: 150px;
     border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 5px;
-
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   }
 
-  ul[id *= -list]{
-
+  [id *="-list"] {
     list-style: none;
     margin: 0;
     padding: 0;
 
     li {
-      margin: 0;
-      padding: 10px;
-      background-color: transparent;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 5px;
+      border-bottom: 1px solid fade(@prompt-font-color,10);
     }
+  }
 
+  input[type=radio]{
+    margin-right: 10px;
+    padding: 0;
   }
 
   input[type=text] {
-
     font-family: @default-font-family;
     padding: 10px;
     font-size: 18px;
     width: 100%;
   }
 
-  input[type=checkbox], input[type=radio], {
-
-    font-family: @default-font-family;
-    margin-right: 10px;
-    font-size: 18px;
-  }
-
-  .editIt-prompt-buttonBar{
+  .editIt-prompt-buttonBar {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -457,22 +450,6 @@ button.editIt-button {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-
-  &.highlight {
-    background-color: fade(@secondary-color,80);
-  }
-
-  .required {
-    border: 1px solid @secondary-color;
-    box-shadow: inset 0 0 15px @secondary-color;
-  }
-
-  .editIt-prompt-message {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: @secondary-color;
   }
 
 }
