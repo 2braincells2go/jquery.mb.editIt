@@ -26,9 +26,6 @@
 			$(d).on("editIt-remove", function () {
 				plugin.destroy.apply(plugin);
 			});
-
-
-
 		},
 
 		update  : function (e) {
