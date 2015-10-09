@@ -31,76 +31,6 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="../inc/jquery.mb.editIt.js"></script>
 
-    <style>
-
-        body {
-            padding: 30px;
-            font-family: sans-serif;
-        }
-        #schedaPlaceHolder {
-            position: relative;
-            max-width: 1024px;
-            margin: auto;
-
-        }
-
-        #enableEditIt, #disableEditIt {
-            -webkit-transition: all 0.5s;
-            transition: all 0.5s;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #009A28;
-            color: #fff;
-            font-size: 32px;
-            font-weight: 100;
-            cursor: pointer;
-            position: relative;
-            margin: 25px 0;
-            display: block;
-        }
-        #disableEditIt {
-            background: #000;
-            color: #fff;
-        }
-        #enableEditIt:hover, #disableEditIt:hover {
-            background: #666;
-            color: #fff;
-        }
-
-        #gitHub {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 180px;
-        }
-
-        .blink {
-            font-size: 70%;
-            font-weight: 100;
-            letter-spacing: -5px;
-            animation: blink 0.6s linear 0s infinite;
-            -webkit-animation: blink 0.8s linear 0.5s infinite; /*alternate*/
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-
-        @keyframes blink {
-            0%   {opacity: 0}
-            50%  {opacity: 0}
-            80% {opacity: 1}
-            100% {opacity: 1}
-        }
-        @-webkit-keyframes blink {
-            0%   {opacity: 0}
-            50%  {opacity: 0}
-            80% {opacity: 1}
-            100% {opacity: 1}
-        }
-
-
-    </style>
-
 </head>
 <body>
 <img id="gitHub" src="http://0xc0.de/img/c/ForkMeOnGitHub.png">
@@ -114,7 +44,6 @@
     <div id="schedaPlaceHolder" data-for="editIt-textarea" ></div>
 
 </div>
-
 <script>
 
     $(function(){
@@ -180,7 +109,13 @@
 </script>
 
 <a style="position: fixed;bottom:40px;right: 30px;" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=V6ZS8JPMZC446&lc=GB&item_name=mb%2eideas&item_number=MBIDEAS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG_global%2egif%3aNonHosted">
-    <img border="0" alt="PayPal" src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG_global.gif" class="alignright"> </a>
+    <img border="0" alt="PayPal" src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG_global.gif" class="alignright">
+</a>
+
+<!-- Hidden variables for the "variablesReplace plug-in-->
+<input type="hidden" name="variabile-1" data-content-replace="true" value="Testo della variabile 1">
+<input type="hidden" name="variabile-2" data-content-replace="true" value="Testo della variabile 2">
+
 
 </body>
 </html>

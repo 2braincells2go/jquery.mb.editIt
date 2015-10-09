@@ -517,6 +517,16 @@ button.editIt-button.big {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.editIt-prompt h2 {
+  margin-top: 0;
+  font-weight: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  padding-bottom: 5px;
+}
+.editIt-prompt h3 {
+  margin-top: 0;
+  font-weight: 100;
+}
 .editIt-prompt > div {
   position: absolute;
   top: 20%;
@@ -531,6 +541,19 @@ button.editIt-button.big {
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 5px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+.editIt-prompt [id*="-list"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.editIt-prompt [id*="-list"] li {
+  padding: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.editIt-prompt input[type=radio] {
+  margin-right: 10px;
+  padding: 0;
 }
 .editIt-prompt input[type=text] {
   font-family: "calluna", "Open Sans", Helvetica, sans-serif;

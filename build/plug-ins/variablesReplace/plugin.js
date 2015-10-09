@@ -34,10 +34,12 @@
 			}
 		},
 
+/*
 		variables: {
 			variableA : "Some custom content 1",
 			variableB : "Some custom content 2"
 		},
+*/
 
 		getVariables: function(){
 			var ks = [];
@@ -94,7 +96,8 @@
 
 				// i18n for prompt
 				"Choose the variable:": "Scegli una variabile da inserire:",
-				"There're no available variables." : "Non ci sono variabili da utilizzare."
+				"There're no available variables." : "Non ci sono variabili da utilizzare.",
+				"Add a dynamic content:": "Aggiungi un contenuto dinamico"
 
 			}
 		}

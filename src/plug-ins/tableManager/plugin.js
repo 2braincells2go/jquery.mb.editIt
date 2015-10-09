@@ -26,9 +26,6 @@
 			$(d).on("editIt-remove", function () {
 				plugin.destroy.apply(plugin);
 			});
-
-
-
 		},
 
 		update  : function (e) {
@@ -306,21 +303,22 @@
 
 		i18n: {
 			"it-IT": {
-				"Table" : "Tabella",
-				"Add row︎" : "Aggiungi riga",
-				"Remove row︎" : "Elimina riga︎",
-				"Add column" : "Aggiungi colonna",
-				"remove column" : "Rimuovi colonna",
-				"Add table" : "Aggiungi tabella",
+				"Table"        : "Tabella",
+				"Add row︎"      : "Aggiungi riga",
+				"Remove row︎"   : "Elimina riga︎",
+				"Add column"   : "Aggiungi colonna",
+				"remove column": "Rimuovi colonna",
+				"Add table"    : "Aggiungi tabella",
 				"Delete table" : "Elimina tabella",
 				"<h2>Are you sure you want to delete this table?</h2>": "<h2>Sei sicuro di voler eliminare questa tabella?</h2>",
 
 				// i18n for add-table-prompt
-				"Add a table:"     : "Aggiungi una tabella:",
-				"Add header"     : "Aggiungi una intestazione:",
-				"How many rows?"   : "Quante righe?",
-				"How many columns?": "Quante colonne?",
-				"%% rows and %% columns": "%% righe e %% colonne"
+				"Add a table"            : "Aggiungi una tabella",
+				"Select rows and column:": "Seleziona righe e colonne:",
+				"Add header"             : "Aggiungi una intestazione",
+				"How many rows?"         : "Quante righe?",
+				"How many columns?"      : "Quante colonne?",
+				"%% rows and %% columns" : "%% righe e %% colonne"
 
 			}
 		}

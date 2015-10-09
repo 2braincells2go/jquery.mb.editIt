@@ -148,7 +148,7 @@ body {
     color: @tool-font-color;
     border: none;
     padding: 12px;
-//    border-right: 1px solid fade(@tool-font-color, 20);
+    //    border-right: 1px solid fade(@tool-font-color, 20);
 
     cursor: pointer;
 
@@ -362,6 +362,7 @@ button.editIt-button {
 
 
 .editIt-prompt {
+
   position: fixed;
   top: 0;
   left: 0;
@@ -382,6 +383,18 @@ button.editIt-button {
     box-sizing: border-box;
   }
 
+  h2 {
+    margin-top: 0;
+    font-weight: 100;
+    border-bottom: 1px solid fade(@prompt-font-color,70);
+    padding-bottom: 5px;
+  }
+
+  h3 {
+    margin-top: 0;
+    font-weight: 100;
+  }
+
   > div {
     position: absolute;
     top: 20%;
@@ -396,20 +409,33 @@ button.editIt-button {
     min-height: 150px;
     border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 5px;
-
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
 
+  [id *="-list"] {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 5px;
+      border-bottom: 1px solid fade(@prompt-font-color,10);
+    }
+  }
+
+  input[type=radio]{
+    margin-right: 10px;
+    padding: 0;
   }
 
   input[type=text] {
-
     font-family: @default-font-family;
     padding: 10px;
     font-size: 18px;
     width: 100%;
   }
 
-  .editIt-prompt-buttonBar{
+  .editIt-prompt-buttonBar {
     position: absolute;
     bottom: 0;
     left: 0;
