@@ -467,9 +467,11 @@ button.editIt-button.big {
   font-size: 16px;
 }
 .editIt-dropdown {
+  position: relative;
   padding: 0;
   font-family: "calluna", "Open Sans", Helvetica, sans-serif;
   background-color: rgba(51, 51, 51, 0.9);
+  z-index: 1000;
 }
 .editIt-dropdown div {
   position: relative;

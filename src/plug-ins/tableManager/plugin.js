@@ -127,7 +127,7 @@
 			addRowAbove: {
 				label: _( "Add row︎" ),
 				icon: "editIt-icon-sort-asc",
-				availableFor: "TABLE",
+				availableFor: "TD",
 				action: function( editor ) {
 					var tr = $( tableManager.actualTag ).parents( "tr" );
 					var newRow = tr.clone();
@@ -139,7 +139,7 @@
 
 			addRowBelow: {
 				label: _( "Add row︎" ),
-				availableFor: "TABLE",
+				availableFor: "TD",
 				icon: "editIt-icon-sort-desc",
 				action: function( editor ) {
 					var tr = $( tableManager.actualTag ).parents( "tr" );
@@ -152,7 +152,7 @@
 
 			removeRow: {
 				label: _( "Remove row︎" ),
-				availableFor: "TABLE",
+				availableFor: "TD",
 				icon: "editIt-icon-close",
 				action: function( editor ) {
 					var tr = $( tableManager.actualTag ).parents( "tr" );
@@ -163,7 +163,7 @@
 
 			addColBefore: {
 				label: _( "Add column" ),
-				availableFor: "TABLE",
+				availableFor: "TD",
 				icon: "editIt-icon-caret-left",
 				action: function( editor ) {
 					var table = $( tableManager.actualTag ).parents( "table" );
@@ -180,7 +180,7 @@
 
 			addColAfter: {
 				label: _( "Add column" ),
-				availableFor: "TABLE",
+				availableFor: "TD",
 				icon: "editIt-icon-caret-right",
 				action: function( editor ) {
 					var table = $( tableManager.actualTag ).parents( "table" );
@@ -197,7 +197,7 @@
 
 			removeCol: {
 				label: _( "remove column" ),
-				availableFor: "TABLE",
+				availableFor: "TD",
 				icon: "editIt-icon-close",
 				action: function( editor ) {
 					var table = $( tableManager.actualTag ).parents( "table" );
@@ -272,7 +272,7 @@
 			deleteTable: {
 				label: _( "Delete table" ),
 				icon: "editIt-icon-close",
-				availableFor: "TABLE",
+				availableFor: "TD",
 				action: function( editor ) {
 					var main_editor = editor.editorsContainer;
 					$.editIt.prompt.draw( main_editor, _( "<h2>Are you sure you want to delete this table?</h2>" ), tableManager, function( data ) {

@@ -112,7 +112,8 @@
 				 */
 
 				for( var x in tbe ) {
-					var btn = tbe[ x ].trim();
+					if( tbe.hasOwnProperty( x ) )
+						var btn = tbe[ x ].trim();
 
 					if( btn == "|" ) {
 						var separator = $( "<span/>" ).addClass( "separator" ).html( "&nbsp;" );
@@ -121,11 +122,9 @@
 					}
 
 					var cmnd = editor.editorsContainer.cmnds[ btn ];
-
-					//	var isAvailabel =
-
-					if( !cmnd || ( cmnd.availableFor && !$.editIt.util.isSelectionInsideElement( cmnd.availableFor ) ) )
+					if( !cmnd || ( cmnd.availableFor && editor.actualTag.tagName.toUpperCase() != cmnd.availableFor ) ) {
 						continue;
+					}
 
 					var toolBarIcon = editor.editorsContainer.opt.toolBarIcon && cmnd.icon;
 					var label = toolBarIcon ? "" : cmnd.label;
@@ -147,11 +146,11 @@
 					switch( cmnd.type ) {
 
 						case "dropdown":
-							var arrow = $( "<span/>" ).addClass( "editIt-icon-sort-desc" ).css( {
+							var arr = $( "<span/>" ).addClass( "editIt-icon-sort-desc" ).css( {
 								paddingLeft: 10
 							} );
 							command[ 0 ].isDropDown = true;
-							command.append( arrow );
+							command.append( arr );
 							break;
 
 						case "plugin":
@@ -249,8 +248,6 @@
 
 			getElements: function( editor ) {
 				var toolBarElements = $.editIt.toolBar[ ( $( editor ).data( "toolbar" ) || editor.editorsContainer.opt.toolBar ) ].slice( 0 );
-				editor.actualTag = $.editIt.util.getSelectedElement();
-
 				/**
 				 *
 				 * Manage exceptions in toolBar elements
@@ -315,11 +312,10 @@
 			extend: function( name, command ) {
 
 				if( typeof name == "object" ) {
-					var command = name;
-					for( var n in command ) {
-						var name = n;
-						var c = command[ n ];
-						$.editIt.commands[ name ] = c;
+					for( var n in name ) {
+
+						if( name.hasOwnProperty( n ) )
+							$.editIt.commands[ n ] = name[ n ];
 					}
 
 				} else
@@ -329,7 +325,7 @@
 			redo: {
 				label: "Redo",
 				icon: "editIt-icon-mail-forward",
-				action: function( editor ) {
+				action: function() {
 					if( d.queryCommandEnabled( "redo" ) )
 						d.execCommand( 'redo', false, null );
 				}
@@ -338,7 +334,7 @@
 			undo: {
 				label: "Undo",
 				icon: "editIt-icon-mail-reply",
-				action: function( editor ) {
+				action: function() {
 					if( d.queryCommandEnabled( "undo" ) )
 						d.execCommand( 'undo', false, null );
 
@@ -348,7 +344,7 @@
 			bold: {
 				label: "Bold",
 				icon: "editIt-icon-bold",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'bold', false, null );
 				}
 			},
@@ -356,7 +352,7 @@
 			italic: {
 				label: "Italic",
 				icon: "editIt-icon-italic",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'italic', false, null );
 				}
 			},
@@ -364,7 +360,7 @@
 			underline: {
 				label: "Underline",
 				icon: "editIt-icon-underline",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'underline', false, null );
 				}
 			},
@@ -372,7 +368,7 @@
 			strikeThrough: {
 				label: "Stroke",
 				icon: "editIt-icon-strikethrough",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'strikeThrough', false, null );
 				}
 			},
@@ -380,7 +376,7 @@
 			removeFormat: {
 				label: "Clear",
 				icon: "editIt-icon-eraser",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'removeFormat', false, null );
 				}
 			},
@@ -419,8 +415,6 @@
 
 					$.editIt.prompt.draw( editor, promptContent, null, function( data ) {
 
-						console.debug( data );
-
 						if( data[ "link" ] && data[ "link" ] != "http://" ) {
 
 							var url = data[ "link" ].replace( pageUrl, "" );
@@ -442,7 +436,7 @@
 			justifyFull: {
 				label: "Justify",
 				icon: "editIt-icon-align-justify",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'justifyFull', false, "" );
 				}
 			},
@@ -450,7 +444,7 @@
 			justifyCenter: {
 				label: "Center",
 				icon: "editIt-icon-align-center",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'justifyCenter', false, "" );
 				}
 			},
@@ -458,7 +452,7 @@
 			justifyLeft: {
 				label: "Left",
 				icon: "editIt-icon-align-left",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'justifyLeft', false, "" );
 				}
 			},
@@ -466,7 +460,7 @@
 			justifyRight: {
 				label: "Right",
 				icon: "editIt-icon-align-right",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'justifyRight', false, "" );
 				}
 			},
@@ -474,7 +468,7 @@
 			unlink: {
 				label: "Unlink",
 				icon: "editIt-icon-chain-broken",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'unlink', false, "" );
 				}
 			},
@@ -497,7 +491,7 @@
 			h1: {
 				label: "Title H1",
 				icon: false,
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'formatBlock', false, "<H1>" );
 				}
 			},
@@ -545,7 +539,7 @@
 			insertOrderedList: {
 				label: "Ordered list",
 				icon: "editIt-icon-list-ol",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'insertOrderedList', false, null )
 				}
 			},
@@ -553,7 +547,7 @@
 			insertUnorderedList: {
 				label: "Unordered list",
 				icon: "editIt-icon-list-ul",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'insertUnorderedList', false, null )
 				}
 			},
@@ -561,7 +555,7 @@
 			indent: {
 				label: "Indent",
 				icon: "editIt-icon-indent",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'indent', false, null )
 				}
 			},
@@ -569,7 +563,7 @@
 			outdent: {
 				label: "Outdent",
 				icon: "editIt-icon-dedent",
-				action: function( editor ) {
+				action: function() {
 					d.execCommand( 'outdent', false, null )
 				}
 			}
@@ -603,7 +597,7 @@
 				} );
 			},
 
-			register: function( plugin, activate ) {
+			register: function( plugin ) {
 
 				$.editIt._plugins = $.editIt.plugins || {};
 				$.editIt._plugins[ plugin.name ] = plugin;
@@ -672,7 +666,6 @@
 
 				$.extend( options, opt );
 
-				var icon = "";
 				var $newBtn = $.editIt.util.drawButton( options.label, "main-color " + options.className || "", options.icon, function( e ) {
 					e.preventDefault();
 					options.action.apply( editor, [ editor ] );
@@ -704,7 +697,7 @@
 				var alertBox = $( "<div/>" ).addClass( "editIt-alert-box" );
 
 				var alertButtonsBar = $( "<div/>" ).addClass( "editIt-alert-buttonBar" );
-				var alertApply = $.editIt.util.drawButton( "Ok", "apply", "editIt-icon-check big", function( e ) {
+				var alertApply = $.editIt.util.drawButton( "Ok", "apply", "editIt-icon-check big", function() {
 					editor.alert.remove();
 					$( "body" ).removeClass( "blur" );
 
@@ -761,11 +754,12 @@
 			 * @param action
 			 * @param applyName
 			 * @param className
+			 * @param mustReturnData
 			 */
 			draw: function( editor, content, plugin, action, applyName, className, mustReturnData ) {
 
 				editor.actualSelection = $.editIt.util.saveSelection();
-				//				$.editIt.toolBar.clear( editor );
+				$.editIt.toolBar.clear( editor );
 
 				editor.prompt = $( "<div/>" ).addClass( "editIt-prompt" ).hide();
 				var promptBox = $( "<div/>" ).addClass( "editIt-prompt-box" );
@@ -799,19 +793,25 @@
 									data[ this.name ] = $( this ).val();
 						}
 
+						/**
+						 * data-required
+						 */
 						if( $( this ).is( "[data-required]" ) && !this.value.length ) {
 							data = "empty-required";
 							$( this ).addClass( "required" );
 							return false;
 						}
-
 					} );
-
+					/**
+					 * isEmptyObject
+					 */
 					if( $.isEmptyObject( data ) && mustReturnData ) {
 						$.editIt.prompt.highlight( editor, _( "Make your choice first..." ) );
 						return;
 					}
-
+					/**
+					 * data-required
+					 */
 					if( data == "empty-required" ) {
 						$.editIt.prompt.highlight( editor, _( "A required field is empty" ) );
 						$( ".required", editor.prompt ).one( "focus", function() {
@@ -858,7 +858,6 @@
 				}
 
 				editor.prompt.fadeIn( 300, function() {
-					//$.editIt.util.restoreSelection(editor.actualSelection);
 					promptBox.find( "input" ).eq( 0 ).focus().select();
 				} );
 
@@ -978,15 +977,15 @@
 
 				for( var x in elements ) {
 
-					if( elements[ x ] == "-" ) {
-						var separator = $( "<div/>" ).addClass( "row_separator" );
-						editor.dropDown.append( separator );
-						continue;
-					}
+					if( elements.hasOwnProperty( x ) )
+						if( elements[ x ] == "-" ) {
+							var separator = $( "<div/>" ).addClass( "row_separator" );
+							editor.dropDown.append( separator );
+							continue;
+						}
 
 					var command = editor.editorsContainer.cmnds[ elements[ x ] ];
-
-					if( !command || ( command.availableFor && !$.editIt.util.isSelectionInsideElement( command.availableFor ) ) )
+					if( !command || ( command.availableFor && editor.actualTag.tagName.toUpperCase() != command.availableFor ) )
 						continue;
 
 					var icon = command.icon ? "<span class='" + command.icon + "'></span>" : "";
@@ -1103,7 +1102,6 @@
 						text.innerHTML = "";
 					}
 				}
-				console.debug( text )
 
 				if( !editor.editorsContainer.opt.pasteAs )
 					return;
@@ -1323,48 +1321,25 @@
 
 					if( sel.type != "Control" ) {
 						range = sel.createRange();
-						range.collapse( true );
+						range.collapse( false );
 						x = range.boundingLeft;
 						y = range.boundingTop;
+						w = range.right - range.left;
 					}
 				} else if( window.getSelection ) {
 
 					sel = window.getSelection();
 
 					if( sel.rangeCount ) {
+
 						range = sel.getRangeAt( 0 ).cloneRange();
 
 						if( range.getClientRects ) {
-							//	range.collapse( true );
-
 							if( range.getClientRects().length > 0 ) {
-
 								var r = range.getClientRects();
-
-								rect = r.length == 1 ? r[ 0 ] : r[ 1 ];
-
-								x = rect.left;
-								y = rect.top;
-								w = rect.right - rect.left;
-							}
-						}
-						// Fall back to inserting a temporary element
-						if( x == 0 && y == 0 ) {
-
-							var span = d.createElement( "span" );
-							if( span.getClientRects ) {
-								// Ensure span has dimensions and position by
-								// adding a zero-width space character
-								span.appendChild( d.createTextNode( "\u200b" ) );
-								range.insertNode( span );
-								rect = span.getClientRects()[ 0 ];
-								x = rect.left;
-								y = rect.top;
-								var spanParent = span.parentNode;
-								spanParent.removeChild( span );
-
-								// Glue any broken text nodes back together
-								spanParent.normalize();
+								x = r[ 0 ].left;
+								y = r[ 0 ].top;
+								w = r.length == 1 ? r[ 0 ].width : r[ 1 ].width;
 							}
 						}
 					}
@@ -1606,6 +1581,14 @@
 					 */
 					.on( "mousedown", function( e ) {
 
+						/*
+						 if( e.button == 2 ) {
+						 e.preventDefault();
+						 e.stopPropagation();
+						 return false;
+						 }
+						 */
+
 						editor.actualTag = e.target;
 
 						$( d ).one( "mouseup", function() {
@@ -1624,6 +1607,14 @@
 					.on( "mouseup keyup", function( e ) {
 
 						e.stopPropagation();
+
+						/*
+						 if( e.button == 2 ) {
+						 e.preventDefault();
+						 e.stopPropagation();
+						 return false;
+						 }
+						 */
 
 						clearTimeout( editor.mouseupTimer );
 
@@ -1662,6 +1653,14 @@
 							$editor.trigger( mouseupEv );
 
 						}, e.type == "mouseup" ? 50 : 500 )
+					} )
+
+					.on( "contextmenu", function( e ) {
+						e.preventDefault();
+						if( !$( ".editIt-dropdown" ).is( ":visible" ) )
+							$.editIt.toolBar.draw( editor );
+
+						return false;
 					} )
 
 					/**
