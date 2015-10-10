@@ -81,9 +81,7 @@
 		},
 
 		destroy: function() {
-
 			$( ".modulesManager-buttonBar" ).remove();
-
 		},
 
 		insert: function( template, where, position ) {

@@ -107,11 +107,11 @@
 <div id="wrapper">
     <h1>editIt <span class="editIt-icon-i-cursor blink" ></span></h1>
     <h2>Smart and light <b>WYSIWYG HTML editor</b> for your contents.</h2>
-    <button id="enableEditIt" onclick="$('#schedaPlaceHolder').editIt(); $('#disableEditIt').show(); $(this).hide()">Enable editIt</button>
+    <button id="enableEditIt" onclick="$('#editItContent').editIt(); $('#disableEditIt').show(); $(this).hide()">Enable editIt</button>
     <button id="disableEditIt" onclick="saveIt('scheda1'); $('#enableEditIt').show(); $(this).hide()" style="display: none" >Disable editIt</button>
 
-    <textarea id="editIt-textarea" name="editIt-textarea"></textarea>
-    <div id="schedaPlaceHolder" data-for="editIt-textarea" ></div>
+    <!--<textarea id="editIt-textarea" name="editIt-textarea"></textarea>-->
+    <div id="editItContent" data-textarea-name="editIt-textarea" ></div>
 
 </div>
 
@@ -132,12 +132,8 @@
             data: {},
             dataType:"html",
             success: function(html){
-                var $schedaPlaceHolder = $("#schedaPlaceHolder");
+                var $schedaPlaceHolder = $("#editItContent");
                 $schedaPlaceHolder.html(html);
-
-                /**
-                 * Initialize the editIt behavior
-                 */
 
                 $.editIt.plugins.load("../plug-ins/tableManager");
                 $.editIt.plugins.load("../plug-ins/variablesReplace");
@@ -146,8 +142,11 @@
                 var variables = {"javascript-variable" : "This has been added via javascript"};
                 $.editIt.setVariables(variables);
 
-                $schedaPlaceHolder.editIt({textareaId: "editIt-textarea"});
-                $.editIt.util.setUneditable( $schedaPlaceHolder );
+                /**
+                 * Initialize the editIt behavior
+                 */
+                //$schedaPlaceHolder.editIt({textareaName: "editIt-textarea"});
+                //$.editIt.util.setUneditable( $schedaPlaceHolder );
             }
         });
     }
@@ -163,9 +162,15 @@
     function saveIt(name){
 
         console.debug( "saveIt" );
-        var container = $("#schedaPlaceHolder");
+        var container = $("#editItContent");
+
+        console.debug("GET CONTENT::: ");
         console.debug($.editIt.util.getContent(container));
+
         $.editIt.util.setUneditable(container);
+
+        console.debug("TEXTAREA::: ");
+        console.debug( $("#editIt-textarea").val() );
 
     }
 

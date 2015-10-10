@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 
 		// Remove built directory
 		clean: {
-			dist: ['build/']
+			dist: ['build'],
+			plugins:['build/**/*.less']
 		},
 
 		// Built stylesheets with less
@@ -17,6 +18,17 @@ module.exports = function(grunt) {
 				},
 				src: 'src/less/*.less',
 				dest: 'build/css/<%= pkg.shortname %>.css'
+			},
+			plugins: {
+				files: [
+					{
+						flatten: false,
+						expand: true,
+						cwd: 'src/',
+						src: ['plug-ins/*/*.less'],
+						dest: 'build/',
+						rename: function(dest, src) {return dest + src.replace('.less','.css');}}
+				]
 			}
 		},
 
@@ -25,7 +37,6 @@ module.exports = function(grunt) {
 			dist: {
 				files: [
 					{flatten: true, expand: true, src: ['src/icons-font/editIt/fonts/*'], dest: 'build/css/editIt-icons/'},
-//					{flatten: true, expand: true, src: ['src/jquery.mb.editIt.src.js'], dest: 'build/inc/',rename: function(dest, src) {return dest + src.replace('.src','');}},
 					{flatten: true, expand: true, src: ['src/*.html'], dest: 'build/demo/',rename: function(dest, src) {return dest + src.replace('.src','');}},
 					{flatten: false, expand: true,cwd: 'src/', src: ['plug-ins/**'], dest: 'build/'},
 					{flatten: false, expand: true,cwd: 'src/', src: ['images/**'], dest: 'build/css/'},
@@ -51,17 +62,31 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				banner: '/*' +
-						'<%= pkg.name %> - <%= grunt.template.today("dd-mm-yyyy") %>\n' +
+						'<%= pkg.name %>\n' +
 						' _ Copyright (c) <%= grunt.template.today("yyyy") %>. <%= pkg.author %>\n' +
 						' */\n'
 			},
-			pre:  {
-				src: [ 'thirdPart/HTMLCleaner.js' ],
+			pre    : {
+				src : [ 'thirdPart/HTMLCleaner.js' ],
 				dest: 'src/support/HTMLCleaner.min.js'
 			},
-			dist:  {
-				src: [ 'build/inc/jquery.mb.editIt.js' ],
+
+			dist: {
+				src : [ 'build/inc/jquery.mb.editIt.js' ],
 				dest: 'build/inc/jquery.mb.editIt.min.js'
+			},
+
+			plugins: {
+
+				files: [
+					{
+						flatten: false,
+						expand: true,
+						cwd: 'src/',
+						src: ['plug-ins/*/*.js'],
+						dest: 'build/',
+						rename: function(dest, src) {return dest + src.replace('.js','.min.js');}}
+				]
 			}
 		},
 
@@ -73,7 +98,7 @@ module.exports = function(grunt) {
 				keepBreaks: true,
 				sourceMap: true
 			},
-			target: {
+			dist: {
 				files: [{
 					expand: true,
 					cwd: 'build/css',
@@ -81,6 +106,18 @@ module.exports = function(grunt) {
 					dest: 'build/css',
 					ext: '.min.css'
 				}]
+			},
+			plugins: {
+				files: [
+					{
+						flatten: false,
+						expand: true,
+						cwd: 'build/',
+						src: ['plug-ins/*/*.css'],
+						dest: 'build/'/*,
+						rename: function(dest, src) {return dest + src.replace('.css','.min.css');}*/
+					}
+				]
 			}
 		},
 
@@ -156,9 +193,9 @@ module.exports = function(grunt) {
 	// Load plugins used by this task gruntfile
 	/* https://github.com/gruntjs/grunt-contrib-less */
 
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks("grunt-jsbeautifier");
@@ -177,7 +214,8 @@ module.exports = function(grunt) {
 
 	// Task definitions
 	grunt.registerTask('dist', ['clean', 'uglify:pre', 'less', 'jsbeautifier', 'concat', 'copy', 'uglify:dist', 'cssmin']); // 'jsbeautifier'
-	grunt.registerTask('comp', ['buildnumber','compress']);
+	grunt.registerTask('compress', ['buildnumber','compress']);
+	grunt.registerTask('plugins', ['uglify:plugins', 'less:plugins', 'clean:plugins', 'cssmin:plugins']);
 
-	grunt.registerTask('default', ['dist']);
+	grunt.registerTask('default', ['dist', 'plugins']);
 };

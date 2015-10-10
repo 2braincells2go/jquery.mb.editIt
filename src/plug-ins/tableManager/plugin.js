@@ -38,8 +38,8 @@
 				if( plugin.actualTag && plugin.actualTag.tagName.toUpperCase() == "TD" ) {
 					plugin.actualTable = $( plugin.actualTag ).parents( "table" );
 					editor.actualSelection = $.editIt.util.saveSelection();
-					plugin.actualTable.find( "td, th" ).unselectable();
-					$( plugin.actualTag ).selectable();
+					plugin.actualTable.find( "td, th" ).addClass( "unselectable" );
+					$( plugin.actualTag ).removeClass( "unselectable" );
 
 				} else if( plugin.actualTable )
 					plugin.cleanUp( plugin.actualTable );
@@ -81,8 +81,9 @@
 				el.eq( x ).focus();
 
 				plugin.actualTag = refNode;
-				plugin.actualTable.find( "td, th" ).unselectable();
-				$( plugin.actualTag ).selectable();
+
+				plugin.actualTable.find( "td, th" ).addClass( "unselectable" );
+				$( plugin.actualTag ).removeClass( "unselectable" );
 
 			}
 
@@ -110,7 +111,8 @@
 		},
 
 		cleanUp: function( table ) {
-			table.find( "td" ).removeAttr( "style" ).removeAttr( "unselectable" );
+			//			table.find( "td" ).removeAttr( "style" ).removeAttr( "unselectable" );
+			table.find( "td" ).removeClass( "unselectable" ).removeAttr( "unselectable" );
 		},
 
 		commands: {
@@ -236,7 +238,9 @@
 								header.append( trH );
 
 								for( var c = 0; c < columns; c++ ) {
-									var tdH = $( "<td/>" ).html( "&nbsp;" );
+									var tdH = $( "<td/>" ).html( "&nbsp;" ).addClass( "th-td-" + c ).css( {
+										width: 100 / columns + "%"
+									} );
 									trH.append( tdH );
 								}
 
@@ -249,7 +253,7 @@
 
 								for( var b = 0; b < columns; b++ ) {
 
-									var td = $( "<td/>" ).html( "&nbsp;" );
+									var td = $( "<td/>" ).html( "&nbsp;" ).addClass( "td-" + b );
 									tr.append( td );
 
 								}

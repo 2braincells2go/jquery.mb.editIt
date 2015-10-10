@@ -1,34 +1,8 @@
-
-.grid {
-  position: relative;
-  margin: auto;
-  border-collapse: collapse;
-  border: 1px dotted #FFFFFF;
-  width: 300px;
-  height: 100px;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-
-  font-size: 1px;
-  line-height: 15px;
-}
-
-.grid td {
-  width: 10%;
-  border: 1px dotted #FFFFFF;
-}
-
-.grid td.sel {
-  background-color: #b9daff;
-  border: 1px dotted #FFFFFF;
-}
-
-#rowCol {
-  font-size: 18px;
-  position: relative;
-  margin: auto;
-  text-align: center;
-  padding: 20px 10px;
-}
+.grid,.grid td,.grid td.sel{border:1px dotted #FFF}
+#rowCol,.grid{position:relative;margin:auto}
+.grid{border-collapse:collapse;width:300px;height:100px;cursor:default;-webkit-user-select:none;-moz-user-select:none;user-select:none;font-size:1px;line-height:15px}
+.grid td{width:10%}
+.grid td.sel{background-color:#b9daff}
+#rowCol{font-size:18px;text-align:center;padding:20px 10px}
+.editIt td.unselectable{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+/*# sourceMappingURL=style.css.map */

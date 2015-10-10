@@ -60,7 +60,7 @@
 		 */
 		defaults: {
 
-			textareaId: null,
+			textareaName: null,
 			pasteAs: "cleanHTML", // "cleanHTML", "text", "HTML", "none"
 			blockImages: true,
 			enablePreview: true,
@@ -190,8 +190,8 @@
 							if( el.isDropDown )
 								return;
 							$.editIt.toolBar.draw( editor );
-							if( editor.editorsContainer.opt.textareaId )
-								editor.editorsContainer.textarea.val( $.editIt.util.getClearContent( editor.editorsContainer ) );
+							if( editor.editorsContainer.opt.textareaName )
+								$.editIt.util.updateTextarea( editor );
 						}, 50 );
 
 					} );
@@ -232,7 +232,7 @@
 				} );
 
 				arrow.css( {
-					left: $.editIt.util.getSelectionCoords().left - editor.editorsContainer.toolBar.position().left + ( pos.width / 2 ) - 5,
+					left: $.editIt.util.getSelectionCoords().left - pos.left + ( pos.width / 2 ) - 5,
 					top: pos.top - editor.editorsContainer.toolBar.position().top + editor.editorsContainer.toolBar.outerHeight() - 10
 				} );
 
@@ -1028,7 +1028,7 @@
 			/**
 			 *
 			 * @param editor
-			 * @returns {*|jQuery}
+			 * @returns {HTML}
 			 */
 			getContent: function( editor ) {
 				$.editIt.util.setUneditable( editor );
@@ -1058,6 +1058,15 @@
 
 			},
 
+			updateTextarea: function( editor ) {
+
+				var $editor = $( editor );
+				editor = $editor[ 0 ];
+
+				if( editor.editorsContainer.textarea )
+					editor.editorsContainer.textarea.val( $.editIt.util.getClearContent( editor ) );
+			},
+
 			/**
 			 *
 			 * @param editor
@@ -1078,7 +1087,9 @@
 				$( "[data-editable]", $( editor ) ).removeClass( "editIt" ).removeAttr( "contenteditable" ).off();
 				$( ".editIt-wrapper" ).removeClass( "inEditMode" );
 
-				$( ".editIt-buttonBar" ).remove();
+				$( "[class*=-buttonBar]" ).remove();
+
+				$.editIt.util.updateTextarea( editor );
 
 			},
 
@@ -1332,7 +1343,7 @@
 
 					if( sel.rangeCount ) {
 
-						range = sel.getRangeAt( 0 ).cloneRange();
+						range = sel.getRangeAt( 0 );
 
 						if( range.getClientRects ) {
 							if( range.getClientRects().length > 0 ) {
@@ -1340,7 +1351,11 @@
 								x = r[ 0 ].left;
 								y = r[ 0 ].top;
 								w = r.length == 1 ? r[ 0 ].width : r[ 1 ].width;
+								var parentWidth = $( sel.anchorNode.parentNode ).outerWidth();
+								if( w > parentWidth )
+									w = parentWidth;
 							}
+
 						}
 					}
 				}
@@ -1517,10 +1532,17 @@
 				if( $self.css( "position" ) == "static" )
 					$self.css( "position", "relative" );
 
-				self.opt.textareaId = $self.data( "for" ) || self.opt.textareaId;
+				self.opt.textareaName = $self.data( "textarea-name" ) || self.opt.textareaName;
 
-				if( self.opt.textareaId ) {
-					self.textarea = $( "#" + self.opt.textareaId );
+				if( self.opt.textareaName ) {
+					if( !$( "textarea[name=" + self.opt.textareaName + "]" ).length ) {
+						var textarea = $( "<textarea/>" ).attr( {
+							name: self.opt.textareaName,
+							id: self.opt.textareaName
+						} ).hide();
+						$self.after( textarea );
+					}
+					self.textarea = $( "#" + self.opt.textareaName );
 					self.textarea.hide();
 				}
 
@@ -1656,11 +1678,11 @@
 					} )
 
 					.on( "contextmenu", function( e ) {
-						e.preventDefault();
-						if( !$( ".editIt-dropdown" ).is( ":visible" ) )
-							$.editIt.toolBar.draw( editor );
-
-						return false;
+						/*
+												e.preventDefault();
+												if( !$( ".editIt-dropdown" ).is( ":visible" ) )
+												return false;
+						*/
 					} )
 
 					/**
@@ -1796,9 +1818,8 @@
 
 					.on( "keyup", function() {
 
-						if( self.editorsContainer.opt.textareaId )
-							editor.editorsContainer.textarea.val( $.editIt.util.getClearContent( editor.editorsContainer ) );
-
+						if( self.editorsContainer.opt.textareaName )
+							$.editIt.util.updateTextarea( self );
 					} )
 
 					/**
@@ -1842,8 +1863,8 @@
 				initEv.editor = self;
 				$( d ).trigger( initEv );
 
-				if( self.editorsContainer.opt.textareaId )
-					self.editorsContainer.textarea.val( $.editIt.util.getClearContent( self ) );
+				if( self.editorsContainer.opt.textareaName )
+					$.editIt.util.updateTextarea( self );
 
 				d.execCommand( "enableInlineTableEditing", false, false );
 				d.execCommand( "enableObjectResizing", false, false );

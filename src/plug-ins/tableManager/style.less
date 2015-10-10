@@ -13,16 +13,17 @@
 
   font-size: 1px;
   line-height: 15px;
-}
 
-.grid td {
-  width: 10%;
-  border: 1px dotted #FFFFFF;
-}
+  td {
+    width: 10%;
+    border: 1px dotted #FFFFFF;
 
-.grid td.sel {
-  background-color: #b9daff;
-  border: 1px dotted #FFFFFF;
+    &.sel {
+      background-color: #b9daff;
+      border: 1px dotted #FFFFFF;
+    }
+  }
+
 }
 
 #rowCol {
@@ -31,4 +32,10 @@
   margin: auto;
   text-align: center;
   padding: 20px 10px;
+}
+
+.editIt td.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
