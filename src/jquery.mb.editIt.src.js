@@ -578,7 +578,7 @@
 
 		plugins: {
 
-			load: function( pathToFolder ) {
+			load: function( pathToFolder, useMin ) {
 
 				$( d ).on( "registered", function( e ) {
 					e.plugin.UID = pathToFolder.asId();
@@ -588,7 +588,7 @@
 				jQuery.ajax( {
 					async: false,
 					type: 'GET',
-					url: pathToFolder + "/plugin.js?_=" + new Date().getTime(),
+					url: pathToFolder + "/plugin" + ( useMin ? ".min" : "" ) + ".js?_=" + new Date().getTime(),
 					data: null,
 					dataType: 'script',
 					error: function() {

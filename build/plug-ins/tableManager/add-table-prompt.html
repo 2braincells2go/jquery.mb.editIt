@@ -1,0 +1,163 @@
+<div id="addTable-prompt">
+    <h2>Title</h2>
+    <table class="grid">
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <div id="rowCol"></div>
+    <input id="addTable-columns" type="hidden" name="columns" value="3">
+    <input id="addTable-rows" type="hidden" name="rows" value="3">
+    <input id="addTable-header" type="checkbox" name="header" value="true" checked>
+    <label for="addTable-header"></label>
+</div>
+<script>
+$.editIt.prompt.onLoad = function(editor, plugin) {
+    var prompt = $("#addTable-prompt");
+    prompt.children("h2").html(_("Add a table:"));
+    //Labels
+    $("[for=addTable-header]").html(_("Add header"));
+    $("[for=addTable-columns]").html(_("How many columns?"));
+    $("[for=addTable-rows]").html(_("How many rows?"));
+
+    function getGrid(e) {
+        var button = typeof e.buttons != "undefined" ? e.buttons : e.which || e.button;
+        if (button == 1) {
+            var table = $(".grid");
+            var tr = $("tr", table);
+            var targetTR = $(e.target).closest("tr");
+            var targetTD = $("td", targetTR);
+            var targetPos = [targetTD.index($(e.target)), tr.index(targetTR)];
+            $("td", table).removeClass("sel");
+            for (var row = 0; row <= targetPos[1]; row++) {
+                for (var col = 0; col <= targetPos[0]; col++) {
+                    $("tr", table).eq(row).find("td").eq(col).addClass("sel")
+                }
+            }
+            $("#rowCol").html(_("%% rows and %% columns", [targetPos[1] + 1, targetPos[0] + 1]));
+            $("#addTable-columns").val(targetPos[0] + 1);
+            $("#addTable-rows").val(targetPos[1] + 1);
+        }
+    }
+    $(".grid").on("mousemove mousedown", "td", function(e) {
+        getGrid(e);
+    });
+};
+</script>

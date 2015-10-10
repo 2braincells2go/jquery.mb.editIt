@@ -29,7 +29,7 @@
     <link rel="stylesheet" type="text/css" href="../css/editIt.min.css">
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="../inc/jquery.mb.editIt.js"></script>
+    <script type="text/javascript" src="../inc/jquery.mb.editIt.min.js"></script>
 
     <style>
 
@@ -135,9 +135,9 @@
                 var $schedaPlaceHolder = $("#editItContent");
                 $schedaPlaceHolder.html(html);
 
-                $.editIt.plugins.load("../plug-ins/tableManager");
-                $.editIt.plugins.load("../plug-ins/variablesReplace");
-                $.editIt.plugins.load("../plug-ins/modulesManager");
+                $.editIt.plugins.load("../plug-ins/tableManager", true);
+                $.editIt.plugins.load("../plug-ins/variablesReplace", true);
+                $.editIt.plugins.load("../plug-ins/modulesManager", true);
 
                 var variables = {"javascript-variable" : "This has been added via javascript"};
                 $.editIt.setVariables(variables);

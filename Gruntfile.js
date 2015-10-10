@@ -13,24 +13,65 @@ module.exports = function(grunt) {
 		less: {
 			dist: {
 				options: {
-					compress: false,
+					compress: true,
 					optimization: 3
 				},
 				src: 'src/less/*.less',
 				dest: 'build/css/<%= pkg.shortname %>.css'
 			},
 			plugins: {
+				options: {
+					compress: true,
+					optimization: 3
+				},
 				files: [
 					{
 						flatten: false,
 						expand: true,
 						cwd: 'src/',
 						src: ['plug-ins/*/*.less'],
-						dest: 'build/',
-						rename: function(dest, src) {return dest + src.replace('.less','.css');}}
+						dest: 'build/',/*
+						rename: function(dest, src) {return dest + src.replace('.less','.css');}*/
+						ext:".css"
+
+					}
 				]
 			}
 		},
+
+		/* Minify CSS files task*/
+		cssmin: {
+			options: {
+				shorthandCompacting: true,
+				roundingPrecision: 2,
+				keepBreaks: false,
+				sourceMap: true
+			},
+			dist: {
+				files: [{
+					expand: true,
+					cwd: 'build/css',
+					src: ['*.css', '!*.min.css'],
+					dest: 'build/css',
+					ext: '.min.css'
+				}]
+			},
+			plugins: {
+				files: [
+					{
+						flatten: false,
+						expand: true,
+						cwd: 'build/',
+						src: ['plug-ins/*/*.css', '!plug-ins/*/*.min.css'],
+						dest: 'build/',
+						ext: ".css"
+						/*,
+					 rename: function(dest, src) {return dest + src.replace('.css','.min.css');}*/
+					}
+				]
+			}
+		},
+
 
 		/* Copy files task*/
 		copy: {
@@ -60,23 +101,28 @@ module.exports = function(grunt) {
 
 		/* Minify javascript files task*/
 		uglify: {
-			options: {
-				banner: '/*' +
-						'<%= pkg.name %>\n' +
-						' _ Copyright (c) <%= grunt.template.today("yyyy") %>. <%= pkg.author %>\n' +
-						' */\n'
-			},
 			pre    : {
 				src : [ 'thirdPart/HTMLCleaner.js' ],
 				dest: 'src/support/HTMLCleaner.min.js'
 			},
 
 			dist: {
+				options: {
+					sourceMap: true,
+					banner: '/*' +
+							'<%= pkg.name %>\n' +
+							' _ Copyright (c) <%= grunt.template.today("yyyy") %>. <%= pkg.author %>\n' +
+							' */\n'
+				},
 				src : [ 'build/inc/jquery.mb.editIt.js' ],
 				dest: 'build/inc/jquery.mb.editIt.min.js'
 			},
 
 			plugins: {
+
+				options: {
+					sourceMap: true
+				},
 
 				files: [
 					{
@@ -90,22 +136,10 @@ module.exports = function(grunt) {
 			}
 		},
 
-		/* Minify CSS files task*/
-		cssmin: {
-			options: {
-				shorthandCompacting: true,
-				roundingPrecision: 2,
-				keepBreaks: true,
-				sourceMap: true
-			},
+		jsbeautifier : {
+
 			dist: {
-				files: [{
-					expand: true,
-					cwd: 'build/css',
-					src: ['*.css', '!*.min.css'],
-					dest: 'build/css',
-					ext: '.min.css'
-				}]
+				src : ['src/jquery.mb.editIt.src.js', "src/plug-ins/**/*.js"]
 			},
 			plugins: {
 				files: [
@@ -113,18 +147,10 @@ module.exports = function(grunt) {
 						flatten: false,
 						expand: true,
 						cwd: 'build/',
-						src: ['plug-ins/*/*.css'],
-						dest: 'build/'/*,
-						rename: function(dest, src) {return dest + src.replace('.css','.min.css');}*/
+						src: ['plug-ins/*/**'],
+						dest: 'build/'
 					}
 				]
-			}
-		},
-
-		jsbeautifier : {
-
-			dist: {
-				src : ['src/jquery.mb.editIt.src.js', "src/plug-ins/**/*.js"]
 			},
 
 			options: {
@@ -215,7 +241,7 @@ module.exports = function(grunt) {
 	// Task definitions
 	grunt.registerTask('dist', ['clean', 'uglify:pre', 'less', 'jsbeautifier', 'concat', 'copy', 'uglify:dist', 'cssmin']); // 'jsbeautifier'
 	grunt.registerTask('compress', ['buildnumber','compress']);
-	grunt.registerTask('plugins', ['uglify:plugins', 'less:plugins', 'clean:plugins', 'cssmin:plugins']);
+	grunt.registerTask('plugins', ['uglify:plugins', 'less:plugins', 'clean:plugins', 'jsbeautifier:plugins' , 'cssmin:plugins' ]);
 
 	grunt.registerTask('default', ['dist', 'plugins']);
 };
