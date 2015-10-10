@@ -1,0 +1,26 @@
+{
+  "name": "jquery.mb.editIt",
+  "version": "1.1.1",
+  "homepage": "https://github.com/pupunzi/jquery.mb.editIt",
+  "authors": [
+    "pupunzi <matteo@open-lab.com>"
+  ],
+  "description": "contenteditable editor.",
+  "main": "build/inc/jquery.mb.editIt.js",
+  "keywords": [
+    "jquery-plugin",
+    "WYSIWYG",
+    "edit",
+    "html5",
+    "editor"
+  ],
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "build": "1011"
+}

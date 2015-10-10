@@ -15,7 +15,6 @@
 		author: "Pupunzi",
 
 		activate: function() {
-
 			var plugin = this;
 			console.debug( "Activate:: ", plugin );
 		},

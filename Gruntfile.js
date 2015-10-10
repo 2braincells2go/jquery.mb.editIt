@@ -119,11 +119,9 @@ module.exports = function(grunt) {
 			},
 
 			plugins: {
-
 				options: {
 					sourceMap: true
 				},
-
 				files: [
 					{
 						flatten: false,
@@ -141,14 +139,14 @@ module.exports = function(grunt) {
 			dist: {
 				src : ['src/jquery.mb.editIt.src.js', "src/plug-ins/**/*.js"]
 			},
+
 			plugins: {
 				files: [
 					{
 						flatten: false,
 						expand: true,
 						cwd: 'build/',
-						src: ['plug-ins/*/**'],
-						dest: 'build/'
+						src: ['plug-ins/*/**']
 					}
 				]
 			},
@@ -200,7 +198,7 @@ module.exports = function(grunt) {
 
 		buildnumber: {
 			options: {
-				field: 'buildNumber'
+				field: 'build'
 			},
 			files  : ['package.json']
 		},
@@ -208,11 +206,49 @@ module.exports = function(grunt) {
 		compress: {
 			dist: {
 				options: {
-					archive: '<%= pkg.name %>-<%= grunt.file.readJSON("package.json").buildNumber %>.zip'
+					archive: '<%= pkg.name %>-<%= grunt.file.readJSON("package.json").build %>.zip'
 				},
 				src : ['build/**']
 			}
+		},
+
+		includereplace: {
+			dist: {
+				options: {
+					prefix : '{{ ',
+					suffix : ' }}',
+					globals: {
+						version: '<%= pkg.version %>',
+						build: '<%= grunt.file.readJSON("package.json").build %>'
+					}
+				},
+				files  : [
+					{src: 'build/inc/*.js', expand: true},
+					{src: 'build/*.html', expand: true},
+					{src: 'build/css/*.css', expand: true}
+				]
+			}
+		},
+
+		bump: {
+			options: {
+				files             : ['package.json', 'bower.json'],
+				updateConfigs     : [],
+				commit            : false,
+				commitMessage     : 'Release v%VERSION% stable',
+				commitFiles       : ['-a'],
+				createTag         : false,
+				tagName           : '%VERSION%',
+				tagMessage        : 'Version %VERSION%',
+				push              : false,
+				pushTo            : 'https://github.com/pupunzi/jquery.mb.editIt.git',
+				gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d',
+				globalReplace     : true,
+				prereleaseName    : 'alpha',
+				regExp            : false
+			}
 		}
+
 
 	});
 
@@ -229,19 +265,17 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-
-	/*
-	 grunt.loadNpmTasks('grunt-contrib-htmlmin');
-	 grunt.loadNpmTasks('grunt-contrib-concat');
-	 grunt.loadNpmTasks('grunt-preprocess');
-	 grunt.loadNpmTasks('grunt-include-replace');
-	 */
+	grunt.loadNpmTasks('grunt-include-replace');
+	grunt.loadNpmTasks('grunt-bump');
 
 
 	// Task definitions
-	grunt.registerTask('dist', ['clean', 'uglify:pre', 'less', 'jsbeautifier', 'concat', 'copy', 'uglify:dist', 'cssmin']); // 'jsbeautifier'
-	grunt.registerTask('compress', ['buildnumber','compress']);
+	grunt.registerTask('dist', ['clean', 'uglify:pre', 'less', 'jsbeautifier', 'concat', 'copy', 'uglify:dist', 'cssmin','includereplace']);
 	grunt.registerTask('plugins', ['uglify:plugins', 'less:plugins', 'clean:plugins', 'jsbeautifier:plugins' , 'cssmin:plugins' ]);
+	grunt.registerTask('compress', ['buildnumber','includereplace', 'compress']);
+	grunt.registerTask('commit', ['default', 'buildnumber','includereplace','bump']);
+
 
 	grunt.registerTask('default', ['dist', 'plugins']);
+
 };
