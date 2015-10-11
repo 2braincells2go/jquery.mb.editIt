@@ -244,9 +244,13 @@
 
 			clear: function( editor ) {
 
+				console.debug( "clear toolbar" )
+
 				if( !editor || !editor.editorsContainer || !editor.editorsContainer.toolBar || !editor.editorsContainer.toolBar.is( ":visible" ) )
 					return;
+
 				editor.editorsContainer.toolBar.remove();
+
 			},
 
 			getElements: function( editor ) {
@@ -775,6 +779,7 @@
 				promptBox.append( content );
 
 				promptApply.on( "click", function() {
+
 					var data = {};
 					$( "input, textarea", editor.prompt ).each( function() {
 
@@ -859,7 +864,7 @@
 					$.editIt.prompt.onLoad = null;
 				}
 
-				editor.prompt.fadeIn( 300, function() {
+				editor.prompt.fadeIn( 200, function() {
 					promptBox.find( "input" ).eq( 0 ).focus().select();
 				} );
 

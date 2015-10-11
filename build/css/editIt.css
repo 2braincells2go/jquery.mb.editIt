@@ -97,7 +97,7 @@ button.editIt-button.apply{background-color:#3c8f53;color:#fff}button.editIt-but
 button.editIt-button.delete{background-color:#bb110e;color:#fff}button.editIt-button.delete:hover{background-color:#333;color:#fff}
 button.editIt-button.align-right{float:right}
 button.editIt-button.big{font-size:16px}
-.editIt-dropdown{position:relative;padding:0;font-family:"calluna","Open Sans",Helvetica,sans-serif;background-color:rgba(51,51,51,0.9);z-index:1000}.editIt-dropdown div{position:relative;min-width:120px;color:#fff;font-weight:100;font-size:16px;cursor:pointer;padding:6px 30px 6px 6px}.editIt-dropdown div:hover{background-color:#333;color:#98c2ff}
+.editIt-dropdown{position:relative;padding:0;font-family:"calluna","Open Sans",Helvetica,sans-serif;background-color:rgba(51,51,51,0.9);z-index:1000}.editIt-dropdown div{position:relative;min-width:120px;color:#fff;font-weight:100;font-size:16px;cursor:pointer;padding:6px 30px 6px 6px;transition:background 0.4s;-webkit-transition:background 0.4s}.editIt-dropdown div:hover{background-color:rgba(51,51,51,0.9);color:#98c2ff}
 .editIt-dropdown div.row_separator{width:100%;height:1px;background-color:rgba(255,255,255,0.2);padding:0}.editIt-dropdown div.row_separator:hover{background-color:rgba(255,255,255,0.2)}
 .editIt-dropdown div span{position:absolute;right:10px;top:5px}
 .editIt-prompt{position:fixed;top:0;left:0;right:0;bottom:0;margin:auto;background-color:rgba(255,255,255,0.5);z-index:10000;font-family:"calluna","Open Sans",Helvetica,sans-serif;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;transition:background 0.4s;-webkit-transition:background 0.4s}.editIt-prompt *{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
