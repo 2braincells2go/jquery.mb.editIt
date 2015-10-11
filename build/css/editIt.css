@@ -61,6 +61,7 @@
 .editIt-icon-eraser:before{content:"\f12d"}
 .editIt-icon-check-square:before{content:"\f14a"}
 .editIt-icon-youtube:before{content:"\f167"}
+.editIt-icon-paragraph:before{content:"\f1dd"}
 .editIt-icon-toggle-off:before{content:"\f204"}
 .editIt-icon-toggle-on:before{content:"\f205"}
 .editIt-icon-i-cursor:before{content:"\f246"}
@@ -186,6 +187,7 @@ button.editIt-button.big{font-size:16px}
 .editIt-icon-eraser:before{content:"\f12d"}
 .editIt-icon-check-square:before{content:"\f14a"}
 .editIt-icon-youtube:before{content:"\f167"}
+.editIt-icon-paragraph:before{content:"\f1dd"}
 .editIt-icon-toggle-off:before{content:"\f204"}
 .editIt-icon-toggle-on:before{content:"\f205"}
 .editIt-icon-i-cursor:before{content:"\f246"}

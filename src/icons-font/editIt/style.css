@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'editIt';
-	src:url('fonts/editIt.eot?ubfjtu');
-	src:url('fonts/editIt.eot?ubfjtu#iefix') format('embedded-opentype'),
-		url('fonts/editIt.ttf?ubfjtu') format('truetype'),
-		url('fonts/editIt.woff?ubfjtu') format('woff'),
-		url('fonts/editIt.svg?ubfjtu#editIt') format('svg');
+	src:url('fonts/editIt.eot?60rcpe');
+	src:url('fonts/editIt.eot?60rcpe#iefix') format('embedded-opentype'),
+		url('fonts/editIt.ttf?60rcpe') format('truetype'),
+		url('fonts/editIt.woff?60rcpe') format('woff'),
+		url('fonts/editIt.svg?60rcpe#editIt') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -205,6 +205,9 @@
 }
 .editIt-icon-youtube:before {
 	content: "\f167";
+}
+.editIt-icon-paragraph:before {
+	content: "\f1dd";
 }
 .editIt-icon-toggle-off:before {
 	content: "\f204";

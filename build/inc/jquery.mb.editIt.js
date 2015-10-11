@@ -83,7 +83,7 @@
 		 */
 		toolBar: {
 			none: "",
-			default: [ "paragraph", "|", "bold", "italic", "underline", "strikeThrough", "|", "justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "|", "removeFormat", "|", "createlink", "|", "insertOrderedList", "insertUnorderedList", "|", "outdent", "indent", "|", "undo", "redo" ],
+			default: [ "bold", "italic", "underline", "strikeThrough", "|", "removeFormat", "|", "justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "|", "paragraph", "|", "createlink", "|", "insertOrderedList", "insertUnorderedList", "|", "outdent", "indent", "|", "undo", "redo" ],
 			small: [ "bold", "italic", "underline", "strikeThrough", "removeFormat", "|", "undo", "redo" ],
 
 			/**
@@ -483,7 +483,7 @@
 			 * */
 			paragraph: {
 				label: "Paragraph",
-				icon: false,
+				icon: "editIt-icon-paragraph",
 				type: "dropdown",
 				action: function( editor ) {
 					var elements = [ "h1", "h2", "h3", "h4", "p", "blockquote" ];
