@@ -1,0 +1,43 @@
+{
+	"it-IT": {
+		"Add block": "Aggiungi un blocco",
+		"Remove block": "elimina il blocco",
+		"Do you really want to delete this content?": "Vuoi veramente rimuovere questo contenuto?",
+		"There's been an error loading the template: <br> %%": "C'è stato un errore caricando il template:<br> %%",
+
+		"Template manager": "Gestione templates",
+		"Choose a template:": "Scegli un template:",
+		"After the current block": "Dopo il blocco corrente",
+		"Before the current bloclk": "Prima del blocco corrente",
+		"Where?": "Dove?"
+
+	},
+
+	"fr-FR": {
+		"Add block": "Ajouter bloc",
+		"Remove block": "Retirer le bloc",
+		"Do you really want to delete this content?": "Voulez-vous vraiment supprimer ce contenu?",
+		"There's been an error loading the template: <br> %%": "Il ya eu une erreur lors du chargement du modèle: <br> %%",
+
+		"Template manager": "Template Manager",
+		"Choose a template:": "Choisir un modèle:",
+		"After the current block": "Après le bloc actuel",
+		"Before the current bloclk": "Avant la bloclk actuelle",
+		"Where?": "Où?"
+
+	},
+
+	"es-ES": {
+		"Add block": "Añadir bloque",
+		"Remove block": "Quitar el bloque",
+		"Do you really want to delete this content?": "¿Realmente quieres borrar este contenido?",
+		"There's been an error loading the template: <br> %%": "Ha habido un error al cargar la plantilla: <br> %%",
+
+		"Template manager": "Gestor de plantilla",
+		"Choose a template:": "Elija una plantilla:",
+		"After the current block": "Después de que el bloque actual",
+		"Before the current bloclk": "Antes de que el bloque actual",
+		"Where?": "¿Dónde?"
+
+	}
+}

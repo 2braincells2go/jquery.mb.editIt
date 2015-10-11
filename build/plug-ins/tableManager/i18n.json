@@ -1,0 +1,52 @@
+{
+	"it-IT": {
+		"Table": "Tabella",
+		"Add row︎": "Aggiungi riga",
+		"Remove row︎": "Elimina riga︎",
+		"Add column": "Aggiungi colonna",
+		"remove column": "Rimuovi colonna",
+		"Add table": "Aggiungi tabella",
+		"Delete table": "Elimina tabella",
+		"<h2>Are you sure you want to delete this table?</h2>": "<h2>Sei sicuro di voler eliminare questa tabella?</h2>",
+		"Add a table:": "Aggiungi una tabella:",
+		"Add header": "Aggiungi una intestazione:",
+		"How many rows?": "Quante righe?",
+		"How many columns?": "Quante colonne?",
+		"%% rows and %% columns": "%% righe e %% colonne"
+
+	},
+
+	"fr-FR": {
+		"Table": "Table",
+		"Add row︎": "Ajouter une ligne",
+		"Remove row︎": "Supprimer la ligne",
+		"Add column": "Ajouter colonne",
+		"remove column": "Supprimer la colonne",
+		"Add table": "Ajouter a table",
+		"Delete table": "Supprimer la table",
+		"<h2>Are you sure you want to delete this table?</h2>": "<h2> Etes-vous sûr de vouloir supprimer cette table? </h2>esta tabella?</h2>",
+		"Add a table:": "Ajouter une table:",
+		"Add header": "Ajouter en-tête",
+		"How many rows?": "Combien de lignes?",
+		"How many columns?": "Combien de colonnes?",
+		"%% rows and %% columns": "%% rangées et %% colonnes"
+
+	},
+
+	"es-ES": {
+		"Table": "tabla",
+		"Add row︎": "Añadir línea",
+		"Remove row︎": "Eliminar línea",
+		"Add column": "Añadir columna",
+		"remove column": "eliminar la columna",
+		"Add table": "Añadir tabla",
+		"Delete table": "Eliminar tabla",
+		"<h2>Are you sure you want to delete this table?</h2>": "<h2> ¿Seguro que quieres eliminar esta tabla?</h2>",
+		"Add a table:": "Agregar una tabla:",
+		"Add header": "Añadir encabezado",
+		"How many rows?": "¿Cuántas filas?",
+		"How many columns?": "¿Cuántas columnas?",
+		"%% rows and %% columns": "Filas %% y %% columnas"
+
+	}
+}
