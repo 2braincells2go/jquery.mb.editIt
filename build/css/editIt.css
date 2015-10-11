@@ -65,18 +65,18 @@
 .editIt-icon-toggle-on:before{content:"\f205"}
 .editIt-icon-i-cursor:before{content:"\f246"}
 body.blur{-webkit-filter:blur(3px);filter:blur(3px);overflow:hidden;opacity:.7}
-body.inSourceMode{margin-bottom:50vh !important}
+body.sourceMode{margin-bottom:50vh !important}
 .editIt-wrapper.inEditMode{border:1px dotted rgba(0,0,0,0.3);box-shadow:0 0 6px rgba(0,0,0,0.3)}
 .editIt-wrapper.full-screen{position:fixed;top:0;left:0;right:0;bottom:0;margin:auto;background:#fff}
 .editIt-wrapper [data-group=true]{position:relative}
 .editIt-wrapper *:focus{outline:0}
+.inSourceMode{position:relative;z-index:100000;padding:5px;background-color:#fff;border:1px dotted rgba(51,51,51,0.0085)}
 .editIt[contenteditable]{position:relative;border:1px dotted transparent;padding:4px;border:1px dotted #fee298;background-color:rgba(254,226,152,0.03);margin:5px 0}.editIt[contenteditable]:focus:before{content:"EDIT MODE";background-color:#fee298;position:absolute;top:-18px;left:0;padding:3px;font-size:8px;font-weight:normal}
 .editIt[contenteditable] img{max-width:100%;height:auto}
 .editIt[contenteditable] table{border-collapse:collapse}.editIt[contenteditable] table td{border:1px dotted #ccc}
 .editIt[contenteditable]::selection,.editIt[contenteditable] *::selection{background:#fee298}
 .editIt[contenteditable]::-moz-selection,.editIt[contenteditable] *::-moz-selection{background:#fee298}
 .editIt-main-buttonBar{position:absolute;top:-45px;right:0;height:30px;font-family:"calluna","Open Sans",Helvetica,sans-serif}
-.inSourceMode{position:relative;z-index:100000;padding:5px;background-color:#fff;border:1px dotted rgba(51,51,51,0.0085)}
 #editIt-toolbar{position:absolute;z-index:1000;margin-top:-40px;padding:0;min-height:33px;font-family:"calluna","Open Sans",Helvetica,sans-serif;background-color:rgba(51,51,51,0.9);border-radius:4px;white-space:nowrap;box-shadow:0 0 4px rgba(0,0,0,0.3)}#editIt-toolbar button{-webkit-transition:all 0.3s;transition:all 0.3s;font-weight:100;font-size:16px;letter-spacing:1px;line-height:18px;position:relative;display:inline-block;background-color:transparent;color:#fff;border:none;padding:12px;cursor:pointer}#editIt-toolbar button:hover{background-color:rgba(51,51,51,0.9);color:#98c2ff}
 #editIt-toolbar button .textual{font-family:"Arimo",Helvetica,Arial,sans-serif}
 #editIt-toolbar button.sel{color:#fee298}

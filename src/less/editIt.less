@@ -12,11 +12,9 @@
 
 @charset "UTF-8";
 
-
 @import "vars";
-
-
 @import "icons";
+
 
 body {
   &.blur {
@@ -25,7 +23,8 @@ body {
     overflow: hidden;
     opacity: .7;
   }
-  &.inSourceMode {
+
+  &.sourceMode {
     margin-bottom: 50vh !important;
   }
 }
@@ -52,6 +51,14 @@ body {
     outline: 0;
   }
 
+}
+
+.inSourceMode{
+  position: relative;
+  z-index: 100000;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px dotted fade(@tool-color, 0.85);
 }
 
 .editIt {
@@ -109,14 +116,6 @@ body {
   right: 0;
   height: 30px;
   font-family: @default-font-family;
-}
-
-.inSourceMode{
-  position: relative;
-  z-index: 100000;
-  padding: 5px;
-  background-color: #fff;
-  border: 1px dotted fade(@tool-color, 0.85);
 }
 
 /** ToolBar */

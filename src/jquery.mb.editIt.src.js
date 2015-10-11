@@ -43,6 +43,8 @@
  * editIt-create-mainBB
  * editIt-preview
  * editIt-remove
+ * editIt-apply
+ *
  *
  **/
 
@@ -70,7 +72,7 @@
 			enableSourceMode: true,
 			styleWithCSS: false,
 
-			defaultLang: "it-IT" //null //"it-IT"
+			lang: "it-IT" //null //"it-IT" //fr-FR
 
 		},
 
@@ -387,7 +389,7 @@
 				icon: "editIt-icon-chain",
 				action: function( editor ) {
 
-					var text = document.getSelection().toString();
+					var text = d.getSelection().toString();
 					var pageUrl = self.location.href;
 
 					/*
@@ -579,21 +581,21 @@
 
 		plugins: {
 
-			load: function( pathToFolder, useMin ) {
+			load: function( name, useMin ) {
 
 				$( d ).on( "registered", function( e ) {
-					e.plugin.UID = pathToFolder.asId();
-					e.plugin.path = pathToFolder;
+					e.plugin.UID = name.asId();
+					e.plugin.path = $.editIt.plugins.path + name + "/";
 				} );
 
 				jQuery.ajax( {
 					async: false,
 					type: 'GET',
-					url: pathToFolder + "/plugin" + ( useMin ? ".min" : "" ) + ".js?_=" + new Date().getTime(),
+					url: $.editIt.plugins.path + name + "/plugin" + ( useMin ? ".min" : "" ) + ".js?_=" + new Date().getTime(),
 					data: null,
 					dataType: 'script',
 					error: function() {
-						$.editIt.alert.draw( null, _( "There's been an error loading the plugin:<br> %%", [ pathToFolder ] ) )
+						$.editIt.alert.draw( null, _( "There's been an error loading the plugin:<br> %%", [ name ] ) )
 					}
 				} );
 			},
@@ -607,8 +609,7 @@
 				registered.plugin = $.editIt._plugins[ plugin.name ];
 				$( d ).trigger( registered );
 
-				if( plugin.i18n )
-					$.editIt.i18n.extend( plugin.i18n );
+				$.editIt.i18n.loadfile( plugin );
 
 				$( '<link/>', {
 					rel: 'stylesheet',
@@ -1019,6 +1020,57 @@
 			}
 		},
 
+		i18n: {
+
+			loadfile: function( obj ) {
+
+				if( obj.i18n ) {
+
+					for( var lang in obj.i18n ) {
+						$.editIt.i18n[ lang ] = $.editIt.i18n[ lang ] || {};
+						$.extend( $.editIt.i18n[ lang ], obj[ lang ] );
+					}
+
+				} else {
+
+					var path = obj ? obj.path : "";
+
+					$.getJSON( path + "i18n.json?_={{ build }}", function( i18n ) {
+						for( var lang in i18n ) {
+							$.editIt.i18n[ lang ] = $.editIt.i18n[ lang ] || {};
+							$.extend( $.editIt.i18n[ lang ], i18n[ lang ] );
+						}
+
+						console.debug( path + "i18n.json file loaded" );
+
+					} ).fail( function( err ) {
+						console.debug( "i18n for " + path + "i18n.json?_={{ build }}" + " faild ", err );
+					} )
+
+				}
+
+			},
+
+			setLabel: function( label, variables ) {
+				var i18n = $.editIt.i18n;
+				var lang = i18n.lang || ( navigator.language || navigator.userLanguage );
+				var trans = label;
+
+				if( i18n[ lang ] && i18n[ lang ][ label ] ) {
+					trans = i18n[ lang ][ label ];
+				}
+
+				if( variables ) {
+					for( var x in variables ) {
+						trans = trans.replace( "%%", variables[ x ] );
+					}
+				}
+
+				return trans;
+			}
+
+		},
+
 		/**
 		 *
 		 * Utilities
@@ -1062,9 +1114,13 @@
 			updateTextarea: function( editor ) {
 
 				var $editor = $( editor );
+
+				if( !$editor.length )
+					return;
+
 				editor = $editor[ 0 ];
 
-				if( editor.editorsContainer.textarea )
+				if( editor.editorsContainer && editor.editorsContainer.textarea )
 					editor.editorsContainer.textarea.val( $.editIt.util.getClearContent( editor ) );
 			},
 
@@ -1088,6 +1144,7 @@
 				$( "[data-editable]", $( editor ) ).removeClass( "editIt" ).removeAttr( "contenteditable" ).off();
 				$( ".editIt-wrapper" ).removeClass( "inEditMode" );
 
+				$( "[class*=-toolbar]" ).remove();
 				$( "[class*=-buttonBar]" ).remove();
 
 				$.editIt.util.updateTextarea( editor );
@@ -1212,7 +1269,7 @@
 						editor.mainButtonBar.remove();
 
 					$editor.addClass( "inSourceMode" );
-					$( "body" ).addClass( "inSourceMode" );
+					$( "body" ).addClass( "sourceMode" );
 
 					editor.isInSourceMode = true;
 
@@ -1517,7 +1574,7 @@
 				$.extend( self.opt, $.editIt.defaults, opt );
 				$.extend( self.cmnds, $.editIt.commands, cmnds );
 
-				$.editIt.i18n.default_lang = self.opt.defaultLang;
+				$.editIt.i18n.lang = self.opt.lang;
 
 				if( !self.editItIdx ) {
 					self.editItIdx = self.id || "editIt_" + new Date().getTime();
@@ -1680,10 +1737,10 @@
 
 					.on( "contextmenu", function( e ) {
 						/*
-												e.preventDefault();
-												if( !$( ".editIt-dropdown" ).is( ":visible" ) )
-												return false;
-						*/
+						 e.preventDefault();
+						 if( !$( ".editIt-dropdown" ).is( ":visible" ) )
+						 return false;
+						 */
 					} )
 
 					/**
@@ -1878,12 +1935,29 @@
 	$.fn.editIt = $.editIt.init;
 	$.fn.sourceMode = $.editIt.sourceMode;
 
+	function getRootPath() {
+		var scripts = d.querySelectorAll( 'script[src]' );
+		var currentScript = scripts[ scripts.length - 1 ].src;
+		var currentScriptChunks = currentScript.split( '/' );
+		var currentScriptFile = currentScriptChunks[ currentScriptChunks.length - 1 ];
+		var rootPath = currentScript.replace( currentScriptFile, '' ).replace( "inc/", "" );
+
+		return rootPath;
+	};
+
+	$.editIt.defaults.path = getRootPath() + "inc/";
+	$.editIt.plugins.path = getRootPath() + "plug-ins/";
+
+	$.editIt.i18n.loadfile( $.editIt.defaults );
+
 } )( jQuery, document );
 
-/************************************************************************************* UTILITIES
- *
- * @returns {*}
- */
+/************************************************************************************* UTILITIES ****/
+
+function _( label, variables ) {
+	return $.editIt.i18n.setLabel( label, variables )
+};
+
 $.fn.unselectable = function() {
 	return this.each( function() {
 		$( this ).css( {

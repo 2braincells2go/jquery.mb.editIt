@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<!--–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+<html>
+<head>
+    <meta charset="UTF-8"/>
+
+    <!--–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   jquery.mb.components                                                                                                                              –
                                                                                                                                                     –
   file: index.html                                                                                                                                  –
@@ -20,9 +24,6 @@
   Copyright (c) 2001-2015. Matteo Bicocchi (Pupunzi);                                                                                               –
   –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-->
 
-<html>
-<head>
-    <meta charset="UTF-8"/>
     <title>editIt</title>
 
     <link rel="stylesheet" type="text/css" href="demo.css">
@@ -31,99 +32,42 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="../inc/jquery.mb.editIt.min.js"></script>
 
-    <style>
-
-        body {
-            padding: 30px;
-            font-family: sans-serif;
-        }
-        #schedaPlaceHolder {
-            position: relative;
-            max-width: 1024px;
-            margin: auto;
-
-        }
-
-        #enableEditIt, #disableEditIt {
-            -webkit-transition: all 0.5s;
-            transition: all 0.5s;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #009A28;
-            color: #fff;
-            font-size: 32px;
-            font-weight: 100;
-            cursor: pointer;
-            position: relative;
-            margin: 25px 0;
-            display: block;
-        }
-        #disableEditIt {
-            background: #000;
-            color: #fff;
-        }
-        #enableEditIt:hover, #disableEditIt:hover {
-            background: #666;
-            color: #fff;
-        }
-
-        #gitHub {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 180px;
-        }
-
-        .blink {
-            font-size: 70%;
-            font-weight: 100;
-            letter-spacing: -5px;
-            animation: blink 0.6s linear 0s infinite;
-            -webkit-animation: blink 0.8s linear 0.5s infinite; /*alternate*/
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-
-        @keyframes blink {
-            0%   {opacity: 0}
-            50%  {opacity: 0}
-            80% {opacity: 1}
-            100% {opacity: 1}
-        }
-        @-webkit-keyframes blink {
-            0%   {opacity: 0}
-            50%  {opacity: 0}
-            80% {opacity: 1}
-            100% {opacity: 1}
-        }
-
-
-    </style>
-
 </head>
 <body>
 <img id="gitHub" src="http://0xc0.de/img/c/ForkMeOnGitHub.png">
 <div id="wrapper">
+
     <h1>editIt <span class="editIt-icon-i-cursor blink" ></span></h1>
     <h2>Smart and light <b>WYSIWYG HTML editor</b> for your contents.</h2>
     <button id="enableEditIt" onclick="$('#editItContent').editIt(); $('#disableEditIt').show(); $(this).hide()">Enable editIt</button>
     <button id="disableEditIt" onclick="saveIt('scheda1'); $('#enableEditIt').show(); $(this).hide()" style="display: none" >Disable editIt</button>
 
-    <!--<textarea id="editIt-textarea" name="editIt-textarea"></textarea>-->
-    <div id="editItContent" data-textarea-name="editIt-textarea" ></div>
+<div id="lang-switcher" style="display: none">
+    <button id="langIT" onclick="changeLang('it-IT');"  >IT</button>
+    <button id="langEN" onclick="changeLang('en-EN');"  >EN</button>
+    <button id="langFR" onclick="changeLang('fr-FR');"  >FR</button>
+    <button id="langES" onclick="changeLang('es-ES');"  >ES</button>
+</div>
+    <div id="editItContent" class="schedaProdotto" data-textarea-name="editIt-textarea" ></div>
 
 </div>
 
 <script>
 
-    $(function(){
-        loadFile('demoContent.html')
-    });
+    $.editIt.defaults.lang = "it-IT";
 
-    /**
-     *
-     * */
+    $(function(){
+        loadFile('demoContent.html');
+
+        $(document).on("editIt-apply", function(){
+            $("#lang-switcher").show();
+        });
+
+        $(document).on("editIt-remove", function(){
+            $("#lang-switcher").hide();
+        });
+
+    });
 
     function loadFile(url){
         $.ajax({
@@ -135,29 +79,16 @@
                 var $schedaPlaceHolder = $("#editItContent");
                 $schedaPlaceHolder.html(html);
 
-                $.editIt.plugins.load("../plug-ins/tableManager", true);
-                $.editIt.plugins.load("../plug-ins/variablesReplace", true);
-                $.editIt.plugins.load("../plug-ins/modulesManager", true);
+                $.editIt.plugins.load("tableManager", true);
+                $.editIt.plugins.load("variablesReplace", true);
+                $.editIt.plugins.load("modulesManager", true);
 
                 var variables = {"javascript-variable" : "This has been added via javascript"};
                 $.editIt.setVariables(variables);
-
-                /**
-                 * Initialize the editIt behavior
-                 */
-                //$schedaPlaceHolder.editIt({textareaName: "editIt-textarea"});
-                //$.editIt.util.setUneditable( $schedaPlaceHolder );
             }
         });
     }
 
-    function removebeforeSaving (arr) {
-        if(arr)
-            for (var el in arr) {
-                var elToRemove = arr[el];
-                $(elToRemove).remove();
-            }
-    }
 
     function saveIt(name){
 
@@ -172,6 +103,12 @@
         console.debug("TEXTAREA::: ");
         console.debug( $("#editIt-textarea").val() );
 
+    }
+
+    function changeLang(lang){
+        var container = $("#editItContent");
+        $.editIt.util.setUneditable(container);
+        $('#editItContent').editIt({lang: lang});
     }
 
 

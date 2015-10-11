@@ -21,7 +21,7 @@
 			/**
 			 * Load template list from the json
 			 */
-			$.getJSON( plugin.path + "/modules/modules.json?_=" + new Date().getTime(), function( data ) {
+			$.getJSON( plugin.path + "modules/modules.json?_=" + new Date().getTime(), function( data ) {
 				plugin.templates = data.templates;
 			} );
 		},
@@ -44,7 +44,7 @@
 				var removeBlock = $.editIt.util.drawButton( "Remove block", "red", "editIt-icon-minus", null, null, true );
 
 				addBlock.on( "click", function() {
-					$.get( plugin.path + "/prompt.html?_=" + new Date().getTime(), function( html ) {
+					$.get( plugin.path + "prompt.html?_=" + new Date().getTime(), function( html ) {
 						var main_editor = $( block ).parents( ".editIt-wrapper" ).eq( 0 );
 						$.editIt.prompt.draw( main_editor, html, plugin, function( data ) {
 							plugin.insert.apply( plugin, [ data[ "template-url" ], block, data[ "position" ], null ] )
@@ -89,7 +89,7 @@
 			var plugin = this;
 			var editor = $( where ).parents( ".editIt-wrapper" ).eq( 0 );
 
-			$.get( plugin.path + "/modules/" + template + "?_=" + new Date().getTime() ).done( function( html ) {
+			$.get( plugin.path + "modules/" + template + "?_=" + new Date().getTime() ).done( function( html ) {
 
 				$( where )[ position ]( html );
 
@@ -101,28 +101,7 @@
 				$.editIt.alert.draw( editor, _( "There's been an error loading the template:<br> %%", [ template ] ) )
 			} );
 
-		},
-
-		i18n: {
-			"it-IT": {
-				"Add block": "Aggiungi un blocco",
-				"Remove block": "elimina il blocco",
-				"Do you really want to delete this content?": "Vuoi veramente rimuovere questo contenuto?",
-				"There's been an error loading the template: <br> %%": "C'è stato un errore caricando il template:<br> %% ",
-
-				// i18n for prompt
-				"Template manager": "Gestione templates",
-				"Choose a template:": "Scegli un template:",
-				"table 3 columns": "Tabella a 3 colonne",
-				"3 box line": "3 box in linea",
-				"simple text box": "box di testo",
-				"After the current block": "Dopo il blocco corrente",
-				"Before the current bloclk": "Prima del blocco corrente",
-				"Where?": "Dove?"
-
-			}
 		}
-
 	};
 
 	$.editIt.plugins.register( modulesManager );

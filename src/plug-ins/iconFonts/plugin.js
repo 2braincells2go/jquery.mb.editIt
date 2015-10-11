@@ -35,14 +35,7 @@
 			$.editIt.commands.extend( "iconfont", this.command );
 			$( d ).on( "editIt-mouseup." + plugin.name, function( e ) {} );
 
-		},
-
-		i18n: {
-			"it-IT": {
-				"Add emoticon": "Aggiungi un'emoticon"
-			}
 		}
-
 	};
 
 	$.editIt.plugins.register( iconFont );

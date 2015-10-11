@@ -72,7 +72,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-
 		/* Copy files task*/
 		copy: {
 			dist: {
@@ -81,7 +80,8 @@ module.exports = function(grunt) {
 					{flatten: true, expand: true, src: ['src/*.html'], dest: 'build/demo/',rename: function(dest, src) {return dest + src.replace('.src','');}},
 					{flatten: false, expand: true,cwd: 'src/', src: ['plug-ins/**'], dest: 'build/'},
 					{flatten: false, expand: true,cwd: 'src/', src: ['images/**'], dest: 'build/css/'},
-					{flatten: true, expand: true, src: ['src/demo.css'], dest: 'build/demo/'}
+					{flatten: true, expand: true, src: ['src/demo.css'], dest: 'build/demo/'},
+					{flatten: true, expand: true, src: ['src/i18n.json'], dest: 'build/inc/'}
 				]
 			}
 		},
@@ -272,7 +272,7 @@ module.exports = function(grunt) {
 	// Task definitions
 	grunt.registerTask('dist', ['clean', 'uglify:pre', 'less', 'jsbeautifier', 'concat', 'copy', 'uglify:dist', 'cssmin','includereplace']);
 	grunt.registerTask('plugins', ['uglify:plugins', 'less:plugins', 'clean:plugins', 'jsbeautifier:plugins' , 'cssmin:plugins' ]);
-	grunt.registerTask('compress', ['buildnumber','includereplace', 'compress']);
+	grunt.registerTask('zipfiles', ['buildnumber','includereplace', 'compress']);
 	grunt.registerTask('commit', ['default', 'buildnumber','includereplace','bump']);
 
 

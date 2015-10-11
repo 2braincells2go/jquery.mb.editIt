@@ -1,0 +1,25 @@
+{
+	"it-IT": {
+		"Insert Variable"                 : "Inserisci una variabile",
+		"Dynamic content"                 : "Contenuti dinamici",
+		"Choose the variable:"            : "Scegli una variabile da inserire:",
+		"There're no available variables.": "Non ci sono variabili da utilizzare."
+
+	},
+
+	"fr-FR": {
+		"Insert Variable"                 : "Insérer une variable",
+		"Dynamic content"                 : "Contenu dynamique",
+		"Choose the variable:"            : "Choisissez la variable:",
+		"There're no available variables.": "Il ne sommes variables disponibles."
+
+	},
+
+	"es-ES": {
+		"Insert Variable"                 : "Insertar variable",
+		"Dynamic content"                 : "Contenido dinámico",
+		"Choose the variable:"            : "Elija la variable",
+		"There're no available variables.": "¡No hay variables disponibles."
+
+	}
+}
