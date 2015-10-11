@@ -243,18 +243,14 @@
 			},
 
 			clear: function( editor ) {
-
-				console.debug( "clear toolbar" )
-
 				if( !editor || !editor.editorsContainer || !editor.editorsContainer.toolBar || !editor.editorsContainer.toolBar.is( ":visible" ) )
 					return;
-
 				editor.editorsContainer.toolBar.remove();
-
 			},
 
 			getElements: function( editor ) {
 				var toolBarElements = $.editIt.toolBar[ ( $( editor ).data( "toolbar" ) || editor.editorsContainer.opt.toolBar ) ].slice( 0 );
+
 				/**
 				 *
 				 * Manage exceptions in toolBar elements
@@ -295,7 +291,6 @@
 			 */
 			extend: function( toolbarName, newElementName, position ) {
 				var toolBar = $.editIt.toolBar[ toolbarName ];
-
 				if( toolBar.indexOf( newElementName ) < 0 )
 					toolBar.splice( position, 0, newElementName );
 			}
