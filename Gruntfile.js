@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 					compress: true,
 					optimization: 3
 				},
-				src: 'src/less/*.less',
+				src: 'src/less/editIt.less',
 				dest: 'build/css/<%= pkg.shortname %>.css'
 			},
 			plugins: {

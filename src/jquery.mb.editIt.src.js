@@ -1,3 +1,24 @@
+/*___________________________________________________________________________________________________________________________________________________
+ _ jquery.mb.components                                                                                                                             _
+ _                                                                                                                                                  _
+ _ file: jquery.mb.editIt.src.js                                                                                                                    _
+ _ last modified: 12/10/15 19.45                                                                                                                    _
+ _                                                                                                                                                  _
+ _ Open Lab s.r.l., Florence - Italy                                                                                                                _
+ _                                                                                                                                                  _
+ _ email: matteo@open-lab.com                                                                                                                       _
+ _ site: http://pupunzi.com                                                                                                                         _
+ _       http://open-lab.com                                                                                                                        _
+ _ blog: http://pupunzi.open-lab.com                                                                                                                _
+ _ Q&A:  http://jquery.pupunzi.com                                                                                                                  _
+ _                                                                                                                                                  _
+ _ Licences: MIT, GPL                                                                                                                               _
+ _    http://www.opensource.org/licenses/mit-license.php                                                                                            _
+ _    http://www.gnu.org/licenses/gpl.html                                                                                                          _
+ _                                                                                                                                                  _
+ _ Copyright (c) 2001-2015. Matteo Bicocchi (Pupunzi);                                                                                              _
+ ___________________________________________________________________________________________________________________________________________________*/
+
 /**
  *
  * Description:
@@ -485,7 +506,7 @@
 				icon: "editIt-icon-paragraph",
 				type: "dropdown",
 				action: function( editor ) {
-					var elements = [ "h1", "h2", "h3", "h4", "p", "blockquote" ];
+					var elements = [ "h1", "h2", "h3", "h4", "h5", "h6", "-", "p", "blockquote" ];
 					$.editIt.dropDown.draw.apply( this, [ editor, elements ] );
 				}
 			},
@@ -522,9 +543,25 @@
 				}
 			},
 
+			h5: {
+				label: "Title H5",
+				icon: false,
+				action: function() {
+					d.execCommand( 'formatBlock', false, "<H5>" );
+				}
+			},
+
+			h6: {
+				label: "Title H6",
+				icon: false,
+				action: function() {
+					d.execCommand( 'formatBlock', false, "<H6>" );
+				}
+			},
+
 			p: {
 				label: "Paragraph P",
-				icon: false,
+				icon: "editIt-icon-paragraph",
 				action: function() {
 					d.execCommand( 'formatBlock', false, "<P>" );
 				}
@@ -1156,61 +1193,173 @@
 			 * @param e
 			 * @param editor
 			 */
+			/*
+			 handlePaste: function( e, editor ) {
+
+			 e = ( e.originalEvent || e );
+
+			 var text = "";
+
+			 if( e && e.clipboardData && e.clipboardData.getData ) { // Webkit - get data from clipboard, put into editdiv, cleanup, then cancel event
+			 if( /text\/html/.test( e.clipboardData.types ) ) {
+			 text = e.clipboardData.getData( 'text/html' );
+			 } else if( /text\/plain/.test( e.clipboardData.types ) ) {
+			 text = e.clipboardData.getData( 'text/plain' );
+			 } else {
+			 text.innerHTML = "";
+			 }
+			 }
+
+			 if( !editor.editorsContainer.opt.pasteAs )
+			 return;
+
+			 if( e.preventDefault ) {
+			 e.stopPropagation();
+			 e.preventDefault();
+			 }
+
+			 if( editor.editorsContainer.opt.pasteAs == "none" ) {
+			 return;
+			 }
+
+			 //Remove images if blockImages
+			 if( editor.editorsContainer.opt.blockImages ) {
+			 var tmp = $( "<div/>" ).html( text );
+			 var images = tmp.find( "img" );
+
+			 if( images.length ) {
+			 $.editIt.alert.draw( editor, _( "<b>Attention!</b><br><br> Images insertion has been disabled in this editor.<br><br> <b>%%</b> images have been removed from the pasted source.", [ images.length ] ) );
+			 images.remove();
+			 text = tmp.html();
+			 tmp.remove();
+			 }
+			 }
+
+			 // get text representation of clipboard
+			 if( editor.editorsContainer.opt.pasteAs == "text" || e.shiftKey ) {
+			 text.replace( /<br>/g, "\n" );
+			 //			text.replace(/\n/g, "<br>");
+			 text = $( text ).text();
+
+			 } else if( editor.editorsContainer.opt.pasteAs == "cleanHTML" ) {
+
+			 text = $.htmlClean( text );
+
+			 }
+
+			 // insert text manually
+			 d.execCommand( "insertHTML", false, text );
+
+			 },
+			 */
+
 			handlePaste: function( e, editor ) {
 
 				e = ( e.originalEvent || e );
 
 				var text = "";
 
+				function processPaste( text ) {
+					//Remove images if blockImages
+					if( editor.editorsContainer.opt.blockImages ) {
+						var tmp = $( "<div/>" ).html( text );
+						var images = tmp.find( "img" );
+						if( images.length ) {
+							$.editIt.alert.draw( editor, _( "<b>Attention!</b><br><br> Images insertion has been disabled in this editor.<br><br> <b>%%</b> images have been removed from the pasted source.", [ images.length ] ) );
+							images.remove();
+							text = tmp.html();
+							tmp.remove();
+						}
+					}
+					// get text representation of clipboard
+					if( editor.editorsContainer.opt.pasteAs == "text" || e.shiftKey ) {
+						text = $( text ).text();
+					} else if( editor.editorsContainer.opt.pasteAs == "cleanHTML" ) {
+						text = $.htmlClean( text );
+					}
+
+					return text;
+				}
+
 				if( e && e.clipboardData && e.clipboardData.getData ) { // Webkit - get data from clipboard, put into editdiv, cleanup, then cancel event
 					if( /text\/html/.test( e.clipboardData.types ) ) {
 						text = e.clipboardData.getData( 'text/html' );
-					} else if( /text\/plain/.test( e.clipboardData.types ) ) {
+					}
+					/*else if( /text\/plain/.test( e.clipboardData.types ) ) {
 						text = e.clipboardData.getData( 'text/plain' );
-					} else {
-						text.innerHTML = "";
+					}*/
+					else {
+
+						window.pasteTarget = $( e.target ).parents( ".editIt" );
+						window.selection = window.getSelection();
+						window.range = selection.getRangeAt( 0 );
+
+						$.fn.getPasteContent = function() {
+							var sanitizeDiv = this;
+
+							return setTimeout( function() {
+								var lastNode, node, range, selection;
+								selection = window.selection;
+								range = window.range;
+								originalHtml = sanitizeDiv.html();
+
+								$( window.target ).focus();
+								selection.removeAllRanges();
+								selection.addRange( range );
+								range.deleteContents();
+								var sanitizedHtml = document.createDocumentFragment();
+								while( node = sanitizeDiv.firstChild ) {
+									lastNode = sanitizedHtml.appendChild( node );
+								}
+								range.insertNode( sanitizedHtml );
+								if( lastNode ) {
+									range = range.cloneRange();
+									range.setStartAfter( lastNode );
+									range.collapse( true );
+									selection.removeAllRanges();
+									selection.addRange( range );
+								}
+
+								d.execCommand( "insertHTML", false, processPaste( sanitizeDiv.html() ) );
+
+								sanitizeDiv.remove();
+								//return $( this ).html( originalHtml );
+							}, 1 );
+						};
+
+						var tmp = $( "<div/>" ).attr( {
+							id: "pasteTmp",
+							contenteditable: true
+						} ).css( {
+							position: "absolute",
+							top: -3000
+						} );
+
+						$( "body" ).append( tmp );
+
+						tmp.on( "focus", function() {
+							$( this ).getPasteContent();
+						} );
+
+						tmp.html( '' ).focus();
+
+						return;
+
 					}
 				}
 
 				if( !editor.editorsContainer.opt.pasteAs )
 					return;
 
-				if( e.preventDefault ) {
-					e.stopPropagation();
-					e.preventDefault();
-				}
+				e.stopPropagation();
+				e.preventDefault();
 
 				if( editor.editorsContainer.opt.pasteAs == "none" ) {
 					return;
 				}
 
-				//Remove images if blockImages
-				if( editor.editorsContainer.opt.blockImages ) {
-					var tmp = $( "<div/>" ).html( text );
-					var images = tmp.find( "img" );
-
-					if( images.length ) {
-						$.editIt.alert.draw( editor, _( "<b>Attention!</b><br><br> Images insertion has been disabled in this editor.<br><br> <b>%%</b> images have been removed from the pasted source.", [ images.length ] ) );
-						images.remove();
-						text = tmp.html();
-						tmp.remove();
-					}
-				}
-
-				// get text representation of clipboard
-				if( editor.editorsContainer.opt.pasteAs == "text" || e.shiftKey ) {
-					text.replace( /<br>/g, "\n" );
-					//			text.replace(/\n/g, "<br>");
-					text = $( text ).text();
-
-				} else if( editor.editorsContainer.opt.pasteAs == "cleanHTML" ) {
-
-					text = $.htmlClean( text );
-
-				}
-
 				// insert text manually
-				d.execCommand( "insertHTML", false, text );
+				d.execCommand( "insertHTML", false, processPaste( text ) );
 
 			},
 
