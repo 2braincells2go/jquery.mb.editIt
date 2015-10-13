@@ -89,7 +89,7 @@
 				if( $( block ).data( "removable" ) )
 					buttonBar.append( removeBlock );
 
-				$( editor ).append( buttonBar );
+				$( block ).append( buttonBar );
 
 				buttonBar.on( "mouseenter", function() {
 					buttonBar.fadeTo( 100, 1 );

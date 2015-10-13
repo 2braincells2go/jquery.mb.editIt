@@ -656,11 +656,13 @@
 				$.editIt._plugins[ plugin.name ].activate.apply( plugin );
 
 				$( d ).on( "editIt-apply", function( e ) {
-					plugin.update.apply( plugin, [ e ] );
+					if( typeof plugin.update == "function" )
+						plugin.update.apply( plugin, [ e ] );
 				} );
 
 				$( d ).on( "editIt-remove", function() {
-					plugin.destroy.apply( plugin );
+					if( typeof plugin.destroy == "function" )
+						plugin.destroy.apply( plugin );
 					$( d ).off( "." + plugin.name );
 				} );
 			}
@@ -794,7 +796,7 @@
 			 * @param className
 			 * @param mustReturnData
 			 */
-			draw: function( editor, content, plugin, action, applyName, className, mustReturnData ) {
+			draw: function( editor, content, plugin, applyAction, applyName, className, mustReturnData ) {
 
 				editor.actualSelection = $.editIt.util.saveSelection();
 				$.editIt.toolBar.clear( editor );
@@ -860,7 +862,7 @@
 					}
 
 					$.editIt.util.restoreSelection( editor.actualSelection );
-					action( data );
+					applyAction( data );
 
 					editor.prompt.remove();
 					$( "body" ).removeClass( "blur" );
@@ -878,7 +880,8 @@
 					editor.prompt.remove();
 					$( "body" ).removeClass( "blur" );
 
-					$.editIt.util.restoreSelection( editor.actualSelection );
+					//	$.editIt.util.restoreSelection( editor.actualSelection );
+					//					$( editor ).focus();
 
 					$.editIt.toolBar.draw( editor, true );
 					$( d ).off( "keydown.prompt" );
@@ -1188,71 +1191,6 @@
 
 			},
 
-			/**
-			 *
-			 * @param e
-			 * @param editor
-			 */
-			/*
-			 handlePaste: function( e, editor ) {
-
-			 e = ( e.originalEvent || e );
-
-			 var text = "";
-
-			 if( e && e.clipboardData && e.clipboardData.getData ) { // Webkit - get data from clipboard, put into editdiv, cleanup, then cancel event
-			 if( /text\/html/.test( e.clipboardData.types ) ) {
-			 text = e.clipboardData.getData( 'text/html' );
-			 } else if( /text\/plain/.test( e.clipboardData.types ) ) {
-			 text = e.clipboardData.getData( 'text/plain' );
-			 } else {
-			 text.innerHTML = "";
-			 }
-			 }
-
-			 if( !editor.editorsContainer.opt.pasteAs )
-			 return;
-
-			 if( e.preventDefault ) {
-			 e.stopPropagation();
-			 e.preventDefault();
-			 }
-
-			 if( editor.editorsContainer.opt.pasteAs == "none" ) {
-			 return;
-			 }
-
-			 //Remove images if blockImages
-			 if( editor.editorsContainer.opt.blockImages ) {
-			 var tmp = $( "<div/>" ).html( text );
-			 var images = tmp.find( "img" );
-
-			 if( images.length ) {
-			 $.editIt.alert.draw( editor, _( "<b>Attention!</b><br><br> Images insertion has been disabled in this editor.<br><br> <b>%%</b> images have been removed from the pasted source.", [ images.length ] ) );
-			 images.remove();
-			 text = tmp.html();
-			 tmp.remove();
-			 }
-			 }
-
-			 // get text representation of clipboard
-			 if( editor.editorsContainer.opt.pasteAs == "text" || e.shiftKey ) {
-			 text.replace( /<br>/g, "\n" );
-			 //			text.replace(/\n/g, "<br>");
-			 text = $( text ).text();
-
-			 } else if( editor.editorsContainer.opt.pasteAs == "cleanHTML" ) {
-
-			 text = $.htmlClean( text );
-
-			 }
-
-			 // insert text manually
-			 d.execCommand( "insertHTML", false, text );
-
-			 },
-			 */
-
 			handlePaste: function( e, editor ) {
 
 				e = ( e.originalEvent || e );
@@ -1286,8 +1224,8 @@
 						text = e.clipboardData.getData( 'text/html' );
 					}
 					/*else if( /text\/plain/.test( e.clipboardData.types ) ) {
-						text = e.clipboardData.getData( 'text/plain' );
-					}*/
+					 text = e.clipboardData.getData( 'text/plain' );
+					 }*/
 					else {
 
 						window.pasteTarget = $( e.target ).parents( ".editIt" );
@@ -1342,7 +1280,6 @@
 						} );
 
 						tmp.html( '' ).focus();
-
 						return;
 
 					}
@@ -1496,7 +1433,7 @@
 					} );
 
 				} else {
-					editor.sourceMode = $.editIt.util.drawButton( "Edit source", "align-right", "editIt-icon-code", action );
+					editor.sourceMode = $.editIt.util.drawButton( "Edit source", "align-right main-color only-icon", "editIt-icon-code", action );
 
 					if( editor.buttonBar )
 						editor.buttonBar.append( editor.sourceMode );
@@ -1510,7 +1447,7 @@
 				var button = $( "<button/>" ).attr( {
 					label: onlyIcon ? "" : _( label ),
 					title: onlyIcon ? _( label ) : ""
-				} ).addClass( "editIt-button" + className + icon + ( onlyIcon ? " onlyIcon" : "" ) );
+				} ).addClass( "editIt-button" + className + icon + ( onlyIcon ? " only-icon" : "" ) );
 
 				if( action )
 					button.on( "click", function( e ) {
