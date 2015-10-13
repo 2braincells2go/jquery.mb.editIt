@@ -92,7 +92,7 @@ button.editIt-button:hover{background-color:#333;color:#fff}
 button.editIt-button.text-modality{background-color:transparent;color:#fff}button.editIt-button.text-modality:hover{background-color:#333;color:rgba(255,255,255,0.6)}
 button.editIt-button.white{background-color:#FFFFFF;color:#333333}button.editIt-button.white:hover{background-color:#333;color:#fff}
 button.editIt-button.red{background-color:#a81b0f;color:#FFF}button.editIt-button.red:hover{background-color:#333;color:#fff}
-button.editIt-button.main-color{background-color:rgba(51,51,51,0.8);color:#fff}button.editIt-button.main-color:hover{background-color:#fee298;color:#333333}
+button.editIt-button.main-color{background-color:rgba(51,51,51,0.8);color:#fff}button.editIt-button.main-color:hover{background-color:#fff;color:#333}
 button.editIt-button.apply{background-color:#3c8f53;color:#fff}button.editIt-button.apply:hover{background-color:#333;color:#fff}
 button.editIt-button.delete{background-color:#bb110e;color:#fff}button.editIt-button.delete:hover{background-color:#333;color:#fff}
 button.editIt-button.align-right{float:right}

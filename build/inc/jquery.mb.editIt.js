@@ -880,8 +880,8 @@
 					editor.prompt.remove();
 					$( "body" ).removeClass( "blur" );
 
-					//	$.editIt.util.restoreSelection( editor.actualSelection );
-					//					$( editor ).focus();
+					$.editIt.util.restoreSelection( editor.actualSelection );
+					$( editor ).focus();
 
 					$.editIt.toolBar.draw( editor, true );
 					$( d ).off( "keydown.prompt" );
@@ -1319,7 +1319,7 @@
 						previewEv.content = preview;
 						$( d ).trigger( previewEv );
 
-						var closePreview = $.editIt.util.drawButton( "Close", "previewMode-close main-color big", "editIt-icon-close", function() {
+						var closePreview = $.editIt.util.drawButton( "Close", "previewMode-close main-color only-icon", "editIt-icon-close", function() {
 							preview.slideUp( 400, function() {
 								$( this ).remove();
 								$( "body" ).removeClass( "blur" );
@@ -1383,7 +1383,7 @@
 						id: "HTML_" + editor.id
 					} );
 					var textArea = $( "<textarea/>" );
-					var closeSwitcher = $.editIt.util.drawButton( "Close", "white align-right", "editIt-icon-close", function() {
+					var closeSwitcher = $.editIt.util.drawButton( "Close", "white align-right only-icon", "editIt-icon-close", function() {
 						editor.isInSourceMode = false;
 
 						var opt = editor.editorsContainer.opt;
@@ -1666,8 +1666,8 @@
 					self.editItIdx = self.id || "editIt_" + new Date().getTime();
 					$.editIt.editors = $.editIt.editors || {};
 					$.editIt.editors[ self.editItIdx ] = {};
-					$.editIt.editors[ self.editItIdx ].opt = self.opt;
 				}
+				$.editIt.editors[ self.editItIdx ].opt = self.opt;
 
 				$.extend( self.opt, $.editIt.editors[ self.editItIdx ].opt );
 
