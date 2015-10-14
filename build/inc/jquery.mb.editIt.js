@@ -146,7 +146,8 @@
 					}
 
 					var cmnd = editor.editorsContainer.cmnds[ btn ];
-					if( !cmnd || ( cmnd.availableFor && editor.actualTag.tagName.toUpperCase() != cmnd.availableFor ) ) {
+					if( !cmnd || ( cmnd.availableFor && cmnd.availableFor.indexOf( editor.actualTag.tagName.toUpperCase() ) > 0 ) ) {
+						//					if( !cmnd || ( cmnd.availableFor && editor.actualTag.tagName.toUpperCase() != cmnd.availableFor ) ) {
 						continue;
 					}
 
@@ -1390,7 +1391,7 @@
 						$( editor.editorsContainer ).editIt( opt );
 
 						$editor.removeClass( "inSourceMode" );
-						$( "body" ).removeClass( "inSourceMode" );
+						$( "body" ).removeClass( "sourceMode" );
 
 						sourceContainer.removeClass( "in" );
 						overlay.delay( 10 ).removeClass( "in" );

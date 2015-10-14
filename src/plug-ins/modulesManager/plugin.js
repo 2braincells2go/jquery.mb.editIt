@@ -58,7 +58,7 @@
 				var editor = $( block ).is( "[data-editable]" ) ? block : $( block ).children( "[data-editable]" ).eq( 0 );
 
 				var buttonBar = $( "<div/>" ).addClass( "modulesManager-buttonBar" ).css( {
-					opacity: 0
+					opacity: 0.1
 				} );
 
 				var addBlock = $.editIt.util.drawButton( "Add block", "apply", "editIt-icon-plus", null, null, true );
@@ -89,12 +89,12 @@
 				if( $( block ).data( "removable" ) )
 					buttonBar.append( removeBlock );
 
-				$( block ).append( buttonBar );
+				$( block ).prepend( buttonBar );
 
 				buttonBar.on( "mouseenter", function() {
 					buttonBar.fadeTo( 100, 1 );
 				} ).on( "mouseleave", function() {
-					buttonBar.fadeTo( 100, 0 );
+					buttonBar.fadeTo( 100, 0.1 );
 				} )
 
 			} )
