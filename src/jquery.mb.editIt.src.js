@@ -1453,6 +1453,8 @@
 				if( action )
 					button.on( "click", function( e ) {
 						action( e )
+						e.preventDefault();
+						return false;
 					} );
 
 				if( data )

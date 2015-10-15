@@ -60,8 +60,14 @@
 						}, 300 )
 
 					}, null, null, false );
+
+					return false;
 				};
-				editor.deleteBlock = $.editIt.util.drawButton( "remove this block", "align-right main-color editIt-delete-block", "editIt-icon-close only-icon", action );
+				editor.deleteBlock = $.editIt.util.drawButton( "remove this block", "align-right main-color editIt-delete-block", "editIt-icon-close only-icon", function(){
+					action();
+					return false;
+
+				} );
 
 				if( editor.buttonBar && !$( ".editIt-delete-block", editor.buttonBar ).length )
 					editor.buttonBar.append( editor.deleteBlock );
