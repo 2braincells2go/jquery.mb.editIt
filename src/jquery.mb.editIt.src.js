@@ -86,12 +86,13 @@
 
 			textareaName: null,
 			pasteAs: "cleanHTML", // "cleanHTML", "text", "HTML", "none"
-			blockImages: true,
+			blockImagesOnPaste: true,
 			enablePreview: true,
 			toolBar: "default",
 			toolBarIcon: true,
 			enableSourceMode: true,
 			styleWithCSS: false,
+			spellcheck: false,
 
 			lang: "it-IT" //null //"it-IT" //fr-FR
 
@@ -361,15 +362,19 @@
 				action: function() {
 					if( d.queryCommandEnabled( "undo" ) )
 						d.execCommand( 'undo', false, null );
-
 				}
 			},
 
 			bold: {
 				label: "Bold",
 				icon: "editIt-icon-bold",
-				action: function() {
+				action: function( editor ) {
 					d.execCommand( 'bold', false, null );
+
+					/*
+										var html = $.editIt.util.getSelectionHtml();
+										d.execCommand( 'insertHTML', false, "<strong>" + html + "</strong>" );
+					*/
 				}
 			},
 
@@ -792,7 +797,7 @@
 			 * @param editor
 			 * @param content
 			 * @param plugin
-			 * @param action
+			 * @param applyAction
 			 * @param applyName
 			 * @param className
 			 * @param mustReturnData
@@ -1199,8 +1204,8 @@
 				var text = "";
 
 				function processPaste( text ) {
-					//Remove images if blockImages
-					if( editor.editorsContainer.opt.blockImages ) {
+					//Remove images if blockImagesOnPaste
+					if( editor.editorsContainer.opt.blockImagesOnPaste ) {
 						var tmp = $( "<div/>" ).html( text );
 						var images = tmp.find( "img" );
 						if( images.length ) {
@@ -1524,10 +1529,31 @@
 				if( window.getSelection ) {
 					return window.getSelection().toString();
 				} else if( d.selection ) {
+
 					return d.selection.createRange().text;
+
 				}
 
 				return '';
+			},
+
+			getSelectionHtml: function() {
+				var html = "";
+				if( typeof window.getSelection != "undefined" ) {
+					var sel = window.getSelection();
+					if( sel.rangeCount ) {
+						var container = document.createElement( "div" );
+						for( var i = 0, len = sel.rangeCount; i < len; ++i ) {
+							container.appendChild( sel.getRangeAt( i ).cloneContents() );
+						}
+						html = container.innerHTML;
+					}
+				} else if( typeof document.selection != "undefined" ) {
+					if( document.selection.type == "Text" ) {
+						html = document.selection.createRange().htmlText;
+					}
+				}
+				return html;
 			},
 
 			/**
@@ -1732,6 +1758,7 @@
 					$editor.addClass( "editIt" );
 
 					$editor.attr( "contenteditable", true );
+					$editor.attr( "spellcheck", self.opt.spellcheck );
 
 					if( self.opt.styleWithCSS )
 						d.execCommand( "styleWithCSS", false, null );
