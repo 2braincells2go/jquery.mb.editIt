@@ -129,7 +129,11 @@
 					$.editIt.editors[ self.editItIdx ].opt = self.opt;
 				}
 
-				if( self.opt.isAlwaysVisible )
+				if( self.opt.isAlwaysVisible ) {
+
+					self.toolbarPlaceholder = $( "<div/>" ).addClass( "editIt-toolbar-placeholder" );
+					$self.before( self.toolbarPlaceholder );
+
 					$( window ).on( "scroll", function() {
 
 						if( !self.toolBar )
@@ -141,10 +145,10 @@
 
 							var scrollTop = $( window ).scrollTop();
 
-							if( scrollTop > $self.offset().top ) {
+							if( scrollTop > $self.offset().top - self.toolbarPlaceholder.outerHeight() ) {
 								self.toolBar.stop();
 								self.toolBar.animate( {
-									top: scrollTop - $self.offset().top
+									top: scrollTop - $self.offset().top + self.toolbarPlaceholder.outerHeight()
 								}, 300 );
 							} else {
 								self.toolBar.animate( {
@@ -153,9 +157,10 @@
 
 							}
 
-						}, 20 );
+						}, 50 );
 
 					} );
+				}
 
 				$.extend( self.opt, $.editIt.editors[ self.editItIdx ].opt );
 
@@ -692,12 +697,17 @@
 
 				} else {
 
-					$( editor.editorsContainer ).prepend( editor.editorsContainer.toolBar );
+					editor.editorsContainer.toolbarPlaceholder.append( editor.editorsContainer.toolBar );
 					editor.editorsContainer.toolBar.addClass( "editIt-always-visible" );
 
-					if( scrollTop > $( editor.editorsContainer ).offset().top ) {
+					editor.editorsContainer.toolbarPlaceholder.css( {
+						height: editor.editorsContainer.toolBar.outerHeight()
+					} );
+
+					if( scrollTop > $( editor.editorsContainer ).offset().top - editor.editorsContainer.toolbarPlaceholder.outerHeight() ) {
+
 						editor.editorsContainer.toolBar.css( {
-							top: scrollTop - $( editor.editorsContainer ).offset().top
+							top: scrollTop - $( editor.editorsContainer ).offset().top + editor.editorsContainer.toolbarPlaceholder.outerHeight()
 						} );
 					}
 
@@ -712,6 +722,10 @@
 					return;
 
 				editor.editorsContainer.toolBar.remove();
+
+				editor.editorsContainer.toolbarPlaceholder.css( {
+					height: 0
+				} );
 
 			},
 
@@ -2150,9 +2164,9 @@
 	};
 
 	$.fn.editIt = $.editIt.init;
-	$.fn.sourceMode = $.editIt.sourceMode;
+	//	$.fn.sourceMode = $.editIt.sourceMode;
 
-	function getRootPath() {
+	var getRootPath = function() {
 		var scripts = d.querySelectorAll( 'script[src]' );
 		var currentScript = scripts[ scripts.length - 1 ].src;
 		var currentScriptChunks = currentScript.split( '/' );
