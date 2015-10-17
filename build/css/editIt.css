@@ -4,6 +4,11 @@
 .editIt-icon-star-o:before{content:"\f006"}
 .editIt-icon-check:before{content:"\f00c"}
 .editIt-icon-close:before{content:"\f00d"}
+.editIt-icon-cog:before{content:"\f013"}
+.editIt-icon-trash-o:before{content:"\f014"}
+.editIt-icon-volume-up:before{content:"\f028"}
+.editIt-icon-print:before{content:"\f02f"}
+.editIt-icon-camera:before{content:"\f030"}
 .editIt-icon-font:before{content:"\f031"}
 .editIt-icon-bold:before{content:"\f032"}
 .editIt-icon-italic:before{content:"\f033"}
@@ -18,6 +23,7 @@
 .editIt-icon-image:before{content:"\f03e"}
 .editIt-icon-pencil:before{content:"\f040"}
 .editIt-icon-map-marker:before{content:"\f041"}
+.editIt-icon-tint:before{content:"\f043"}
 .editIt-icon-check-square-o:before{content:"\f046"}
 .editIt-icon-chevron-left:before{content:"\f053"}
 .editIt-icon-chevron-right:before{content:"\f054"}
@@ -39,7 +45,10 @@
 .editIt-icon-folder:before{content:"\f07b"}
 .editIt-icon-folder-open:before{content:"\f07c"}
 .editIt-icon-square-o:before{content:"\f096"}
+.editIt-icon-wrench:before{content:"\f0ad"}
 .editIt-icon-chain:before{content:"\f0c1"}
+.editIt-icon-cut:before{content:"\f0c4"}
+.editIt-icon-copy:before{content:"\f0c5"}
 .editIt-icon-paperclip:before{content:"\f0c6"}
 .editIt-icon-square:before{content:"\f0c8"}
 .editIt-icon-list-ul:before{content:"\f0ca"}
@@ -51,6 +60,7 @@
 .editIt-icon-caret-right:before{content:"\f0da"}
 .editIt-icon-sort-desc:before{content:"\f0dd"}
 .editIt-icon-sort-asc:before{content:"\f0de"}
+.editIt-icon-clipboard:before{content:"\f0ea"}
 .editIt-icon-quote-left:before{content:"\f10d"}
 .editIt-icon-quote-right:before{content:"\f10e"}
 .editIt-icon-mail-reply:before{content:"\f112"}
@@ -62,6 +72,7 @@
 .editIt-icon-check-square:before{content:"\f14a"}
 .editIt-icon-youtube:before{content:"\f167"}
 .editIt-icon-paragraph:before{content:"\f1dd"}
+.editIt-icon-trash:before{content:"\f1f8"}
 .editIt-icon-toggle-off:before{content:"\f204"}
 .editIt-icon-toggle-on:before{content:"\f205"}
 .editIt-icon-i-cursor:before{content:"\f246"}
@@ -78,7 +89,8 @@ body.sourceMode{margin-bottom:50vh !important}
 .editIt[contenteditable]::selection,.editIt[contenteditable] *::selection{background:#fee298}
 .editIt[contenteditable]::-moz-selection,.editIt[contenteditable] *::-moz-selection{background:#fee298}
 .editIt-main-buttonBar{position:absolute;top:-45px;right:0;height:30px;font-family:"calluna","Open Sans",Helvetica,sans-serif}
-#editIt-toolbar{position:absolute;z-index:1000;margin-top:-40px;padding:0;min-height:33px;font-family:"calluna","Open Sans",Helvetica,sans-serif;background-color:rgba(51,51,51,0.9);border-radius:4px;white-space:nowrap;box-shadow:0 0 4px rgba(0,0,0,0.3)}#editIt-toolbar button{-webkit-transition:all 0.3s;transition:all 0.3s;font-weight:100;font-size:16px;letter-spacing:1px;line-height:18px;position:relative;display:inline-block;background-color:transparent;color:#fff;border:none;padding:12px;cursor:pointer}#editIt-toolbar button:hover{background-color:rgba(51,51,51,0.9);color:#98c2ff}
+#editIt-toolbar{position:absolute;z-index:1000;margin-top:-40px;padding:0;min-height:33px;font-family:"calluna","Open Sans",Helvetica,sans-serif;background-color:rgba(51,51,51,0.9);border-radius:4px;white-space:nowrap;box-shadow:0 0 4px rgba(0,0,0,0.3)}#editIt-toolbar.editIt-always-visible{z-index:10000;top:0;left:0;margin-top:0;border-radius:0;width:100%;white-space:normal;min-height:0}#editIt-toolbar.editIt-always-visible button{padding:15px 12px}
+#editIt-toolbar button{-webkit-transition:all 0.3s;transition:all 0.3s;font-weight:100;font-size:16px;letter-spacing:1px;line-height:18px;position:relative;display:inline-block;background-color:transparent;color:#fff;border:none;padding:12px;cursor:pointer}#editIt-toolbar button:hover{background-color:rgba(51,51,51,0.9);color:#98c2ff}
 #editIt-toolbar button .textual{font-family:"Arimo",Helvetica,Arial,sans-serif}
 #editIt-toolbar button.sel{color:#fee298}
 #editIt-toolbar button.disabled{color:rgba(255,255,255,0.2)}

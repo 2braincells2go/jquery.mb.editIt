@@ -1,31 +1,10 @@
-/*___________________________________________________________________________________________________________________________________________________
- _ jquery.mb.components                                                                                                                             _
- _                                                                                                                                                  _
- _ file: style.css                                                                                                                                  _
- _ last modified: 11/10/15 22.54                                                                                                                    _
- _                                                                                                                                                  _
- _ Open Lab s.r.l., Florence - Italy                                                                                                                _
- _                                                                                                                                                  _
- _ email: matteo@open-lab.com                                                                                                                       _
- _ site: http://pupunzi.com                                                                                                                         _
- _       http://open-lab.com                                                                                                                        _
- _ blog: http://pupunzi.open-lab.com                                                                                                                _
- _ Q&A:  http://jquery.pupunzi.com                                                                                                                  _
- _                                                                                                                                                  _
- _ Licences: MIT, GPL                                                                                                                               _
- _    http://www.opensource.org/licenses/mit-license.php                                                                                            _
- _    http://www.gnu.org/licenses/gpl.html                                                                                                          _
- _                                                                                                                                                  _
- _ Copyright (c) 2001-2015. Matteo Bicocchi (Pupunzi);                                                                                              _
- ___________________________________________________________________________________________________________________________________________________*/
-
 @font-face {
 	font-family: 'editIt';
-	src:url('fonts/editIt.eot?60rcpe');
-	src:url('fonts/editIt.eot?60rcpe#iefix') format('embedded-opentype'),
-		url('fonts/editIt.ttf?60rcpe') format('truetype'),
-		url('fonts/editIt.woff?60rcpe') format('woff'),
-		url('fonts/editIt.svg?60rcpe#editIt') format('svg');
+	src:url('fonts/editIt.eot?1ps5n7');
+	src:url('fonts/editIt.eot?1ps5n7#iefix') format('embedded-opentype'),
+		url('fonts/editIt.ttf?1ps5n7') format('truetype'),
+		url('fonts/editIt.woff?1ps5n7') format('woff'),
+		url('fonts/editIt.svg?1ps5n7#editIt') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -55,6 +34,21 @@
 }
 .editIt-icon-close:before {
 	content: "\f00d";
+}
+.editIt-icon-cog:before {
+	content: "\f013";
+}
+.editIt-icon-trash-o:before {
+	content: "\f014";
+}
+.editIt-icon-volume-up:before {
+	content: "\f028";
+}
+.editIt-icon-print:before {
+	content: "\f02f";
+}
+.editIt-icon-camera:before {
+	content: "\f030";
 }
 .editIt-icon-font:before {
 	content: "\f031";
@@ -97,6 +91,9 @@
 }
 .editIt-icon-map-marker:before {
 	content: "\f041";
+}
+.editIt-icon-tint:before {
+	content: "\f043";
 }
 .editIt-icon-check-square-o:before {
 	content: "\f046";
@@ -161,8 +158,17 @@
 .editIt-icon-square-o:before {
 	content: "\f096";
 }
+.editIt-icon-wrench:before {
+	content: "\f0ad";
+}
 .editIt-icon-chain:before {
 	content: "\f0c1";
+}
+.editIt-icon-cut:before {
+	content: "\f0c4";
+}
+.editIt-icon-copy:before {
+	content: "\f0c5";
 }
 .editIt-icon-paperclip:before {
 	content: "\f0c6";
@@ -197,6 +203,9 @@
 .editIt-icon-sort-asc:before {
 	content: "\f0de";
 }
+.editIt-icon-clipboard:before {
+	content: "\f0ea";
+}
 .editIt-icon-quote-left:before {
 	content: "\f10d";
 }
@@ -229,6 +238,9 @@
 }
 .editIt-icon-paragraph:before {
 	content: "\f1dd";
+}
+.editIt-icon-trash:before {
+	content: "\f1f8";
 }
 .editIt-icon-toggle-off:before {
 	content: "\f204";

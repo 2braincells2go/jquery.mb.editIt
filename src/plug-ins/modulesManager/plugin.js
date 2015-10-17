@@ -52,7 +52,7 @@
 			$( ".modulesManager-buttonBar" ).remove();
 
 			var plugin = this;
-			$( "[data-group]" ).each( function() {
+			$( "[data-module]" ).each( function() {
 
 				var block = this;
 				var editor = $( block ).is( "[data-editable]" ) ? block : $( block ).children( "[data-editable]" ).eq( 0 );

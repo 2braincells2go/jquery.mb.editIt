@@ -3,10 +3,10 @@
 		"Add block"                                          : "Aggiungi un blocco",
 		"Remove block"                                       : "elimina il blocco",
 		"Do you really want to delete this content?"         : "Vuoi veramente rimuovere questo contenuto?",
-		"There's been an error loading the template: <br> %%": "C'è stato un errore caricando il template:<br> %%",
+		"There's been an error loading the template: <br> %%": "C'è stato un errore caricando il modulo:<br> %%",
 
-		"Template manager"                                   : "Gestione templates",
-		"Choose a template:"                                 : "Scegli un template:",
+		"Template manager"                                   : "Gestione Moduli",
+		"Choose a template:"                                 : "Scegli un modulo:",
 		"After the current block"                            : "Dopo il blocco corrente",
 		"Before the current bloclk"                          : "Prima del blocco corrente",
 		"Where?"                                             : "Dove?"

@@ -154,6 +154,22 @@ body {
 
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 
+  &.editIt-always-visible {
+    z-index: 10000;
+    top:0;
+    left:0;
+    margin-top: 0;
+    border-radius: 0;
+    width: 100%;
+    white-space: normal;
+    min-height: 0;
+
+    button {
+      padding: 15px 12px;
+    }
+
+  }
+
   button {
     -webkit-transition: all 0.3s;
     transition: all 0.3s;

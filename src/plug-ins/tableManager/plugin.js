@@ -48,6 +48,7 @@
 			var defaultToolBar = editor.editorsContainer.opt.toolBar;
 			$.editIt.commands.extend( plugin.commands );
 			$.editIt.toolBar.extend( defaultToolBar, "table", 22 );
+			$.editIt.toolBar.extend( defaultToolBar, "|", 23 );
 
 			$( d ).on( "editIt-mousedown." + plugin.name, function( e ) {
 
@@ -174,7 +175,7 @@
 			removeRow: {
 				label: _( "Remove row︎" ),
 				availableFor: "TD",
-				icon: "editIt-icon-close",
+				icon: "editIt-icon-trash-o",
 				action: function( editor ) {
 					var tr = $( tableManager.actualTag ).parents( "tr" );
 					tr.remove();
@@ -219,7 +220,7 @@
 			removeCol: {
 				label: _( "remove column" ),
 				availableFor: "TD",
-				icon: "editIt-icon-close",
+				icon: "editIt-icon-trash-o",
 				action: function( editor ) {
 					var table = $( tableManager.actualTag ).parents( "table" );
 					var idx = $( tableManager.actualTag ).index();
@@ -294,7 +295,7 @@
 
 			deleteTable: {
 				label: _( "Delete table" ),
-				icon: "editIt-icon-close",
+				icon: "editIt-icon-trash-o",
 				availableFor: "TD",
 				action: function( editor ) {
 					var main_editor = editor.editorsContainer;

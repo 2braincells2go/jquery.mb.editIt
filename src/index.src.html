@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../css/editIt.min.css">
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="../inc/jquery.mb.editIt.min.js"></script>
+    <script type="text/javascript" src="../inc/jquery.mb.editIt.js"></script>
 
 </head>
 <body>
@@ -82,8 +82,8 @@
                 $.editIt.plugins.load("tableManager", true);
                 $.editIt.plugins.load("variablesReplace", true);
                 $.editIt.plugins.load("modulesManager", true);
-                $.editIt.plugins.load("deleteBlock", true);
                 $.editIt.plugins.load("imageManager", true);
+                $.editIt.plugins.load("blockTools", true);
 
                 var variables = {"javascript-variable" : "This has been added via javascript"};
                 $.editIt.setVariables(variables);

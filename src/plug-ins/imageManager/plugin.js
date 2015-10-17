@@ -48,7 +48,10 @@
 				var editor = e.editor;
 				var targetIsImage = $( editor.actualTag ).is( "img" );
 
-				console.debug( targetIsImage );
+				if( targetIsImage ) {
+					var img = $( editor.actualTag );
+
+				}
 
 			} )
 		},

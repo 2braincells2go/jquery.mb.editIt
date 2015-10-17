@@ -1,0 +1,19 @@
+{
+	"it-IT": {
+		"Do you really want to delete this content?": "Vuoi veramente rimuovere questo contenuto?",
+		"Paste before"                              : "Incolla sopra",
+		"Paste after"                               : "Incolla sotto"
+	},
+
+	"fr-FR": {
+		"Do you really want to delete this content?": "Voulez-vous vraiment supprimer ce contenu?",
+		"Paste before"                              : "Coller avant",
+		"Paste after"                               : "Coller après"
+	},
+
+	"es-ES": {
+		"Do you really want to delete this content?": "¿Realmente quieres borrar este contenido?",
+		"Paste before"                              : "Pegar antes",
+		"Paste after"                               : "Pegar después"
+	}
+}
