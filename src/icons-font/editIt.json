@@ -576,11 +576,19 @@
 				},
 				{
 					"id": 95,
-					"order": 0
+					"order": 96,
+					"prevSize": 42,
+					"code": 61541,
+					"name": "expand",
+					"tempChar": ""
 				},
 				{
 					"id": 96,
-					"order": 0
+					"order": 97,
+					"prevSize": 42,
+					"code": 61542,
+					"name": "compress",
+					"tempChar": ""
 				},
 				{
 					"id": 97,
@@ -588,7 +596,7 @@
 					"prevSize": 42,
 					"code": 61543,
 					"name": "plus",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 98,
@@ -596,7 +604,7 @@
 					"prevSize": 42,
 					"code": 61544,
 					"name": "minus",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 99,
@@ -624,7 +632,7 @@
 					"prevSize": 42,
 					"code": 61550,
 					"name": "eye",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 105,
@@ -632,7 +640,7 @@
 					"prevSize": 42,
 					"code": 61552,
 					"name": "eye-slash",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 106,
@@ -640,7 +648,7 @@
 					"prevSize": 42,
 					"code": 61553,
 					"name": "exclamation-triangle",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 107,
@@ -684,7 +692,7 @@
 					"prevSize": 42,
 					"code": 61563,
 					"name": "folder",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 117,
@@ -692,7 +700,7 @@
 					"prevSize": 42,
 					"code": 61564,
 					"name": "folder-open",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 118,
@@ -792,7 +800,7 @@
 					"prevSize": 42,
 					"code": 61590,
 					"name": "square-o",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 142,
@@ -884,7 +892,7 @@
 					"prevSize": 42,
 					"code": 61613,
 					"name": "wrench",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 164,
@@ -912,7 +920,7 @@
 					"prevSize": 42,
 					"code": 61633,
 					"name": "chain",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 170,
@@ -928,7 +936,7 @@
 					"prevSize": 42,
 					"code": 61636,
 					"name": "cut",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 173,
@@ -936,7 +944,7 @@
 					"prevSize": 42,
 					"code": 61637,
 					"name": "copy",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 174,
@@ -944,7 +952,7 @@
 					"prevSize": 42,
 					"code": 61638,
 					"name": "paperclip",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 175,
@@ -956,7 +964,7 @@
 					"prevSize": 42,
 					"code": 61640,
 					"name": "square",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 177,
@@ -968,7 +976,7 @@
 					"prevSize": 42,
 					"code": 61642,
 					"name": "list-ul",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 179,
@@ -976,7 +984,7 @@
 					"prevSize": 42,
 					"code": 61643,
 					"name": "list-ol",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 180,
@@ -984,7 +992,7 @@
 					"prevSize": 42,
 					"code": 61644,
 					"name": "strikethrough",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 181,
@@ -992,7 +1000,7 @@
 					"prevSize": 42,
 					"code": 61645,
 					"name": "underline",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 182,
@@ -1000,7 +1008,7 @@
 					"prevSize": 42,
 					"code": 61646,
 					"name": "table",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 183,
@@ -1044,7 +1052,7 @@
 					"prevSize": 42,
 					"code": 61657,
 					"name": "caret-left",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 193,
@@ -1052,7 +1060,7 @@
 					"prevSize": 42,
 					"code": 61658,
 					"name": "caret-right",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 194,
@@ -1068,7 +1076,7 @@
 					"prevSize": 42,
 					"code": 61661,
 					"name": "sort-desc",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 197,
@@ -1076,7 +1084,7 @@
 					"prevSize": 42,
 					"code": 61662,
 					"name": "sort-asc",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 198,
@@ -1124,7 +1132,7 @@
 					"prevSize": 42,
 					"code": 61674,
 					"name": "clipboard",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 209,
@@ -1260,7 +1268,7 @@
 					"prevSize": 42,
 					"code": 61709,
 					"name": "quote-left",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 242,
@@ -1268,7 +1276,7 @@
 					"prevSize": 42,
 					"code": 61710,
 					"name": "quote-right",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 243,
@@ -1284,7 +1292,7 @@
 					"prevSize": 42,
 					"code": 61714,
 					"name": "mail-reply",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 246,
@@ -1336,7 +1344,7 @@
 					"prevSize": 42,
 					"code": 61729,
 					"name": "code",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 258,
@@ -1364,7 +1372,7 @@
 					"prevSize": 42,
 					"code": 61735,
 					"name": "chain-broken",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 264,
@@ -1384,7 +1392,7 @@
 					"prevSize": 42,
 					"code": 61739,
 					"name": "superscript",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 268,
@@ -1392,7 +1400,7 @@
 					"prevSize": 42,
 					"code": 61740,
 					"name": "subscript",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 269,
@@ -1400,7 +1408,7 @@
 					"prevSize": 42,
 					"code": 61741,
 					"name": "eraser",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 270,
@@ -1512,7 +1520,7 @@
 					"prevSize": 42,
 					"code": 61770,
 					"name": "check-square",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 297,
@@ -1624,7 +1632,7 @@
 					"prevSize": 42,
 					"code": 61799,
 					"name": "youtube",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 324,
@@ -2072,7 +2080,7 @@
 					"prevSize": 42,
 					"code": 61917,
 					"name": "paragraph",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 435,
@@ -2176,7 +2184,7 @@
 					"prevSize": 42,
 					"code": 61944,
 					"name": "trash",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 460,
@@ -2224,7 +2232,7 @@
 					"prevSize": 42,
 					"code": 61956,
 					"name": "toggle-off",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 471,
@@ -2232,7 +2240,7 @@
 					"prevSize": 42,
 					"code": 61957,
 					"name": "toggle-on",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 472,
@@ -2472,7 +2480,7 @@
 					"prevSize": 42,
 					"code": 62022,
 					"name": "i-cursor",
-					"tempChar": ""
+					"tempChar": ""
 				},
 				{
 					"id": 531,

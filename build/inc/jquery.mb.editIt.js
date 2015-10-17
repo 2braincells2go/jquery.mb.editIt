@@ -86,15 +86,441 @@
 
 			textareaName: null,
 			pasteAs: "cleanHTML", // "cleanHTML", "text", "HTML", "none"
-			blockImages: true,
+			blockImagesOnPaste: true,
 			enablePreview: true,
 			toolBar: "default",
 			toolBarIcon: true,
 			enableSourceMode: true,
 			styleWithCSS: false,
-
+			spellcheck: false,
+			isAlwaysVisible: true,
 			lang: "it-IT" //null //"it-IT" //fr-FR
 
+		},
+
+		/**
+		 *
+		 * @param opt
+		 * @param cmnds
+		 * @returns {*}
+		 */
+		init: function( opt, cmnds ) {
+
+			return this.each( function() {
+
+				var self = this;
+				var $self = $( self );
+
+				$self.off();
+
+				self.opt = {};
+				self.cmnds = {};
+				self.editorsContainer = self;
+
+				$.extend( self.opt, $.editIt.defaults, opt );
+				$.extend( self.cmnds, $.editIt.commands, cmnds );
+
+				$.editIt.i18n.lang = self.opt.lang;
+
+				if( !self.editItIdx ) {
+					self.editItIdx = self.id || "editIt_" + new Date().getTime();
+					$.editIt.editors = $.editIt.editors || {};
+					$.editIt.editors[ self.editItIdx ] = {};
+					$.editIt.editors[ self.editItIdx ].opt = self.opt;
+				}
+
+				if( self.opt.isAlwaysVisible )
+					$( window ).on( "scroll", function() {
+
+						if( !self.toolBar )
+							return;
+
+						clearTimeout( $.editIt.scrollAnimation );
+
+						$.editIt.scrollAnimation = setTimeout( function() {
+
+							var scrollTop = $( window ).scrollTop();
+
+							if( scrollTop > $self.offset().top ) {
+								self.toolBar.stop();
+								self.toolBar.animate( {
+									top: scrollTop - $self.offset().top
+								}, 300 );
+							} else {
+								self.toolBar.animate( {
+									top: 0
+								}, 300 );
+
+							}
+
+						}, 20 );
+
+					} );
+
+				$.extend( self.opt, $.editIt.editors[ self.editItIdx ].opt );
+
+				$.editIt.mainButtonBar.draw( self );
+
+				if( $self.css( "position" ) == "static" )
+					$self.css( "position", "relative" );
+
+				self.opt.textareaName = $self.data( "textarea-name" ) || self.opt.textareaName;
+
+				if( self.opt.textareaName ) {
+					if( !$( "textarea[name=" + self.opt.textareaName + "]" ).length ) {
+						var textarea = $( "<textarea/>" ).attr( {
+							name: self.opt.textareaName,
+							id: self.opt.textareaName
+						} ).hide();
+						$self.after( textarea );
+					}
+					self.textarea = $( "#" + self.opt.textareaName );
+					self.textarea.hide();
+				}
+
+				if( self.opt.enableSourceMode )
+					$.editIt.util.enableSourceMode.apply( self );
+
+				if( self.opt.enablePreview )
+					$.editIt.util.enablePreview.apply( self );
+
+				$( self ).addClass( "editIt-wrapper inEditMode" );
+
+				if( $self.css( "position" ) == "static" )
+					$self.css( "position", "relative" );
+
+				var editors = $self.is( "[data-editable]" ) ? $( this ) : $( "[data-editable]", $self );
+
+				editors.each( function() {
+
+					var editor = this;
+					var $editor = $( editor );
+
+					// Clear all binded events
+					$editor.off();
+
+					if( $editor.css( "position" ) == "static" )
+						$editor.css( "position", "relative" );
+
+					editor.buttonBar = $( "<div/>" ).addClass( "editIt-buttonBar" );
+					$editor.prepend( editor.buttonBar );
+
+					if( $editor.parents().is( "[data-editable]" ) )
+						return;
+
+					if( $editor.data( "enablesourcemode" ) )
+						$.editIt.util.enableSourceMode.apply( editor );
+
+					if( !editor.id )
+						editor.id = "editIt_" + new Date().getTime();
+
+					editor.editorsContainer = self.editorsContainer;
+
+					$editor.addClass( "editIt" );
+
+					$editor.attr( "contenteditable", true );
+					$editor.attr( "spellcheck", self.opt.spellcheck );
+
+					if( self.opt.styleWithCSS )
+						d.execCommand( "styleWithCSS", false, null );
+
+					/**
+					 * PASTE event
+					 */
+					$editor.on( "paste", function( e ) {
+						$.editIt.util.handlePaste( e, editor );
+					} )
+
+					/**
+					 * MOUSE down event
+					 */
+					.on( "mousedown", function( e ) {
+
+						editor.actualTag = e.target;
+
+						$( d ).one( "mouseup", function() {
+
+							if( $.editIt.util.getSelectedText().length ) {
+
+								$editor.trigger( "mouseup" );
+
+							}
+
+						} );
+
+						var mousedownEv = $.Event( "editIt-mousedown" );
+						mousedownEv.editor = editor;
+						$editor.trigger( mousedownEv );
+
+					} )
+
+					/**
+					 * MOUSE UP event
+					 */
+					.on( "mouseup keyup", function( e ) {
+
+						if( e.type == "keyup" && editor.editorsContainer.opt.isAlwaysVisible )
+							return;
+
+						e.stopPropagation();
+
+						clearTimeout( editor.mouseupTimer );
+
+						editor.actualTag = e.target;
+
+						$.editIt.actualEditor = editor.editorsContainer;
+
+						editor.mouseupTimer = setTimeout( function() {
+
+							if( editor.editorsContainer.opt.isAlwaysVisible ) {
+
+								clearTimeout( $.editIt.hidetimer );
+								$.editIt.toolBar.clear( editor );
+
+								$( ".editIt-tooltip" ).remove();
+
+								if( !$( ".editIt-dropdown" ).is( ":visible" ) && $.editIt.util.getSelectionCoords().left > 0 )
+									$.editIt.toolBar.draw( editor );
+
+							} else if( $.editIt.util.getSelectedText().length == 0 ) {
+
+								$.editIt.toolBar.clear( editor );
+
+							} else {
+
+								clearTimeout( $.editIt.hidetimer );
+
+								if( !$( ".editIt-dropdown" ).is( ":visible" ) && $.editIt.util.getSelectionCoords().left > 0 )
+									$.editIt.toolBar.draw( editor );
+
+							}
+
+							var anchor = editor.actualTag.tagName.toUpperCase() == "A";
+
+							if( anchor ) {
+								var anchorLink = editor.actualTag.href;
+
+								if( $.editIt.util.getSelectedText().length == 0 )
+									$.editIt.tooltip.draw.apply( editor.actualTag, [ editor, "<a href='" + anchorLink + "' target='_blank'>" + anchorLink + "</a>", true ] );
+							}
+
+							var mouseupEv = $.Event( "editIt-mouseup" );
+							mouseupEv.editor = editor;
+
+							$editor.trigger( mouseupEv );
+
+						}, e.type == "mouseup" ? 50 : 500 )
+
+					} )
+
+					/*
+					 .on( "contextmenu", function( e ) {
+					 e.preventDefault();
+					 if( !$( ".editIt-dropdown" ).is( ":visible" ) )
+					 return false;
+					 } )
+
+					 */
+
+					/**
+					 * FOCUS event
+					 */
+					.on( "focus", function() {
+
+						//console.debug( "focus", editor )
+
+						if( editor.editorsContainer.toolBar && editor.editorsContainer.toolBar.is( ":visible" ) )
+							clearTimeout( $.editIt.hidetimer );
+
+						$( ".focusedEditor" ).removeClass( "focusedEditor" );
+						$( this ).addClass( "focusedEditor" );
+
+						//console.debug( "editor.buttonBar FOCUS ", editor.buttonBar );
+						if( editor.buttonBar ) {
+							editor.buttonBar.fadeIn( 100 );
+						}
+
+						var focusEv = $.Event( "editIt-focus" );
+						focusEv.editor = editor;
+						$editor.trigger( focusEv );
+
+					} )
+
+					/**
+					 * BLUR event
+					 */
+					.on( "blur", function() {
+
+						//console.debug( "blur", editor )
+
+						$.editIt.hidetimer = setTimeout( function() {
+
+							$.editIt.toolBar.clear( editor );
+
+							$( ".focusedEditor" ).removeClass( "focusedEditor" );
+
+							setTimeout( function() {
+								$( ".editIt-tooltip" ).remove();
+							}, 30 );
+
+							var blurEv = $.Event( "editIt-blur" );
+							blurEv.editor = editor;
+							$editor.trigger( blurEv );
+
+						}, 150 );
+
+						//	console.debug( "editor.buttonBar  BLUR  ", editor.buttonBar );
+
+						if( editor.buttonBar ) {
+							editor.buttonBar.fadeOut( 100 );
+						}
+
+					} )
+
+					/**
+					 * KEYDOWN event
+					 */
+					.on( "keydown", function( e ) {
+
+						var k = e.keyCode;
+
+						//console.debug(k);
+
+						switch( k ) {
+
+							case 8:
+								$.editIt.toolBar.clear( editor );
+								break;
+
+							case 13: // return
+
+								var isInsideList = $.editIt.util.isSelectionInsideElement( "OL" ) || $.editIt.util.isSelectionInsideElement( "UL" );
+								if( isInsideList ) {
+									return;
+								}
+
+								e.preventDefault();
+
+								var selection = window.getSelection(),
+									range = selection.getRangeAt( 0 ),
+									el = d.createElement( "br" ),
+									textNode = d.createTextNode( "\u00a0" );
+
+								range.collapse( false );
+								range.insertNode( textNode );
+								range.insertNode( el );
+								range.selectNodeContents( textNode );
+								selection.removeAllRanges();
+								selection.addRange( range );
+								d.execCommand( "forwardDelete", false, null );
+
+								if( !e.shiftKey )
+									d.execCommand( "formatBlock", false, "p" );
+								break;
+
+							case 65: //A
+								if( e.ctrlKey || e.metaKey )
+									setTimeout( function() {
+										$.editIt.toolBar.draw( editor )
+									}, 50 );
+								break;
+
+							case 66: //B
+								if( e.ctrlKey || e.metaKey ) {
+									d.execCommand( "bold", false, null );
+									e.preventDefault();
+								}
+								break;
+
+							case 73: //I
+								if( e.ctrlKey || e.metaKey ) {
+									d.execCommand( "italic", false, null );
+									e.preventDefault();
+								}
+								break;
+
+							case 85: //U
+								if( e.ctrlKey || e.metaKey ) {
+									d.execCommand( "underline", false, null );
+									e.preventDefault();
+								}
+								break;
+
+							default:
+								if( !editor.editorsContainer.opt.isAlwaysVisible )
+									$.editIt.toolBar.clear( editor );
+								break;
+						}
+
+						var keydownEv = $.Event( "editIt-keydown" );
+						keydownEv.editor = editor;
+						keydownEv.key = k;
+
+						$editor.trigger( keydownEv );
+
+					} )
+
+					.on( "keyup", function() {
+
+						if( self.editorsContainer.opt.textareaName )
+							$.editIt.util.updateTextarea( self );
+
+						var keyupEv = $.Event( "editIt-keyup" );
+						keyupEv.editor = editor;
+						keyupEv.key = k;
+
+						$editor.trigger( keyupEv );
+
+					} )
+
+					/**
+					 * MOUSEOVER event
+					 */
+					.on( "mouseover", function( e ) {
+
+						var hoverElement = e.target;
+						var $hoverElement = $( hoverElement );
+
+						if( !$hoverElement.parents( ".focusedEditor" ).length )
+							return;
+
+						switch( hoverElement.tagName.toUpperCase() ) {
+
+							case "IMG":
+								//console.debug($hoverElement.attr("src"));
+								break;
+
+							case "TD":
+								//console.debug("TABLE");
+								break;
+
+							case "A":
+								//console.debug("A");
+								$hoverElement.click();
+								break;
+						}
+
+						editor.hoverTag = hoverElement.tagName.toUpperCase();
+						var mouseoverEv = $.Event( "editIt-mouseover" );
+						mouseoverEv.editor = editor;
+						mouseoverEv.hoverElement = hoverElement;
+						$editor.trigger( mouseoverEv );
+
+					} );
+
+				} );
+
+				var initEv = $.Event( "editIt-apply" );
+				initEv.editor = self;
+				$( d ).trigger( initEv );
+
+				if( self.editorsContainer.opt.textareaName )
+					$.editIt.util.updateTextarea( self );
+
+				d.execCommand( "enableInlineTableEditing", false, false );
+				d.execCommand( "enableObjectResizing", false, false );
+
+			} )
 		},
 
 		/**
@@ -117,7 +543,7 @@
 			 */
 			draw: function( editor, fade ) {
 
-				if( !$( editor ).is( "[contenteditable]" ) || !editor.editorsContainer )
+				if( !editor.editorsContainer.opt.isAlwaysVisible && ( !$( editor ).is( "[contenteditable]" ) || !editor.editorsContainer ) )
 					return;
 
 				$.extend( editor.editorsContainer.cmnds, $.editIt.commands );
@@ -233,41 +659,60 @@
 
 				var scrollLeft = $( window ).scrollLeft();
 				var scrollTop = $( window ).scrollTop();
-				var pos = $.editIt.util.getSelectionCoords();
 
-				$( "body" ).after( editor.editorsContainer.toolBar );
-				var arrow = $( "<div/>" ).addClass( "arrow_box" );
-				editor.editorsContainer.toolBar.append( arrow );
+				if( !editor.editorsContainer.opt.isAlwaysVisible ) {
 
-				pos.left = pos.left - ( editor.editorsContainer.toolBar.outerWidth() / 2 );
-				pos.top = pos.top - 20;
+					var pos = $.editIt.util.getSelectionCoords();
 
-				var toolBarLeftIsInWin = ( pos.left - scrollLeft ) + editor.editorsContainer.toolBar.width() < $( window ).width();
-				var toolBarTopIsInWin = ( pos.top - scrollTop ) + editor.editorsContainer.toolBar.height() < $( window ).height();
+					$( "body" ).after( editor.editorsContainer.toolBar );
+					var arrow = $( "<div/>" ).addClass( "arrow_box" );
+					editor.editorsContainer.toolBar.append( arrow );
 
-				pos.left = toolBarLeftIsInWin ? pos.left : pos.left - ( ( pos.left - scrollLeft ) + editor.editorsContainer.toolBar.width() - $( window ).width() ) - 10;
-				pos.left = pos.left > 10 ? pos.left : 10;
+					pos.left = pos.left - ( editor.editorsContainer.toolBar.outerWidth() / 2 );
+					pos.top = pos.top - 20;
 
-				pos.top = toolBarTopIsInWin ? pos.top : pos.top - ( ( pos.top - scrollTop ) + editor.editorsContainer.toolBar.height() - $( window ).height() ) - 10;
-				pos.top = pos.top <= scrollTop + editor.editorsContainer.toolBar.height() ? pos.top + editor.editorsContainer.toolBar.outerHeight() + 20 : pos.top;
+					var toolBarLeftIsInWin = ( pos.left - scrollLeft ) + editor.editorsContainer.toolBar.width() < $( window ).width();
+					var toolBarTopIsInWin = ( pos.top - scrollTop ) + editor.editorsContainer.toolBar.height() < $( window ).height();
 
-				editor.editorsContainer.toolBar.css( {
-					left: pos.left,
-					top: pos.top
-				} );
+					pos.left = toolBarLeftIsInWin ? pos.left : pos.left - ( ( pos.left - scrollLeft ) + editor.editorsContainer.toolBar.width() - $( window ).width() ) - 10;
+					pos.left = pos.left > 10 ? pos.left : 10;
 
-				arrow.css( {
-					left: $.editIt.util.getSelectionCoords().left - pos.left + ( pos.width / 2 ) - 5,
-					top: pos.top - editor.editorsContainer.toolBar.position().top + editor.editorsContainer.toolBar.outerHeight() - 10
-				} );
+					pos.top = toolBarTopIsInWin ? pos.top : pos.top - ( ( pos.top - scrollTop ) + editor.editorsContainer.toolBar.height() - $( window ).height() ) - 10;
+					pos.top = pos.top <= scrollTop + editor.editorsContainer.toolBar.height() ? pos.top + editor.editorsContainer.toolBar.outerHeight() + 20 : pos.top;
+
+					editor.editorsContainer.toolBar.css( {
+						left: pos.left,
+						top: pos.top
+					} );
+
+					arrow.css( {
+						left: $.editIt.util.getSelectionCoords().left - pos.left + ( pos.width / 2 ) - 5,
+						top: pos.top - editor.editorsContainer.toolBar.position().top + editor.editorsContainer.toolBar.outerHeight() - 10
+					} );
+
+				} else {
+
+					$( editor.editorsContainer ).prepend( editor.editorsContainer.toolBar );
+					editor.editorsContainer.toolBar.addClass( "editIt-always-visible" );
+
+					if( scrollTop > $( editor.editorsContainer ).offset().top ) {
+						editor.editorsContainer.toolBar.css( {
+							top: scrollTop - $( editor.editorsContainer ).offset().top
+						} );
+					}
+
+				}
 
 				$( ".editIt-tooltip" ).remove();
 			},
 
 			clear: function( editor ) {
+
 				if( !editor || !editor.editorsContainer || !editor.editorsContainer.toolBar || !editor.editorsContainer.toolBar.is( ":visible" ) )
 					return;
+
 				editor.editorsContainer.toolBar.remove();
+
 			},
 
 			getElements: function( editor ) {
@@ -313,7 +758,8 @@
 			 */
 			extend: function( toolbarName, newElementName, position ) {
 				var toolBar = $.editIt.toolBar[ toolbarName ];
-				if( toolBar.indexOf( newElementName ) < 0 )
+
+				if( newElementName == "|" || toolBar.indexOf( newElementName ) < 0 )
 					toolBar.splice( position, 0, newElementName );
 			}
 
@@ -361,15 +807,19 @@
 				action: function() {
 					if( d.queryCommandEnabled( "undo" ) )
 						d.execCommand( 'undo', false, null );
-
 				}
 			},
 
 			bold: {
 				label: "Bold",
 				icon: "editIt-icon-bold",
-				action: function() {
+				action: function( editor ) {
 					d.execCommand( 'bold', false, null );
+
+					/*
+					 var html = $.editIt.util.getSelectionHtml();
+					 d.execCommand( 'insertHTML', false, "<strong>" + html + "</strong>" );
+					 */
 				}
 			},
 
@@ -792,14 +1242,17 @@
 			 * @param editor
 			 * @param content
 			 * @param plugin
-			 * @param action
+			 * @param applyAction
 			 * @param applyName
 			 * @param className
 			 * @param mustReturnData
 			 */
 			draw: function( editor, content, plugin, applyAction, applyName, className, mustReturnData ) {
 
+				var toolbarWasVisible = $( ".editIt-toolbar" ).is( ":visible" );
+
 				editor.actualSelection = $.editIt.util.saveSelection();
+
 				$.editIt.toolBar.clear( editor );
 
 				editor.prompt = $( "<div/>" ).addClass( "editIt-prompt" ).hide();
@@ -862,15 +1315,20 @@
 						return;
 					}
 
-					$.editIt.util.restoreSelection( editor.actualSelection );
-					applyAction( data );
-
 					editor.prompt.remove();
 					$( "body" ).removeClass( "blur" );
 
 					setTimeout( function() {
-						$.editIt.toolBar.draw( editor );
+
+						$.editIt.util.restoreSelection( editor.actualSelection );
+
 						$( editor ).focus();
+
+						if( toolbarWasVisible )
+							$.editIt.toolBar.draw( editor );
+
+						applyAction( data );
+
 					}, 50 );
 
 					$( d ).off( "keydown.prompt" );
@@ -882,9 +1340,12 @@
 					$( "body" ).removeClass( "blur" );
 
 					$.editIt.util.restoreSelection( editor.actualSelection );
+
+					if( toolbarWasVisible )
+						$.editIt.toolBar.draw( editor, true );
+
 					$( editor ).focus();
 
-					$.editIt.toolBar.draw( editor, true );
 					$( d ).off( "keydown.prompt" );
 				} );
 
@@ -902,6 +1363,8 @@
 
 				editor.prompt.fadeIn( 200, function() {
 					promptBox.find( "input" ).eq( 0 ).focus().select();
+
+					$( editor ).blur();
 				} );
 
 				$( d ).on( "keydown.prompt", function( e ) {
@@ -982,7 +1445,7 @@
 
 		/**
 		 *
-		 * Dropdown
+		 * Dropdown menu
 		 *
 		 */
 		dropDown: {
@@ -1028,6 +1491,7 @@
 						}
 
 					var command = editor.editorsContainer.cmnds[ elements[ x ] ];
+
 					if( !command || ( command.availableFor && editor.actualTag.tagName.toUpperCase() != command.availableFor ) )
 						continue;
 
@@ -1036,27 +1500,47 @@
 
 					editor.dropDown.append( row );
 
+					var isToolbarButton = $( editor.dropDown[ 0 ].opener ).parents( ".editIt-toolbar" ).length;
+
 					row.on( "mousedown", function() {
 
 						var el = $( this );
 
 						editor.actualSelection = $.editIt.util.saveSelection();
 
-						setTimeout( function() {
-							var args = [ editor ];
-							$.editIt.util.restoreSelection( editor.actualSelection );
-							editor.editorsContainer.cmnds[ el.data( "action" ) ].action.apply( el[ 0 ], args );
-							$( editor ).focus();
+						if( isToolbarButton ) {
 
-							$.editIt.toolBar.draw( editor );
+							setTimeout( function() {
 
-						}, 50 )
+								$.editIt.util.restoreSelection( editor.actualSelection );
+
+								var args = [ editor ];
+								editor.editorsContainer.cmnds[ el.data( "action" ) ].action.apply( el[ 0 ], args );
+								$( editor ).focus();
+								$.editIt.toolBar.draw( editor );
+
+								editor.dropDown.remove();
+							}, 50 )
+
+						} else {
+
+							setTimeout( function() {
+								var args = [ editor ];
+								editor.editorsContainer.cmnds[ el.data( "action" ) ].action.apply( el[ 0 ], args );
+								editor.dropDown.remove();
+							}, 50 )
+
+						}
 
 					} );
 
 				}
 
 				$( buttonOpener ).after( editor.dropDown );
+				$( document ).one( "blur, mousedown", editor, function( e ) {
+					if( !$( e.target ).is( editor.dropDown[ 0 ].opener ) && !$( e.target ).parents().is( editor.dropDown ) )
+						editor.dropDown.remove();
+				} );
 
 			}
 		},
@@ -1173,10 +1657,7 @@
 
 				var removeEv = $.Event( "editIt-remove" );
 				removeEv.editor = editor;
-
 				$( editor ).trigger( removeEv );
-
-				$.editIt.mainButtonBar.clear();
 
 				$.editIt.toolBar.clear( editor );
 
@@ -1188,7 +1669,10 @@
 				$( "[class*=-toolbar]" ).remove();
 				$( "[class*=-buttonBar]" ).remove();
 
+				$.editIt.mainButtonBar.clear();
 				$.editIt.util.updateTextarea( editor );
+
+				$( editor ).blur();
 
 			},
 
@@ -1199,8 +1683,8 @@
 				var text = "";
 
 				function processPaste( text ) {
-					//Remove images if blockImages
-					if( editor.editorsContainer.opt.blockImages ) {
+					//Remove images if blockImagesOnPaste
+					if( editor.editorsContainer.opt.blockImagesOnPaste ) {
 						var tmp = $( "<div/>" ).html( text );
 						var images = tmp.find( "img" );
 						if( images.length ) {
@@ -1352,6 +1836,8 @@
 
 				var action = function() {
 
+					$.editIt.util.setUneditable( editor.editorsContainer );
+
 					if( editor.mainButtonBar )
 						editor.mainButtonBar.remove();
 
@@ -1359,8 +1845,6 @@
 					$( "body" ).addClass( "sourceMode" );
 
 					editor.isInSourceMode = true;
-
-					$.editIt.util.setUneditable( editor.editorsContainer );
 
 					var source = $editor.html();
 
@@ -1414,6 +1898,8 @@
 						sourceContainer.addClass( "in" );
 						overlay.addClass( "in" );
 						textArea.focus();
+						$.editIt.toolBar.clear( editor );
+
 					}, 100 );
 
 					textArea.on( "change mouseup keyup", function() {
@@ -1452,7 +1938,7 @@
 
 				if( action )
 					button.on( "click", function( e ) {
-						action( e )
+						action.apply( this, [ e ] )
 						e.preventDefault();
 						return false;
 					} );
@@ -1526,10 +2012,31 @@
 				if( window.getSelection ) {
 					return window.getSelection().toString();
 				} else if( d.selection ) {
+
 					return d.selection.createRange().text;
+
 				}
 
 				return '';
+			},
+
+			getSelectionHtml: function() {
+				var html = "";
+				if( typeof window.getSelection != "undefined" ) {
+					var sel = window.getSelection();
+					if( sel.rangeCount ) {
+						var container = document.createElement( "div" );
+						for( var i = 0, len = sel.rangeCount; i < len; ++i ) {
+							container.appendChild( sel.getRangeAt( i ).cloneContents() );
+						}
+						html = container.innerHTML;
+					}
+				} else if( typeof document.selection != "undefined" ) {
+					if( document.selection.type == "Text" ) {
+						html = document.selection.createRange().htmlText;
+					}
+				}
+				return html;
 			},
 
 			/**
@@ -1639,386 +2146,7 @@
 
 			}
 
-		},
-
-		/**
-		 *
-		 * @param opt
-		 * @param cmnds
-		 * @returns {*}
-		 */
-		init: function( opt, cmnds ) {
-
-			return this.each( function() {
-
-				var self = this;
-				var $self = $( self );
-
-				$self.off();
-
-				self.opt = {};
-				self.cmnds = {};
-				self.editorsContainer = self;
-
-				$.extend( self.opt, $.editIt.defaults, opt );
-				$.extend( self.cmnds, $.editIt.commands, cmnds );
-
-				$.editIt.i18n.lang = self.opt.lang;
-
-				if( !self.editItIdx ) {
-					self.editItIdx = self.id || "editIt_" + new Date().getTime();
-					$.editIt.editors = $.editIt.editors || {};
-					$.editIt.editors[ self.editItIdx ] = {};
-				}
-				$.editIt.editors[ self.editItIdx ].opt = self.opt;
-
-				$.extend( self.opt, $.editIt.editors[ self.editItIdx ].opt );
-
-				$.editIt.mainButtonBar.draw( self );
-
-				if( $self.css( "position" ) == "static" )
-					$self.css( "position", "relative" );
-
-				self.opt.textareaName = $self.data( "textarea-name" ) || self.opt.textareaName;
-
-				if( self.opt.textareaName ) {
-					if( !$( "textarea[name=" + self.opt.textareaName + "]" ).length ) {
-						var textarea = $( "<textarea/>" ).attr( {
-							name: self.opt.textareaName,
-							id: self.opt.textareaName
-						} ).hide();
-						$self.after( textarea );
-					}
-					self.textarea = $( "#" + self.opt.textareaName );
-					self.textarea.hide();
-				}
-
-				if( self.opt.enableSourceMode )
-					$.editIt.util.enableSourceMode.apply( self );
-
-				if( self.opt.enablePreview )
-					$.editIt.util.enablePreview.apply( self );
-
-				$( self ).addClass( "editIt-wrapper inEditMode" );
-
-				if( $self.css( "position" ) == "static" )
-					$self.css( "position", "relative" );
-
-				var editors = $self.is( "[data-editable]" ) ? $( this ) : $( "[data-editable]", $self );
-
-				editors.each( function() {
-
-					var editor = this;
-					var $editor = $( editor );
-
-					// Clear all binded events
-					$editor.off();
-
-					if( $editor.css( "position" ) == "static" )
-						$editor.css( "position", "relative" );
-
-					editor.buttonBar = $( "<div/>" ).addClass( "editIt-buttonBar" );
-					$editor.prepend( editor.buttonBar );
-
-					if( $editor.parents().is( "[data-editable]" ) )
-						return;
-
-					if( $editor.data( "enablesourcemode" ) )
-						$.editIt.util.enableSourceMode.apply( editor );
-
-					if( !editor.id )
-						editor.id = "editIt_" + new Date().getTime();
-
-					editor.editorsContainer = self.editorsContainer;
-
-					$editor.addClass( "editIt" );
-
-					$editor.attr( "contenteditable", true );
-
-					if( self.opt.styleWithCSS )
-						d.execCommand( "styleWithCSS", false, null );
-					/**
-					 * PASTE event
-					 */
-
-					$editor.on( "paste", function( e ) {
-						$.editIt.util.handlePaste( e, editor );
-					} )
-
-					/**
-					 * MOUSE down event
-					 */
-					.on( "mousedown", function( e ) {
-
-						/*
-						 if( e.button == 2 ) {
-						 e.preventDefault();
-						 e.stopPropagation();
-						 return false;
-						 }
-						 */
-
-						editor.actualTag = e.target;
-
-						$( d ).one( "mouseup", function() {
-							$editor.trigger( "mouseup" );
-						} );
-
-						var mousedownEv = $.Event( "editIt-mousedown" );
-						mousedownEv.editor = editor;
-						$editor.trigger( mousedownEv );
-
-					} )
-
-					/**
-					 * MOUSE UP event
-					 */
-					.on( "mouseup keyup", function( e ) {
-
-						e.stopPropagation();
-
-						/*
-						 if( e.button == 2 ) {
-						 e.preventDefault();
-						 e.stopPropagation();
-						 return false;
-						 }
-						 */
-
-						clearTimeout( editor.mouseupTimer );
-
-						editor.actualTag = e.target;
-
-						$.editIt.actualEditor = editor.editorsContainer;
-
-						editor.mouseupTimer = setTimeout( function() {
-
-							if( $.editIt.util.getSelectedText().length == 0 ) { //.trim()
-
-								$.editIt.toolBar.clear( editor );
-
-								$( ".editIt-tooltip" ).remove();
-
-								var anchor = editor.actualTag.tagName.toUpperCase() == "A";
-
-								if( anchor ) {
-									var anchorLink = editor.actualTag.href;
-
-									$.editIt.tooltip.draw.apply( editor.actualTag, [ editor, "<a href='" + anchorLink + "' target='_blank'>" + anchorLink + "</a>", true ] );
-								}
-
-							} else {
-
-								clearTimeout( $.editIt.hidetimer );
-
-								if( !$( ".editIt-dropdown" ).is( ":visible" ) )
-									$.editIt.toolBar.draw( editor );
-
-							}
-
-							var mouseupEv = $.Event( "editIt-mouseup" );
-							mouseupEv.editor = editor;
-
-							$editor.trigger( mouseupEv );
-
-						}, e.type == "mouseup" ? 50 : 500 )
-					} )
-
-					.on( "contextmenu", function( e ) {
-						/*
-						 e.preventDefault();
-						 if( !$( ".editIt-dropdown" ).is( ":visible" ) )
-						 return false;
-						 */
-					} )
-
-					/**
-					 * FOCUS event
-					 */
-					.on( "focus", function() {
-
-						if( editor.editorsContainer.toolBar && editor.editorsContainer.toolBar.is( ":visible" ) )
-							clearTimeout( $.editIt.hidetimer );
-
-						$( ".focusedEditor" ).removeClass( "focusedEditor" );
-						$( this ).addClass( "focusedEditor" );
-
-						if( editor.buttonBar ) {
-							editor.buttonBar.fadeIn( 100 );
-						}
-
-						var focusEv = $.Event( "editIt-focus" );
-						focusEv.editor = editor;
-
-						$editor.trigger( focusEv );
-
-					} )
-
-					/**
-					 * BLUR event
-					 */
-					.on( "blur", function() {
-						$.editIt.hidetimer = setTimeout( function() {
-
-							$.editIt.toolBar.clear( editor );
-
-							if( editor.buttonBar ) {
-								editor.buttonBar.fadeOut( 100 );
-							}
-
-							$( ".focusedEditor" ).removeClass( "focusedEditor" );
-
-							setTimeout( function() {
-								$( ".editIt-tooltip" ).remove();
-							}, 30 );
-
-							var blurEv = $.Event( "editIt-blur" );
-							blurEv.editor = editor;
-
-							$editor.trigger( blurEv );
-
-						}, 150 );
-
-					} )
-
-					/**
-					 * KEYDOWN event
-					 */
-					.on( "keydown", function( e ) {
-
-						var k = e.keyCode;
-
-						//console.debug(k);
-
-						switch( k ) {
-
-							case 8:
-								$.editIt.toolBar.clear( editor );
-								break;
-
-							case 13: // return
-
-								var isInsideList = $.editIt.util.isSelectionInsideElement( "OL" ) || $.editIt.util.isSelectionInsideElement( "UL" );
-								if( isInsideList ) {
-									return;
-								}
-
-								e.preventDefault();
-
-								var selection = window.getSelection(),
-									range = selection.getRangeAt( 0 ),
-									el = d.createElement( "br" ),
-									textNode = d.createTextNode( "\u00a0" );
-
-								range.collapse( false );
-								range.insertNode( textNode );
-								range.insertNode( el );
-								range.selectNodeContents( textNode );
-								selection.removeAllRanges();
-								selection.addRange( range );
-								d.execCommand( "forwardDelete", false, null );
-
-								if( !e.shiftKey )
-									d.execCommand( "formatBlock", false, "p" );
-								break;
-
-							case 65: //A
-								if( e.ctrlKey || e.metaKey )
-									setTimeout( function() {
-										$.editIt.toolBar.draw( editor )
-									}, 50 );
-								break;
-
-							case 66: //B
-								if( e.ctrlKey || e.metaKey ) {
-									d.execCommand( "bold", false, null );
-									e.preventDefault();
-								}
-								break;
-
-							case 73: //I
-								if( e.ctrlKey || e.metaKey ) {
-									d.execCommand( "italic", false, null );
-									e.preventDefault();
-								}
-								break;
-
-							case 85: //U
-								if( e.ctrlKey || e.metaKey ) {
-									d.execCommand( "underline", false, null );
-									e.preventDefault();
-								}
-								break;
-
-							default:
-								$.editIt.toolBar.clear( editor );
-								break;
-						}
-
-						var keyupEv = $.Event( "editIt-keyup" );
-						keyupEv.editor = editor;
-						keyupEv.key = k;
-
-						$editor.trigger( keyupEv );
-
-					} )
-
-					.on( "keyup", function() {
-
-						if( self.editorsContainer.opt.textareaName )
-							$.editIt.util.updateTextarea( self );
-					} )
-
-					/**
-					 * MOUSEOVER event
-					 */
-					.on( "mouseover", function( e ) {
-
-						var hoverElement = e.target;
-						var $hoverElement = $( hoverElement );
-
-						if( !$hoverElement.parents( ".focusedEditor" ).length )
-							return;
-
-						switch( hoverElement.tagName.toUpperCase() ) {
-
-							case "IMG":
-								//console.debug($hoverElement.attr("src"));
-								break;
-
-							case "TD":
-								//console.debug("TABLE");
-								break;
-
-							case "A":
-								//console.debug("A");
-								$hoverElement.click();
-								break;
-						}
-
-						editor.hoverTag = hoverElement.tagName.toUpperCase();
-						var mouseoverEv = $.Event( "editIt-mouseover" );
-						mouseoverEv.editor = editor;
-						mouseoverEv.hoverElement = hoverElement;
-						$editor.trigger( mouseoverEv );
-
-					} );
-
-				} );
-
-				var initEv = $.Event( "editIt-apply" );
-				initEv.editor = self;
-				$( d ).trigger( initEv );
-
-				if( self.editorsContainer.opt.textareaName )
-					$.editIt.util.updateTextarea( self );
-
-				d.execCommand( "enableInlineTableEditing", false, false );
-				d.execCommand( "enableObjectResizing", false, false );
-
-			} )
 		}
-
 	};
 
 	$.fn.editIt = $.editIt.init;

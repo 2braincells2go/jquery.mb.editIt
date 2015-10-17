@@ -93,7 +93,7 @@
 			enableSourceMode: true,
 			styleWithCSS: false,
 			spellcheck: false,
-			isAlwaysVisible: false,
+			isAlwaysVisible: true,
 			lang: "it-IT" //null //"it-IT" //fr-FR
 
 		},
@@ -707,8 +707,10 @@
 			},
 
 			clear: function( editor ) {
+
 				if( !editor || !editor.editorsContainer || !editor.editorsContainer.toolBar || !editor.editorsContainer.toolBar.is( ":visible" ) )
 					return;
+
 				editor.editorsContainer.toolBar.remove();
 
 			},
@@ -756,8 +758,6 @@
 			 */
 			extend: function( toolbarName, newElementName, position ) {
 				var toolBar = $.editIt.toolBar[ toolbarName ];
-
-				console.debug( newElementName, newElementName == "|" || toolBar.indexOf( newElementName ) < 0 )
 
 				if( newElementName == "|" || toolBar.indexOf( newElementName ) < 0 )
 					toolBar.splice( position, 0, newElementName );
@@ -1537,11 +1537,7 @@
 				}
 
 				$( buttonOpener ).after( editor.dropDown );
-
 				$( document ).one( "blur, mousedown", editor, function( e ) {
-
-					console.debug( e.target, !$( e.target ).is( editor.dropDown[ 0 ].opener ) && !$( e.target ).parents().is( editor.dropDown ) )
-
 					if( !$( e.target ).is( editor.dropDown[ 0 ].opener ) && !$( e.target ).parents().is( editor.dropDown ) )
 						editor.dropDown.remove();
 				} );
@@ -1661,10 +1657,7 @@
 
 				var removeEv = $.Event( "editIt-remove" );
 				removeEv.editor = editor;
-
 				$( editor ).trigger( removeEv );
-
-				$.editIt.mainButtonBar.clear();
 
 				$.editIt.toolBar.clear( editor );
 
@@ -1676,7 +1669,10 @@
 				$( "[class*=-toolbar]" ).remove();
 				$( "[class*=-buttonBar]" ).remove();
 
+				$.editIt.mainButtonBar.clear();
 				$.editIt.util.updateTextarea( editor );
+
+				$( editor ).blur();
 
 			},
 
@@ -1840,6 +1836,8 @@
 
 				var action = function() {
 
+					$.editIt.util.setUneditable( editor.editorsContainer );
+
 					if( editor.mainButtonBar )
 						editor.mainButtonBar.remove();
 
@@ -1847,8 +1845,6 @@
 					$( "body" ).addClass( "sourceMode" );
 
 					editor.isInSourceMode = true;
-
-					$.editIt.util.setUneditable( editor.editorsContainer );
 
 					var source = $editor.html();
 
@@ -1902,6 +1898,8 @@
 						sourceContainer.addClass( "in" );
 						overlay.addClass( "in" );
 						textArea.focus();
+						$.editIt.toolBar.clear( editor );
+
 					}, 100 );
 
 					textArea.on( "change mouseup keyup", function() {
